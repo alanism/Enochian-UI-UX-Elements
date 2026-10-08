@@ -47,7 +47,7 @@ Keep the root tokens, or map them onto your own design system:
 
 ```css
 :root {
-  --accent: #CC0000;   /* Cinnabar; Ember is #E76A2E */
+  --accent: #CC0000;   /* Cinnabar signal */
   --ink: #111; --muted: #6e6e6e; --tile: #f5f6f7; --paper: #fff;
   --sans: "IBM Plex Sans", sans-serif;
   --mono: "IBM Plex Mono", monospace;

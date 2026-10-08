@@ -1,37 +1,15 @@
-# Enochian UI UX Elements
+# Enochian control sources
 
-A control atlas of hardware-inspired interface elements for the web: dials, switches, meters, keys and instruments that are felt before they are understood. Every element is a working interaction study with keyboard access, spring motion and a copyable implementation behind the Code Veil.
+These three self-contained studies supply the 55 working controls in the [single Enochian showcase](../UIUX/index.html):
 
-Volume I lives at [uncommoncore.web.app/enochian_knobs_keys](https://uncommoncore.web.app/enochian_knobs_keys/). This repository holds Volumes II and III.
+| Source | Controls | Purpose |
+|---|---:|---|
+| [`index.html`](index.html) | 11 | Foundation controls, including dials, keys, clocks, and the receiver |
+| [`volume-3/index.html`](volume-3/index.html) | 20 | Compact actions, switches, sliders, and navigation |
+| [`volume-2/index.html`](volume-2/index.html) | 24 | Instruments, meters, transport, and displays |
 
-## Volumes
+The showcase generator in [`../scripts/generate_uiux.py`](../scripts/generate_uiux.py) combines their markup, styles, and behavior. The source files remain available for editing individual instruments. The public deployment contains only the combined showcase and its assets.
 
-| Volume | Open | Contents |
-|---|---|---|
-| **II · signal, scale and sequence** | [`volume-2/index.html`](volume-2/index.html) | Lumen VU, Cantor Ladder, Meridian Fader, Regie Bank, Aperture Scale, Interlock Bank, Lantern Row, Strobe Platter, Lumen Pad, Transport Bank, Cadence Pads, Penumbra Deck, Tally Keypad, Sigil Remote, Orbit Wheel, Excursion Pair, Monitor Pair, Augur rangefinder, Lodestar compass, Climate thermostat, Velocity speedometer, Triad system monitor, Departures and Manifest split-flap boards |
-| **III · after Drams** | [`volume-3/index.html`](volume-3/index.html) | Twenty small controls after the [Drams](https://drams.framer.website/) collection: OP-1 Keys, Bouncin' Ball, Rollin' Search, Fidget Poppin', Triple Switch, Standard Switch, Triple Push Buttons, Pinchin' Switch, Triple Light Switch, Pinchin' Track Switch, Coloured Switch, Trackin' Slider, LED Switch, Round On/Off Knob, Joypad Controller, Square Slider, Concaved Switch, Pushin' Click Button, Dimpled Slider, I/O Switch |
+Black, white, and Cinnabar `#CC0000` define the palette. Ivory and Obsidian are component material finishes. Use semantic controls, visible focus, synchronized ARIA state, and reduced-motion support when adapting a control.
 
-Each `index.html` is a single self-contained file. Open it in a browser and it works, with no build step and no install.
-
-`enochian-elements-vol2.html` and `enochian-elements-vol3.html` at the root are the same pages without the `<!doctype>` and `<head>` wrapper. They are the sources the hosted previews are published from.
-
-## Design rules
-
-- **Palette:** black, white and one signal accent: Cinnabar `#CC0000`, or Ember `#E76A2E` (switchable on each page). Other colours appear only on sensors and gauges, for example amber meter lamps and the thermostat's cooling blue.
-- **Type:** IBM Plex Sans, Mono and Serif.
-- **Finishes:** every instrument has an Ivory and an Obsidian finish.
-- **Motion:** springs, using the same constants throughout: `SNAP {700, 35, 0.8}` and `HEAVY {300, 30, 1.2}`. Motion is reduced when the visitor prefers reduced motion.
-- **Access:** every control works from the keyboard and exposes its state through ARIA.
-- **Portable:** no libraries and no hosted services. The springs, clicks, synth voices, drum kit and physics are written inline with the Web Audio and DOM APIs.
-
-## Use and remix
-
-To lift a single control into your own project, or to contribute a remix, see **[HOW_TO_USE_AND_REMIX.md](HOW_TO_USE_AND_REMIX.md)**. It covers where each control's code lives, the shared core it needs, and the checklist a remix should pass.
-
-## License
-
-[CC BY-NC 4.0](LICENSE.md). You are free to share and remix with credit, but not for commercial use.
-
-## Credits
-
-Hardware lineage is noted on each card, for example Braun, Technics, Nakamichi, Leica, Work Louder and Teenage Engineering. Volume III is a homage to [Drams](https://drams.framer.website/) by [@mrblackstudio](https://x.com/mrblackstudio). Brand names appear only as design references, and every element carries the UnCommon Core mark instead.
+See [`HOW_TO_USE_AND_REMIX.md`](HOW_TO_USE_AND_REMIX.md) for implementation details and [`LICENSE.md`](LICENSE.md) for source terms.

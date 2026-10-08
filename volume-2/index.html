@@ -3,11 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Enochian Elements II</title>
+<title>Enochian Instruments</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<script>if(new URLSearchParams(location.search).has("embedded"))document.documentElement.classList.add("embedded");</script>
 <style>
+  html.embedded .page > header, html.embedded .page > .finish-line{display:none}
+  html.embedded .page > .section-title:first-of-type{padding-top:18px}
+
   /* Layout: Volume I atlas grammar — header, mono section eyebrows, two-up instrument tiles on #f5f6f7.
      One page-level look (white paper); each instrument carries its own Ivory / Obsidian finish. */
   :root{
@@ -818,9 +822,9 @@
 <div class="page">
 <header>
   <h1>Enochian Elements</h1>
-  <h2>Volume II · signal, scale, and sequence</h2>
-  <p>A second set of instruments for the atlas. These come from meters, tuners, turntables, tape decks and macro pads: hardware that shows its state through needles, lamps, key travel and light. Each one is translated into a pattern a web app can use.</p>
-  <p>Every element keeps the Volume I rules. Each has an Ivory and an Obsidian finish, one signal accent, spring motion, keyboard access, and a copyable implementation behind the Code Veil.</p>
+  <h2>Instruments · signal, scale, and sequence</h2>
+  <p>Enochian instruments for the atlas. These come from meters, tuners, turntables, tape decks and macro pads: hardware that shows its state through needles, lamps, key travel and light. Each one is translated into a pattern a web app can use.</p>
+  <p>Every element follows the atlas rules. Each has an Ivory and an Obsidian finish, one signal accent, spring motion, keyboard access, and a copyable implementation behind the Code Veil.</p>
   <div class="portable"><strong>Same construction.</strong> No libraries and no hosted services. Springs, clicks and drawing are written inline, so any control can be lifted out on its own.</div>
   <div class="atlas-map">
     <h3>Find the right pattern</h3>
@@ -850,7 +854,6 @@
   </div>
   <div class="accentrow">
     <span>Signal accent:</span>
-    <button type="button" id="accOrange" aria-pressed="false">EMBER</button>
     <button type="button" id="accRed" aria-pressed="true">CINNABAR</button>
     <span class="sep"></span>
     <span>Clicks:</span>
@@ -863,7 +866,7 @@
   <article class="unit wide">
     <div class="cap"><span>The Code Veil · reveal the implementation</span><span class="pill">CODE HIDDEN / VISIBLE</span></div>
     <div class="card code-toggle-card">
-      <p class="component-copy">The same switch as Volume I. Turn it on to show a copyable fragment under each instrument below: the part that makes the control behave, not the whole file.</p>
+      <p class="component-copy">The Code Veil reveals a copyable fragment. Turn it on to show a copyable fragment under each instrument below: the part that makes the control behave, not the whole file.</p>
       <div class="rthemes" id="veilFinish" role="group" aria-label="Code Veil finish"><button type="button" data-finish="ivory" aria-pressed="true">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="false">OBSIDIAN</button></div>
       <div class="d37-wrap">
         <button type="button" class="d37-track" id="veil" data-finish="ivory" role="switch" aria-checked="false" aria-label="Show implementation code"><span class="d37-knob" id="veilKnob"></span></button>
@@ -900,7 +903,6 @@
       </div>
       <div class="readout"><b id="vuRead">−∞ VU</b> · <span id="vuGainRead">gain 62%</span></div>
       <div class="hint">knob: drag ↕ · ←/→ keys · Home/End · peak lamp holds for 350 ms above 0 VU</div>
-      <div class="lineage">after · FiiO tube amp halo · Nakamichi meter bridge</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Lumen VU</span><button type="button" class="copy-code">COPY</button></div><pre><code>// VU scale is logarithmic: 0 VU sits at ~71% of the arc, +3 at 100%.
 const vuPos = db =&gt; Math.pow(10, db / 20) / Math.pow(10, 3 / 20);
 const vuAngle = p =&gt; -44 + p * 88;            // degrees either side of 12 o'clock
@@ -932,7 +934,6 @@ function stepNeedle(n, targetDb, dt) {
       </div>
       <div class="readout"><b id="ladRead">−∞ dB</b> · <span id="ladMode">peak · hold</span></div>
       <div class="hint">fed by the Lumen VU signal · turn SIGNAL off there and the ladder falls dark</div>
-      <div class="lineage">after · Nakamichi Dragon peak meter</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Cantor Ladder</span><button type="button" class="copy-code">COPY</button></div><pre><code>const STEPS = [-40,-30,-24,-20,-16,-13,-10,-8,-6,-5,-4,-3,-2,-1,0,1,2,3,5,8];
 // Peak response: instant attack, 24 dB/s release.
 ch.level = mode === "peak"
@@ -973,7 +974,6 @@ segs.forEach((seg, i) =&gt; seg.classList.toggle("on", i &lt; lit));</code></pre
       </div>
       <div class="readout"><b id="merVal">0.0%</b> · <span id="merRpm">33⅓ rpm · quartz lock</span></div>
       <div class="hint">drag ↕ · ↑/↓ 0.1 · PgUp/PgDn 1 · 0 or Delete recenters</div>
-      <div class="lineage">after · Technics SL-1200 pitch control</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Meridian Fader</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Only pointer input is caught, so arrow keys can still step off center.
 function quantize(x, catchDetent) {
   x = Math.round(clamp(x, min, max) / step) * step;
@@ -1004,7 +1004,6 @@ function set(x, src) {
       <div class="stepbar" role="group" aria-label="Regie presets"><button type="button" data-preset="flat">FLAT</button><button type="button" data-preset="loud">LOUDNESS</button><button type="button" data-preset="speech">SPEECH</button></div>
       <div class="readout" id="regRead"><b>−12 dB</b> · bass +3 · treble 0 · linked</div>
       <div class="hint">drag ↕ · arrow keys · tone faders catch at 0 · link moves both levels</div>
-      <div class="lineage">after · Braun regie 350 slider deck</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Regie Bank</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Ganged faders keep their offset, like a locked aspect ratio.
 left.onInput = (v, prev, src) =&gt; {
   if (linked &amp;&amp; src !== "link") right.set(right.get() + (v - prev), src, "link");
@@ -1036,7 +1035,6 @@ function recall(preset) {
       </div>
       <div class="readout"><b id="apVal">98.3</b> <span id="apUnit">MHz</span> · <span id="apState">tuned · signal 5/5</span></div>
       <div class="hint">drag or fling ↔ · ←/→ one step · Shift + ←/→ one major mark · PgUp/PgDn seek · trackpad swipe works too</div>
-      <div class="lineage">after · Braun TP 1 dial window · regie tuning glass</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Aperture Scale</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Drag moves the strip, not the needle: value = start − dx / pxPerUnit.
 // On release, glide with friction, then settle on a magnet or a step.
 function glide(dt) {
@@ -1080,7 +1078,6 @@ strip.style.transform = `translateX(${win.clientWidth / 2 - x(value)}px)`;</code
       </div>
       <div class="readout" id="ilkRead">source <b>phono</b> · mono</div>
       <div class="hint">source: arrow keys move and select · filters: Space / Enter latch and release</div>
-      <div class="lineage">after · Braun regie 550 input keys</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Interlock Bank</span><button type="button" class="copy-code">COPY</button></div><pre><code>.ilk-cap {
   --lift: 1;                                  /* 1 = up, .15 = seated */
   transform: translateY(calc(var(--lift) * -5px));
@@ -1112,7 +1109,6 @@ setTimeout(() =&gt; lift[prev].to(1, SNAP), 30);</code></pre></section>
       <div class="stepbar" role="group" aria-label="Lantern scenes"><button type="button" id="lanAll">ALL ON</button><button type="button" id="lanNone">ALL OFF</button></div>
       <div class="readout" id="lanRead"><b>3 lit</b> · sync · notify · autosave</div>
       <div class="hint">click or Space toggles · Shift + click solos one lamp</div>
-      <div class="lineage">after · Telepathic Instruments Orchid function caps</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Lantern Row</span><button type="button" class="copy-code">COPY</button></div><pre><code>.lan-glow { opacity: 0; transition: opacity .24s ease-out; }   /* filament fade */
 .lan-cap[aria-pressed="true"] .lan-glow {
   opacity: 1; transition: opacity .09s ease-in;                 /* filament warm-up */
@@ -1140,7 +1136,7 @@ setTimeout(() =&gt; lift[prev].to(1, SNAP), 30);</code></pre></section>
         <div class="tt-platter" id="ttPlatter" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="1200" aria-valuenow="134" aria-valuetext="2 minutes 14 seconds">
           <canvas id="ttRingA" aria-hidden="true"></canvas><canvas id="ttRingB" aria-hidden="true"></canvas>
           <div class="tt-record" id="ttRecord">
-            <div class="tt-label"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="#f4f2ec"/><rect x="46" y="5" width="8" height="11" rx="2" style="fill:var(--accent)"/><text x="50" y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="9" letter-spacing="1" fill="#111">UNCOMMON</text><text x="50" y="55" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="9" letter-spacing="1" fill="#111">CORE</text><text x="50" y="72" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" fill="#777">SIDE A · 20 MIN</text></svg></div>
+            <div class="tt-label"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="#f4f2ec"/><rect x="46" y="5" width="8" height="11" rx="2" style="fill:var(--accent)"/><text x="50" y="44" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="9" letter-spacing="1" fill="#111">ENOCHIAN</text><text x="50" y="55" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="9" letter-spacing="1" fill="#111">STROBE</text><text x="50" y="72" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6" fill="#777">SIDE A · 20 MIN</text></svg></div>
           </div>
           <div class="tt-sheen"></div><span class="tt-spindle"></span>
         </div>
@@ -1164,7 +1160,6 @@ setTimeout(() =&gt; lift[prev].to(1, SNAP), 30);</code></pre></section>
       </div>
       <div class="readout"><b id="ttTime">02:14.0</b> · <span id="ttState">running · strobe still</span></div>
       <div class="hint">drag the record to scrub · ←/→ nudge 1 s · Space starts and stops</div>
-      <div class="lineage">after · Technics SL-1200 platter and strobe</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Strobe Platter</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Motor: a first-order pull toward target speed. Fast start, slower brake.
 const target = running ? rpm * 6 * (1 + pitch / 100) : 0;     // deg/s
 if (!held) w += (target - w) * (1 - Math.exp(-dt / (target &gt; w ? 0.18 : 0.45)));
@@ -1188,7 +1183,7 @@ ring.style.transform   = `rotate(${ringAngle}deg)`;</code></pre></section>
             <i class="lp-screw" style="top:8px;left:8px;--r:30deg"></i><i class="lp-screw" style="top:8px;right:8px;--r:-20deg"></i>
             <i class="lp-screw" style="bottom:8px;left:8px;--r:70deg"></i><i class="lp-screw" style="bottom:8px;right:8px;--r:10deg"></i>
             <span class="lp-print t" aria-hidden="true">↑</span>
-            <span class="lp-print l" aria-hidden="true">UnCommon Core · Lumen Pad</span>
+            <span class="lp-print l" aria-hidden="true">Enochian · Lumen Pad</span>
             <span class="lp-print r" aria-hidden="true">every key says what it did</span>
             <span class="lp-print b" aria-hidden="true">turn · press · hold</span>
             <div class="lp-grid">
@@ -1214,7 +1209,6 @@ ring.style.transform   = `rotate(${ringAngle}deg)`;</code></pre></section>
       </div>
       <div class="readout" id="lpRead"><b>BUILD</b> · 3 actions · history 3/3</div>
       <div class="hint">encoder: drag ↕ or ←/→ · actions: click or Enter · mic: hold pointer, Space or Enter</div>
-      <div class="lineage">after · Work Louder macro pad</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Lumen Pad</span><button type="button" class="copy-code">COPY</button></div><pre><code>// A layer swaps meanings, not hardware: same keys, new actions and switches.
 const LAYERS = {
   build:  { toggles: ["watch","lint","test","types"],    ok: "accept change" },
@@ -1255,7 +1249,6 @@ function turn(detents) {
       </div>
       <div class="readout"><b id="tpRead">STOP</b> · counter <span id="tpCountRead">0412</span> · memory <span id="tpMemRead">off</span></div>
       <div class="hint">rec alone arms the deck, then play records · ff or rew cancels a recording · pause needs play</div>
-      <div class="lineage">after · Nakamichi Dragon transport and counter</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Transport Bank</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Every key is a request; the machine decides, and refusals explain themselves.
 function press(k) {
   switch (k) {
@@ -1301,7 +1294,6 @@ if (s.memory &amp;&amp; s.mode === "rew" &amp;&amp; count &lt;= 0) { count = 0; 
       </div>
       <div class="readout" id="cpRead"><b>tempo</b> · 96 BPM</div>
       <div class="hint">pads: pointer or keys 1–4 · Q–R · A–F · Z–V when the pad has focus · knobs: drag ↕, arrows, double-click resets</div>
-      <div class="lineage">after · 16-pad MIDI controller</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Cadence Pads</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Velocity from where the pad is struck: the center hits hardest.
 const r = pad.getBoundingClientRect();
 const d = Math.hypot((e.clientX - r.left) / r.width - .5, (e.clientY - r.top) / r.height - .5) / .707;
@@ -1354,7 +1346,6 @@ osc.frequency.exponentialRampToValueAtTime(45 * pitch, t + 0.09);</code></pre></
       </div>
       <div class="readout" id="pdRead"><b>graded</b> · frame 288 · 0 adjustments</div>
       <div class="hint">faders: drag ↕ or arrows, they catch at 0 · knobs: drag ↕, double-click resets · dial: drag ↕, wheel, ←/→ · hold before (or press B) to compare</div>
-      <div class="lineage">after · Loupedeck+ editing console</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Penumbra Deck</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Every control folds into one 1024-step lookup table, so a fader move
 // re-grades the frame with a single pass over the pixels.
 function grade(x) {
@@ -1375,7 +1366,7 @@ for (let p = 0; p &lt; base.length; p++) out[p] = lut[base[p] * 1023 | 0] * 255;
   <article class="unit wide">
     <div class="cap"><span>Tally Keypad · number pad with macro column</span><span class="pill">CALCULATOR · M1–M5 · NUDGE KNOB</span></div>
     <div class="card">
-      <p class="component-copy">Number entry with the same keycaps as the Volume I keyboard. The pad works as a calculator, and the tape keeps the last results. The knob nudges the number on screen up or down by one, or by 0.1 with Shift held. <strong>M1–M5 work like radio presets</strong>: hold a key to store the number on screen and tap it to recall. A red dot marks a filled slot.</p>
+      <p class="component-copy">Number entry with Enochian mechanical keycaps. The pad works as a calculator, and the tape keeps the last results. The knob nudges the number on screen up or down by one, or by 0.1 with Shift held. <strong>M1–M5 work like radio presets</strong>: hold a key to store the number on screen and tap it to recall. A red dot marks a filled slot.</p>
       <div class="rthemes" id="nkFinish" role="group" aria-label="Tally Keypad finish"><button type="button" data-finish="ivory" aria-pressed="false">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="true">OBSIDIAN</button></div>
       <div class="nk-wrap">
         <div class="nk" id="nk" data-finish="obsidian" tabindex="0" aria-label="Number keypad. While focused, your keyboard's number keys, operators, Enter, Backspace and Escape work.">
@@ -1417,7 +1408,6 @@ for (let p = 0; p &lt; base.length; p++) out[p] = lut[base[p] * 1023 | 0] * 255;
         </div>
       </div>
       <div class="hint">focus the pad to use your keyboard's number keys, operators, Enter, Backspace and Esc · hold M1–M5 for half a second to store · knob: drag ↕ or ←/→, Shift for 0.1</div>
-      <div class="lineage">after · Keychron number pad with macro column</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Tally Keypad</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Presets: hold 500 ms to store, tap to recall, the same as a car radio.
 key.addEventListener("pointerdown", () =&gt; {
   held = false;
@@ -1469,7 +1459,6 @@ pad.addEventListener("keydown", e =&gt; {
       </div>
       <div class="readout" id="rmRead"><b>HOME</b> · focus Vigil · volume 8/16</div>
       <div class="hint">ring: press an edge · center: swipe to glide, tap to select · or focus the remote and use arrows, Enter, Esc, Space, + / −, M</div>
-      <div class="lineage">after · Apple TV clickpad remote</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Sigil Remote</span><button type="button" class="copy-code">COPY</button></div><pre><code>// One surface, two gestures: the ring is four buttons, the center is a trackpad.
 pad.addEventListener("pointerdown", e =&gt; {
   const { x, y, r } = local(e);                       // relative to pad center
@@ -1505,7 +1494,6 @@ if (!canMove) tile.style.setProperty("--nx", dx * 4 + "px"), tile.classList.add(
       </div>
       <div class="readout" id="ipRead"><b>Orbit</b> · 7 items</div>
       <div class="hint">turn: drag around the ring, mouse wheel, or ↑/↓ · press: MENU top, ⏮ ⏭ sides, ▶❚❚ bottom, center selects</div>
-      <div class="lineage">after · iPod nano click wheel</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Orbit Wheel</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Angular scrolling: accumulate the change in angle, emit a step per 15° detent.
 let last = null, acc = 0, turned = 0;
 wheel.addEventListener("pointermove", e =&gt; {
@@ -1547,7 +1535,7 @@ wheel.addEventListener("pointerup", () =&gt; { if (turned &lt; 8) press(quadrant
                 <circle r="55.6" fill="none" style="stroke:var(--accent)" stroke-width=".9" stroke-dasharray="3 1.8"/>
                 <circle r="52" fill="url(#exWeave)"/>
                 <circle r="40" fill="url(#exCapG)"/>
-                <text x="29" y="3" text-anchor="end" font-family="IBM Plex Sans,sans-serif" font-size="8" letter-spacing=".6" fill="#f7f7f8"><tspan font-weight="700">UNCOMMON</tspan> CORE</text>
+                <text x="29" y="3" text-anchor="end" font-family="IBM Plex Sans,sans-serif" font-size="8" letter-spacing=".6" fill="#f7f7f8"><tspan font-weight="700">ENOCHIAN</tspan></text>
                 <rect x="31.5" y="-3.8" width="3.6" height="7.6" style="fill:var(--accent)"/>
               </g>
             </svg>
@@ -1565,7 +1553,7 @@ wheel.addEventListener("pointerup", () =&gt; { if (turned &lt; 8) press(quadrant
               <g class="ex-dome" id="exDome"><circle r="40" fill="url(#txDomeG)"/><circle id="exGlint" cx="-12" cy="-14" r="9" fill="#fff" opacity=".25"/></g>
               <g id="txMesh" clip-path="url(#txClip)" fill="none" stroke="#0c0c0d" stroke-width="2.2"></g>
               <path d="M-40.4 38 L40.4 38 A55 55 0 0 1 -40.4 38 Z" fill="#111113"/>
-              <text x="23" y="49" text-anchor="end" font-family="IBM Plex Sans,sans-serif" font-size="6.2" letter-spacing=".5" fill="#f7f7f8"><tspan font-weight="700">UNCOMMON</tspan> CORE</text>
+              <text x="23" y="49" text-anchor="end" font-family="IBM Plex Sans,sans-serif" font-size="6.2" letter-spacing=".5" fill="#f7f7f8"><tspan font-weight="700">ENOCHIAN</tspan></text>
               <rect x="25" y="44.2" width="2.8" height="5.6" style="fill:var(--accent)"/>
             </svg>
             <div class="ex-meter"><b id="exTm"></b></div><span class="ex-lbl" id="exTl">tweeter 0%</span>
@@ -1585,7 +1573,6 @@ wheel.addEventListener("pointerup", () =&gt; { if (turned &lt; 8) press(quadrant
       </div>
       <div class="readout" id="exRead"><b>off</b> · 120 Hz · crossover 2.0 kHz</div>
       <div class="hint">frequency knob: drag ↕ or arrows · crossover: drag ↔ or ←/→ · tone and sweep play quietly through your speakers</div>
-      <div class="lineage">after · MB Quart subwoofer and tweeter</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Excursion Pair</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Second-order crossover: each driver's share of one frequency.
 const woofer  = f =&gt; 1 / Math.sqrt(1 + (f / xover) ** 4);
 const tweeter = f =&gt; 1 / Math.sqrt(1 + (xover / f) ** 4);
@@ -1608,7 +1595,7 @@ cone.style.transform = `scale(${1 + low * 0.06})`;</code></pre></section>
           <div class="mn-face">
             <span class="mn-wave"><span class="mn-dome"></span></span>
             <button type="button" class="mn-woof" data-side="-1" aria-label="Left speaker, play test burst"><span class="mn-cone" id="mnConeL"></span></button>
-            <span class="mn-brand">UNCOMMON CORE</span>
+            <span class="mn-brand">ENOCHIAN</span>
             <span class="mn-feet"><i></i><i></i></span>
           </div>
           <div class="mn-back"><span class="mn-port"></span><span class="mn-model">PASSIVE · L</span><span class="mn-iec" style="width:24%"></span></div>
@@ -1644,7 +1631,6 @@ cone.style.transform = `scale(${1 + low * 0.06})`;</code></pre></section>
       </div>
       <div class="readout" id="mnRead"><b>70%</b> · input USB-C · on</div>
       <div class="hint">knob: drag ↕ or arrows, Enter or a click without dragging toggles standby · tap a woofer to test that side · rear: pick an input</div>
-      <div class="lineage">after · Edifier desk monitors · KEF LSX II rear panel</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Monitor Pair</span><button type="button" class="copy-code">COPY</button></div><pre><code>// One master bus for the whole page: every voice connects here, not to destination.
 master = ctx.createGain();  analyser = ctx.createAnalyser();
 master.connect(analyser);   analyser.connect(ctx.destination);
@@ -1696,7 +1682,7 @@ const pan = ctx.createStereoPanner(); pan.pan.value = side;   // −1 left, +1 r
             <circle cx="280" cy="215" r="79" class="t-chrome" stroke="rgba(0,0,0,.2)" stroke-width="1"/>
             <g id="camFocusRing">
               <circle cx="280" cy="215" r="71" fill="#0c0c0d"/>
-              <text font-family="IBM Plex Mono,monospace" font-size="7" font-weight="600" letter-spacing="1.6" fill="#f2f2f4"><textPath href="#camTextPath">UNCOMMON CORE · AUGUR 1:1.4/50 ASPH. · 2026 · No 0412 · ROLL 01 ·</textPath></text>
+              <text font-family="IBM Plex Mono,monospace" font-size="7" font-weight="600" letter-spacing="1.6" fill="#f2f2f4"><textPath href="#camTextPath">ENOCHIAN · AUGUR 1:1.4/50 ASPH. · 2026 · No 0412 · ROLL 01 ·</textPath></text>
               <g transform="rotate(28 280 215)"><rect x="352" y="203" width="28" height="24" rx="12" class="t-chrome" stroke="rgba(0,0,0,.25)"/><circle cx="370" cy="215" r="5" class="t-chrome" stroke="rgba(0,0,0,.25)"/></g>
             </g>
             <circle cx="280" cy="215" r="56" class="t-chrome"/>
@@ -1731,7 +1717,6 @@ const pan = ctx.createStereoPanner(); pan.pan.value = side;   // −1 left, +1 r
       </div>
       <div class="readout" id="camRead"><b>1/125 · f/2.8</b> · focus 3 m · metering asleep</div>
       <div class="hint">dial: drag around or ←/→ · rings: drag ↔ or arrows · release: hold to meter, let go to take the picture (Space or Enter works too) · meter: ◀ under, ● correct, ▶ over</div>
-      <div class="lineage">after · Leica M rangefinder</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Augur</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Rangefinder: the ghost image shifts by the focus error, measured in diopters (1/m).
 const error = 1 / focusDistance - 1 / subjectDistance;   // 0 when the images align
 patch.drawImage(scene, error * 0.7 * 90, 0);               // ghost offset in px
@@ -1759,7 +1744,7 @@ const shake = t &gt; 1 / 60 ? Math.log2(t * 60) * 1.5 + 1 : 0;</code></pre></sec
       <p class="component-copy">Two angles and the difference between them. Drag inside the dial to turn yourself around, and the needle swings to stay on north, overshooting and settling the way a real needle does. Drag the knurled bezel to set the bearing you want to follow, one 5° click at a time. <strong>Bring the red needle into the outlined arrow</strong> and you're on course. The mirror lid folds down to protect the dial.</p>
       <div class="rthemes" id="cmpFinish" role="group" aria-label="Lodestar finish"><button type="button" data-finish="ivory" aria-pressed="false">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="true">OBSIDIAN</button></div>
       <div class="cmpx" id="cmpx" data-finish="obsidian">
-        <div class="cmp-lid" id="cmpLid" aria-hidden="true"><div class="lid-face"><span class="mirror"></span></div><div class="lid-face lid-back"><span>UNCOMMON CORE</span></div></div>
+        <div class="cmp-lid" id="cmpLid" aria-hidden="true"><div class="lid-face"><span class="mirror"></span></div><div class="lid-face lid-back"><span>ENOCHIAN</span></div></div>
         <div class="cmp-hinge"><button type="button" id="cmpLatch" aria-pressed="false" aria-label="Close the lid">CLOSE</button></div>
         <div class="cmp-case" id="cmpCase">
           <svg viewBox="0 0 260 260" aria-hidden="true">
@@ -1785,7 +1770,6 @@ const shake = t &gt; 1 / 60 ? Math.log2(t * 60) * 1.5 + 1 : 0;</code></pre></sec
       <div class="cmp-turns stepbar" role="group" aria-label="Compass actions"><button type="button" id="cmpSet">SET BEARING = HEADING</button><button type="button" id="cmpWander">WANDER</button></div>
       <div class="readout" id="cmpRead"><b>062° ENE</b> · bearing 060° · turn left 2°</div>
       <div class="hint">inside the dial: drag around to turn yourself · bezel ring: drag to set the bearing · keys: ←/→ turn, [ / ] bezel, S set bearing</div>
-      <div class="lineage">after · Porsche Design compass watch</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Lodestar</span><button type="button" class="copy-code">COPY</button></div><pre><code>// A compass needle is an under-damped pendulum on a magnetic spring.
 const angDiff = (a, b) =&gt; ((a - b + 540) % 360) - 180;          // shortest signed turn
 function needleStep(dt) {
@@ -1815,7 +1799,6 @@ onCourse = Math.abs(off) &lt;= 3;</code></pre></section>
       <div class="stepbar" role="group" aria-label="Units"><button type="button" data-unit="C" aria-pressed="true">°C</button><button type="button" data-unit="F" aria-pressed="false">°F</button></div>
       <div class="readout" id="thRead"><b>heating</b> to 21.5° · inside 19.4°</div>
       <div class="hint">drag around the ring or the screen · ↑/↓ half a degree · corner keys: click or Tab + Space · the room responds in accelerated time: one simulated minute per second</div>
-      <div class="lineage">after · the Horologion case · Honeywell T87 ring</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Climate</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Hysteresis keeps the heat from chattering on and off at the target.
 if (mode === "heat") hvac = cur &lt; target - 0.3 ? "heating" : cur &gt;= target ? "idle" : hvac;
 if (mode === "cool") hvac = cur &gt; target + 0.3 ? "cooling" : cur &lt;= target ? "idle" : hvac;
@@ -1846,7 +1829,6 @@ tick.style.stroke = between(t, cur, target) ? (hvac === "cooling" ? COOL : HEAT)
       <div class="pedals"><button type="button" class="pedal" id="vlBrake" aria-label="Brake, hold">BRAKE</button><button type="button" class="pedal gas" id="vlGas" aria-label="Throttle, hold">THROTTLE</button></div>
       <div class="readout" id="vlRead"><b>0 mph</b> · trip 0.0 mi</div>
       <div class="hint">hold a pedal (pointer, or ↑ / ↓ with the dial focused) · cruise and limit take the current speed</div>
-      <div class="lineage">after · the Climate case · analog car instruments</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Velocity</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Longitudinal model in mph/s: power falls off with speed, drag rises with it.
 const thrust = throttle ? 9.5 * (1 - v / 175) : 0;
 const brake  = braking  ? 24 : 0;
@@ -1874,7 +1856,6 @@ trip += v / 3600 * dt;                                         // miles</code></
       <div class="readout" id="trRead"><b>CPU 24%</b> · GPU 12% · RAM 58%</div>
       <div class="demo-tag" id="trTag">demo data · core count read from this device</div>
       <div class="hint">corner keys choose the large figure · LOAD runs a 20-second stress test</div>
-      <div class="lineage">after · the Climate case · Activity Monitor</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Triad</span><button type="button" class="copy-code">COPY</button></div><pre><code>// One arc per metric: a 270° track with a value stroke drawn by dash length.
 const len = 2 * Math.PI * r * 0.75;
 arc.setAttribute("stroke-dasharray", `${len * value} ${len}`);
@@ -1900,8 +1881,7 @@ const cores = Math.min(16, navigator.hardwareConcurrency || 8);</code></pre></se
         <div class="board-foot"><span id="fbFoot"><b>8</b> flights shown</span><span class="stepbar" role="group" aria-label="Board speed"><button type="button" data-fbs="1" aria-pressed="false">1×</button><button type="button" data-fbs="20" aria-pressed="true">20×</button><button type="button" data-fbs="60" aria-pressed="false">60×</button></span></div>
       </div>
       <div class="readout" id="fbRead"><b>18:03</b> · next: NEW YORK boarding</div>
-      <div class="hint">the clock runs at 20× by default · each flap step makes a soft click, which the Clicks switch at the top mutes</div>
-      <div class="lineage">after · Solari di Udine split-flap boards</div>
+      <div class="hint">the clock runs at 20× by default · each flap step makes a soft click, which the atlas Sound control mutes</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Departures</span><button type="button" class="copy-code">COPY</button></div><pre><code>// A flap cannot jump: it steps through the drum until it reaches the target.
 const DRUM = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-.#";
 function stepCell(c, now) {
@@ -1930,7 +1910,6 @@ function stepCell(c, now) {
       </div>
       <div class="readout" id="mfRead"><b>4 in flight</b> · 1 awaiting review · 1 failed</div>
       <div class="hint">row: click or Enter to act · Shift + click or B to block · Delete to remove · the pipeline runs in accelerated time</div>
-      <div class="lineage">after · Departures · CI pipelines</div>
       <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Manifest</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Automatic stages advance on a timer; human stages wait for a click.
 const NEXT = { QUEUED: "BUILDING", BUILDING: "TESTING", MERGING: "SHIPPED" };
 function advance(t) {
@@ -1944,8 +1923,8 @@ row.onclick = e =&gt; e.shiftKey ? block(t) : ACT[t.status] &amp;&amp; (t.status
 </div>
 
 <section class="finish-line">
-  <h2>The Volume II finish line</h2>
-  <p>A needle, a lamp and a key that stays down all do the same job. They show the state without the user having to ask. Volume I was about the feel of a control in the hand. Volume II is about reading a control from across the room: what is happening, how much, and what is allowed next.</p>
+  <h2>The instrument finish line</h2>
+  <p>A needle, a lamp and a key that stays down all do the same job. They show the state without the user having to ask. These instruments make state readable from across the room: what is happening, how much, and what is allowed next.</p>
   <blockquote>Read the signal. Set the scale. Run the sequence.</blockquote>
 </section>
 </div>
@@ -2024,11 +2003,9 @@ let ACCENT = "#CC0000";
 const accentHooks = [];
 function paintAccent(){
   document.documentElement.style.setProperty("--accent", ACCENT);
-  $("accOrange").setAttribute("aria-pressed", String(ACCENT==="#E76A2E"));
   $("accRed").setAttribute("aria-pressed", String(ACCENT==="#CC0000"));
   accentHooks.forEach(f=>f());
 }
-$("accOrange").onclick = () => { ACCENT="#E76A2E"; paintAccent(); tick(); };
 $("accRed").onclick    = () => { ACCENT="#CC0000"; paintAccent(); tick(); };
 $("soundBtn").onclick = () => { soundOn=!soundOn; $("soundBtn").setAttribute("aria-pressed", String(soundOn)); $("soundBtn").textContent = soundOn?"ON":"OFF"; tick(); };
 
@@ -2105,7 +2082,7 @@ function buildVU(svg, chName){
     const [tx,ty]=pt(R-16,a); const t=svgEl("text",{ x:tx.toFixed(1), y:(ty+2.5).toFixed(1), "text-anchor":"middle", class:"vu-pct" }, svg); t.textContent=pc;
   });
   svgEl("text",{ x:110, y:88, "text-anchor":"middle", class:"vu-big" }, svg).textContent="VU";
-  svgEl("text",{ x:110, y:99, "text-anchor":"middle", class:"vu-tiny" }, svg).textContent="dB · UNCOMMON CORE";
+  svgEl("text",{ x:110, y:99, "text-anchor":"middle", class:"vu-tiny" }, svg).textContent="dB · ENOCHIAN";
   svgEl("text",{ x:14, y:106, class:"vu-tiny" }, svg).textContent=chName;
   svgEl("text",{ x:190, y:16, "text-anchor":"end", class:"vu-tiny" }, svg).textContent="PEAK";
   peaks[chName] = svgEl("circle",{ cx:200, cy:13.5, r:3.6, class:"vu-peak" }, svg);
@@ -3223,7 +3200,7 @@ function ipMain(){ return { title:"Orbit", items:[
   { label:"Settings", chev:true, go:()=>ipPush(ipSettings()) },
   { label:"About", chev:true, go:()=>ipPush(ipAbout()) } ] }; }
 function ipMusic(){ return { title:"Music", items:[
-  { label:"Playlists", chev:true, go:()=>ipPush({ title:"Playlists", items:[ { label:"Volume I", chev:true, go:()=>ipPush(ipSongs("Volume I",[0,1,2,3,4,5])) }, { label:"Volume II", chev:true, go:()=>ipPush(ipSongs("Volume II",[6,7,8,9,10,11])) } ] }) },
+  { label:"Playlists", chev:true, go:()=>ipPush({ title:"Playlists", items:[ { label:"Foundation", chev:true, go:()=>ipPush(ipSongs("Foundation",[0,1,2,3,4,5])) }, { label:"Instruments", chev:true, go:()=>ipPush(ipSongs("Instruments",[6,7,8,9,10,11])) } ] }) },
   { label:"Artists", chev:true, go:()=>ipPush({ title:"Artists", items:IP_SONGS.map((s,i)=>({ label:s[1], chev:true, go:()=>ipPush(ipSongs(s[1],[i])) })).sort((a,b)=>a.label.localeCompare(b.label)) }) },
   { label:"Songs", chev:true, go:()=>ipPush(ipSongs("Songs", IP_SONGS.map((_,i)=>i))) } ] }; }
 function ipSettings(){ return { title:"Settings", items:[
