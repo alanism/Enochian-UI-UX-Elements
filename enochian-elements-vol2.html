@@ -756,6 +756,53 @@
   .th-c i.cool{background:var(--cool)}
   .th-c.tl{top:10px;left:10px}.th-c.tr{top:10px;right:10px}.th-c.bl{bottom:10px;left:10px}.th-c.br{bottom:10px;right:10px}
   .th-note{font:500 11px var(--sans);color:var(--muted);text-align:center;max-width:360px}
+  /* ── Velocity + Triad share the Climate case: white rounded square, black round screen, corner keys ── */
+  .gauge-scr text.g-num{fill:#c9c9ce;font:500 10px var(--mono)}
+  .gauge-scr .g-tick{stroke:#4a4a50} .gauge-scr .g-tick.maj{stroke:#c9c9ce}
+  .gauge-scr .g-big{fill:#f7f7f8;font:300 46px var(--sans);letter-spacing:-1px}
+  .gauge-scr .g-lbl{fill:#9a9aa0;font:600 8px var(--mono);letter-spacing:1.6px}
+  .gauge-scr .g-small{fill:#c9c9ce;font:500 9.5px var(--mono)}
+  .pedals{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .pedal{width:118px;height:58px;border-radius:10px;border:1px solid #c9c9cd;background:linear-gradient(180deg,#fafafa,#e6e6e9);color:#111;font:600 10px var(--mono);letter-spacing:1.4px;cursor:pointer;touch-action:none;
+    background-image:repeating-linear-gradient(90deg,transparent 0 9px,rgba(0,0,0,.06) 9px 11px),linear-gradient(180deg,#fafafa,#e6e6e9);box-shadow:0 5px 0 #b9b9be,0 8px 12px rgba(0,0,0,.14);transition:transform .06s,box-shadow .06s}
+  .pedal[data-down="true"]{transform:translateY(4px);box-shadow:0 1px 0 #b9b9be,0 2px 4px rgba(0,0,0,.14)}
+  .pedal.gas[data-down="true"]{color:var(--accent)}
+  .pedal:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .cores{display:flex;gap:4px;align-items:flex-end;height:46px;padding:8px 10px;border-radius:8px;background:#111113;max-width:100%;overflow:hidden}
+  .cores i{width:12px;height:100%;border-radius:2px;background:linear-gradient(0deg,#f2f2f4 var(--v,0%),#2a2a2e var(--v,0%))}
+  .cores i.hot{background:linear-gradient(0deg,var(--accent) var(--v,0%),#2a2a2e var(--v,0%))}
+  .demo-tag{font:600 9px var(--mono);letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
+
+  /* ── split-flap boards ── */
+  .board{--cw:15px;--ch:24px;--fs:14px;--frame:#fff;--frame-ink:#111;--frame-sub:#8a8a8f;
+    width:100%;max-width:1060px;border-radius:18px;padding:18px;background:var(--frame);box-shadow:0 14px 34px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.08);transition:background .22s}
+  .board[data-finish="obsidian"]{--frame:#101012;--frame-ink:#f7f7f8;--frame-sub:#9a9aa0;box-shadow:0 18px 42px rgba(0,0,0,.34),0 2px 8px rgba(0,0,0,.2)}
+  .board-scroll{overflow-x:auto;border-radius:10px;background:#09090a;box-shadow:inset 0 2px 10px rgba(0,0,0,.8)}
+  .board-in{min-width:max-content;padding:14px 16px 16px}
+  .board-head{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:12px}
+  .board-title{display:flex;align-items:center;gap:12px;font:600 22px var(--sans);letter-spacing:1px;color:#f7f7f8}
+  .board-title .ico{width:34px;height:34px;border-radius:7px;background:var(--accent);display:grid;place-items:center}
+  .board-title .ico svg{width:22px;height:22px;fill:#fff}
+  .board-cols,.board-row{display:flex;gap:14px;align-items:center}
+  .board-cols{font:600 10px var(--mono);letter-spacing:1.6px;color:#8d8d92;margin-bottom:8px}
+  .board-cols span{flex:none}
+  .board-row{margin-bottom:5px;border-radius:4px;outline-offset:3px}
+  .board-row[role="button"]{cursor:pointer}
+  .board-row[role="button"]:hover{background:rgba(255,255,255,.03)}
+  .board-row:focus-visible{outline:2px solid var(--accent)}
+  .fgrp{display:flex;gap:2px;flex:none}
+  .fc{position:relative;display:grid;place-items:center;width:var(--cw);height:var(--ch);border-radius:2px;overflow:hidden;
+    background:linear-gradient(180deg,#232327 0 49%,#17171a 51% 100%);color:#f2f2f4;font:600 var(--fs)/1 var(--mono);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 1px 0 #000}
+  .fc::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;margin-top:-.5px;background:rgba(0,0,0,.85)}
+  .fc i{position:absolute;left:0;right:0;top:0;height:50%;background:#2e2e33;transform-origin:50% 100%;opacity:0;pointer-events:none}
+  .fc.red{color:var(--accent)} .fc.dim{color:#5c5c62} .fc.amb{color:#f7f7f8}
+  .board-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;font:600 10px var(--mono);letter-spacing:1px;color:var(--frame-sub)}
+  .board-foot b{color:var(--frame-ink);font-weight:600}
+  .mf-add{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .mf-add input{width:220px;max-width:100%;height:36px;border-radius:8px;border:1px solid #c9c9cd;background:#fff;color:#111;padding:0 12px;font:600 12px var(--mono);letter-spacing:1px;text-transform:uppercase}
+  .mf-add input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .board[data-finish="obsidian"] .mf-add input{background:#1c1c1f;border-color:#2c2c30;color:#f7f7f8}
+  @media (max-width:640px){.board{--cw:12px;--ch:20px;--fs:12px;padding:12px}.board-title{font-size:17px}}
   .finish-line{margin-block:48px 56px;padding-block:28px 0;border-top:1px solid var(--line);max-width:860px}
   .finish-line h2{font-size:18px;margin:0 0 10px}.finish-line p{color:var(--muted);font-size:14px;line-height:1.6;max-width:70ch}
   .finish-line blockquote{margin:18px 0 0;padding-left:15px;border-left:3px solid var(--accent);font-weight:700}
@@ -792,6 +839,8 @@
       <li><b>Commit several settings with one action</b> with the Augur rangefinder.</li>
       <li><b>Hold a direction and see how far off it you are</b> with the Lodestar compass.</li>
       <li><b>Set a target and watch the system work toward it</b> with the Climate thermostat.</li>
+      <li><b>Show a fast-changing value</b> with the Velocity speedometer, and several loads at once with Triad.</li>
+      <li><b>Show a live schedule or queue</b> with the Departures and Manifest split-flap boards.</li>
     </ul>
   </div>
   <div class="accentrow">
@@ -1770,6 +1819,121 @@ const a = clamp(angleFromTop(e), -135, 135);
 target = Math.round((10 + (a + 135) / 270 * 22) * 2) / 2;
 // Ticks between the room and the target take the mode's colour.
 tick.style.stroke = between(t, cur, target) ? (hvac === "cooling" ? COOL : HEAT) : IDLE;</code></pre></section>
+    </div>
+  </article>
+</div>
+
+<!-- ───────────────────────── READOUTS AND BOARDS ───────────────────────── -->
+<div class="section-title">Readouts and boards</div>
+<div class="grid">
+  <article class="unit">
+    <div class="cap"><span>Velocity · speedometer</span><span class="pill">0–160 MPH · 0–260 KM/H</span></div>
+    <div class="card">
+      <p class="component-copy">A sweeping needle and an exact number on one face. The needle shows the trend at a glance and the digits give the reading. Hold the throttle and the car pulls hard at first and then less as speed rises. Release it and drag slows you down. <strong>Cruise</strong> holds your current speed. <strong>Limit</strong> caps the throttle and turns the ticks above the limit red.</p>
+      <div class="rthemes" id="vlFinish" role="group" aria-label="Velocity finish"><button type="button" data-finish="ivory" aria-pressed="true">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="false">OBSIDIAN</button></div>
+      <div class="th" id="vl" data-finish="ivory">
+        <div class="th-screen gauge-scr" id="vlScreen" tabindex="0" role="meter" aria-label="Speed. While focused, hold the up arrow to accelerate and the down arrow to brake." aria-valuemin="0" aria-valuemax="160"><svg viewBox="0 0 240 240" id="vlSvg" aria-hidden="true"></svg></div>
+        <button type="button" class="th-c tl" id="vlUnit" aria-label="Units: mph. Switch to km/h"><i class="on"></i>MPH</button>
+        <button type="button" class="th-c tr" id="vlTrip" aria-label="Reset trip"><i></i>TRIP</button>
+        <button type="button" class="th-c bl" id="vlCruise" aria-pressed="false" aria-label="Cruise control"><i></i>CRUISE</button>
+        <button type="button" class="th-c br" id="vlLimit" aria-pressed="false" aria-label="Speed limiter"><i></i>LIMIT</button>
+      </div>
+      <div class="pedals"><button type="button" class="pedal" id="vlBrake" aria-label="Brake, hold">BRAKE</button><button type="button" class="pedal gas" id="vlGas" aria-label="Throttle, hold">THROTTLE</button></div>
+      <div class="readout" id="vlRead"><b>0 mph</b> · trip 0.0 mi</div>
+      <div class="hint">hold a pedal (pointer, or ↑ / ↓ with the dial focused) · cruise and limit take the current speed</div>
+      <div class="lineage">after · the Climate case · analog car instruments</div>
+      <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Velocity</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Longitudinal model in mph/s: power falls off with speed, drag rises with it.
+const thrust = throttle ? 9.5 * (1 - v / 175) : 0;
+const brake  = braking  ? 24 : 0;
+const drag   = 0.5 + v * 0.011;
+if (cruise) v += clamp((cruiseAt - v) * 0.8, -4, 6) * dt;   // P-controller holds speed
+else v = Math.max(0, v + (thrust - brake - drag) * dt);
+if (limit &amp;&amp; v &gt; limitAt) v = limitAt;                        // limiter caps, never brakes
+trip += v / 3600 * dt;                                         // miles</code></pre></section>
+    </div>
+  </article>
+
+  <article class="unit">
+    <div class="cap"><span>Triad · CPU, GPU and memory</span><span class="pill">3 RINGS · PER-CORE BARS</span></div>
+    <div class="card">
+      <p class="component-copy">Three loads on one face: CPU on the outer ring, GPU in the middle and memory inside. A ring turns red above 85%, which is where to look first. The corner keys choose which load gets the large number and detail lines. <strong>Load</strong> starts a stress test. The bar per core below shows how the work is spread.</p>
+      <div class="rthemes" id="trFinish" role="group" aria-label="Triad finish"><button type="button" data-finish="ivory" aria-pressed="false">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="true">OBSIDIAN</button></div>
+      <div class="th" id="tr" data-finish="obsidian">
+        <div class="th-screen gauge-scr" id="trScreen" role="img" aria-label="System load"><svg viewBox="0 0 240 240" id="trSvg" aria-hidden="true"></svg></div>
+        <button type="button" class="th-c tl" data-metric="cpu" aria-pressed="true"><i class="on"></i>CPU</button>
+        <button type="button" class="th-c tr" data-metric="gpu" aria-pressed="false"><i></i>GPU</button>
+        <button type="button" class="th-c bl" data-metric="ram" aria-pressed="false"><i></i>RAM</button>
+        <button type="button" class="th-c br" id="trLoad" aria-pressed="false" aria-label="Stress test"><i></i>LOAD</button>
+      </div>
+      <div class="cores" id="trCores" role="img" aria-label="Per-core load"></div>
+      <div class="readout" id="trRead"><b>CPU 24%</b> · GPU 12% · RAM 58%</div>
+      <div class="demo-tag" id="trTag">demo data · core count read from this device</div>
+      <div class="hint">corner keys choose the large figure · LOAD runs a 20-second stress test</div>
+      <div class="lineage">after · the Climate case · Activity Monitor</div>
+      <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Triad</span><button type="button" class="copy-code">COPY</button></div><pre><code>// One arc per metric: a 270° track with a value stroke drawn by dash length.
+const len = 2 * Math.PI * r * 0.75;
+arc.setAttribute("stroke-dasharray", `${len * value} ${len}`);
+arc.style.stroke = value &gt; 0.85 ? "var(--accent)" : "#f2f2f4";   // red only when it matters
+// Temperatures follow load with thermal lag.
+temp += (35 + load * 55 - temp) * (1 - Math.exp(-dt / 6));
+// Cores: the real count, never more than 16 bars.
+const cores = Math.min(16, navigator.hardwareConcurrency || 8);</code></pre></section>
+    </div>
+  </article>
+
+  <article class="unit wide">
+    <div class="cap"><span>Departures · split-flap flight board</span><span class="pill">FLAPS · LIVE STATUS · SIM CLOCK</span></div>
+    <div class="card">
+      <p class="component-copy">A board you can read from across the hall. Every character is a flap that rattles through the alphabet to its new letter, so you can hear a change coming before you read it. Flights move from on time to boarding to gate closing, then depart and the rows roll up. <strong>Red is kept for remarks that need action</strong>: gate closing, delayed and cancelled.</p>
+      <div class="rthemes" id="fbFinish" role="group" aria-label="Departures finish"><button type="button" data-finish="ivory" aria-pressed="true">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="false">OBSIDIAN</button></div>
+      <div class="board" id="fb" data-finish="ivory">
+        <div class="board-scroll"><div class="board-in">
+          <div class="board-head"><span class="board-title"><span class="ico"><svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg></span>DEPARTURES</span><span class="fgrp" id="fbClock"></span></div>
+          <div class="board-cols" id="fbCols"></div>
+          <div id="fbRows" aria-live="off"></div>
+        </div></div>
+        <div class="board-foot"><span id="fbFoot"><b>8</b> flights shown</span><span class="stepbar" role="group" aria-label="Board speed"><button type="button" data-fbs="1" aria-pressed="false">1×</button><button type="button" data-fbs="20" aria-pressed="true">20×</button><button type="button" data-fbs="60" aria-pressed="false">60×</button></span></div>
+      </div>
+      <div class="readout" id="fbRead"><b>18:03</b> · next: NEW YORK boarding</div>
+      <div class="hint">the clock runs at 20× by default · each flap step makes a soft click, which the Clicks switch at the top mutes</div>
+      <div class="lineage">after · Solari di Udine split-flap boards</div>
+      <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Departures</span><button type="button" class="copy-code">COPY</button></div><pre><code>// A flap cannot jump: it steps through the drum until it reaches the target.
+const DRUM = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-.#";
+function stepCell(c, now) {
+  if (c.at === c.target || now &lt; c.next) return;
+  c.at = (c.at + 1) % DRUM.length;              // one flap
+  c.el.firstChild.nodeValue = DRUM[c.at];
+  c.flap.animate([{ transform: "scaleY(1)", opacity: .9 }, { transform: "scaleY(0)", opacity: 0 }], 70);
+  c.next = now + 38;                            // ~26 flaps per second
+}
+// Status follows the clock: boarding at T-30, gate closing at T-10, departed at T-0.</code></pre></section>
+    </div>
+  </article>
+
+  <article class="unit wide">
+    <div class="cap"><span>Manifest · task board for a codebase</span><span class="pill">QUEUED → BUILDING → TESTING → REVIEW → SHIPPED</span></div>
+    <div class="card">
+      <p class="component-copy">The flight board turned into a build board. Tasks move from queued to building to testing on their own. A task waits in review until you approve it, and if its checks fail it stays red until you retry. <strong>Click a row or press Enter on it</strong> to approve, retry or unblock. Shift-click or B blocks a task, and Delete removes it. A shipped task leaves the board like a departed flight.</p>
+      <div class="rthemes" id="mfFinish" role="group" aria-label="Manifest finish"><button type="button" data-finish="ivory" aria-pressed="false">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="true">OBSIDIAN</button></div>
+      <div class="board" id="mf" data-finish="obsidian">
+        <div class="board-scroll"><div class="board-in">
+          <div class="board-head"><span class="board-title"><span class="ico"><svg viewBox="0 0 24 24"><path d="M8.6 16.6 4 12l4.6-4.6L10 8.8 6.8 12l3.2 3.2zm6.8 0L14 15.2l3.2-3.2L14 8.8l1.4-1.4L20 12z"/></svg></span>MANIFEST</span><span class="fgrp" id="mfClock"></span></div>
+          <div class="board-cols" id="mfCols"></div>
+          <div id="mfRows"></div>
+        </div></div>
+        <div class="board-foot"><form class="mf-add" id="mfForm"><input id="mfInput" maxlength="18" placeholder="NEW TASK" aria-label="New task title, up to 18 characters" autocomplete="off"><span class="stepbar"><button type="submit">ADD TO BOARD</button></span></form><span id="mfFoot"><b>0</b> shipped today</span></div>
+      </div>
+      <div class="readout" id="mfRead"><b>4 in flight</b> · 1 awaiting review · 1 failed</div>
+      <div class="hint">row: click or Enter to act · Shift + click or B to block · Delete to remove · the pipeline runs in accelerated time</div>
+      <div class="lineage">after · Departures · CI pipelines</div>
+      <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Manifest</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Automatic stages advance on a timer; human stages wait for a click.
+const NEXT = { QUEUED: "BUILDING", BUILDING: "TESTING", MERGING: "SHIPPED" };
+function advance(t) {
+  if (t.status === "TESTING") t.status = Math.random() &lt; .25 ? "CHECKS FAILED" : "IN REVIEW";
+  else if (NEXT[t.status]) t.status = NEXT[t.status];
+}
+const ACT = { "IN REVIEW": "MERGING", "CHECKS FAILED": "BUILDING", "BLOCKED": "QUEUED" };
+row.onclick = e =&gt; e.shiftKey ? block(t) : ACT[t.status] &amp;&amp; (t.status = ACT[t.status]);</code></pre></section>
     </div>
   </article>
 </div>
@@ -3591,6 +3755,258 @@ $("thSched").onclick=()=>{ TH.sched=!TH.sched; tick(); thRender(); };
 $$("[data-unit]").forEach(b=>b.onclick=()=>{ TH.unit=b.dataset.unit; $$("[data-unit]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); tick(); thRender(); });
 bindFinish("thFinish","th");
 thRender();
+
+/* ═════════ Velocity speedometer ═════════ */
+const VL={ v:0, unit:"mph", gas:false, brake:false, cruise:false, cruiseAt:0, limit:false, limitAt:0, trip:0, odo:4213.0, readAt:0, drawnUnit:null };
+const VL_C=120, vlPt=(r,a)=>[VL_C+r*Math.sin(a*Math.PI/180), VL_C-r*Math.cos(a*Math.PI/180)];
+const vlMax=()=>VL.unit==="mph"?160:260, vlConv=mph=>VL.unit==="mph"?mph:mph*1.609344;
+const vlAng=x=>-120+clamp(x/vlMax(),0,1.02)*240;
+let vlTicks=[];
+function vlBuild(){
+  const svg=$("vlSvg"); svg.innerHTML=""; vlTicks=[];
+  const max=vlMax(), minor=VL.unit==="mph"?5:10;
+  for(let x=0;x<=max;x+=minor){ const a=vlAng(x), maj=x%20===0, [x1,y1]=vlPt(112,a), [x2,y2]=vlPt(maj?98:104,a);
+    const l=svgEl("line",{ x1,y1,x2,y2, class:"g-tick"+(maj?" maj":""), "stroke-width":maj?2.2:1.4, "stroke-linecap":"round" }, svg); l.dataset.x=x; vlTicks.push(l);
+    if(maj){ const [tx,ty]=vlPt(84,a); svgEl("text",{ x:tx, y:ty, "text-anchor":"middle", "dominant-baseline":"central", class:"g-num" }, svg).textContent=x; } }
+  VL.tUnit=svgEl("text",{ x:VL_C, y:198, "text-anchor":"middle", class:"g-lbl" }, svg);
+  VL.tBig=svgEl("text",{ x:VL_C, y:184, style:"font-size:36px", "text-anchor":"middle", class:"g-big" }, svg);
+  VL.tTrip=svgEl("text",{ x:VL_C, y:214, "text-anchor":"middle", class:"g-small" }, svg);
+  VL.tMode=svgEl("text",{ x:VL_C, y:228, "text-anchor":"middle", class:"g-lbl" }, svg);
+  VL.needle=svgEl("g",{}, svg);
+  svgEl("line",{ x1:VL_C, y1:VL_C+16, x2:VL_C, y2:VL_C-100, style:"stroke:var(--accent)", "stroke-width":3, "stroke-linecap":"round" }, VL.needle);
+  svgEl("circle",{ cx:VL_C, cy:VL_C, r:7, fill:"#1c1c1f", stroke:"#5a5a60", "stroke-width":1.5 }, svg);
+  VL.drawnUnit=VL.unit; vlRender(true);
+}
+function vlRender(force){
+  const s=vlConv(VL.v), max=vlMax();
+  VL.needle.setAttribute("transform",`rotate(${vlAng(s).toFixed(2)} ${VL_C} ${VL_C})`);
+  const now=performance.now(); if(!force && now-VL.readAt<70) return; VL.readAt=now;
+  const lim=VL.limit?vlConv(VL.limitAt):Infinity;
+  vlTicks.forEach(t=>{ const x=+t.dataset.x; t.style.stroke = x>=max*.85 || x>lim+.01 ? "var(--accent)" : ""; });
+  VL.tBig.textContent=Math.round(s); VL.tUnit.textContent=VL.unit==="mph"?"MPH":"KM/H";
+  const d=VL.unit==="mph"?1:1.609344, u=VL.unit==="mph"?"MI":"KM";
+  VL.tTrip.textContent=`TRIP ${(VL.trip*d).toFixed(1)} ${u} · ODO ${String(Math.floor(VL.odo*d)).padStart(6,"0")}`;
+  VL.tMode.textContent = VL.cruise ? `CRUISE ${Math.round(vlConv(VL.cruiseAt))}` : VL.limit ? `LIMIT ${Math.round(vlConv(VL.limitAt))}` : VL.gas ? "THROTTLE" : VL.brake ? "BRAKING" : "";
+  $("vlScreen").setAttribute("aria-valuenow",Math.round(s)); $("vlScreen").setAttribute("aria-valuemax",max); $("vlScreen").setAttribute("aria-valuetext",`${Math.round(s)} ${VL.unit==="mph"?"miles":"kilometres"} per hour`);
+  $("vlRead").innerHTML=`<b>${Math.round(s)} ${VL.unit==="mph"?"mph":"km/h"}</b> · trip ${(VL.trip*d).toFixed(1)} ${u.toLowerCase()}${VL.cruise?" · cruise on":""}${VL.limit?` · limit ${Math.round(vlConv(VL.limitAt))}`:""}`;
+}
+function vlTick(dt){
+  const v=VL.v;
+  if(VL.brake && VL.cruise){ VL.cruise=false; vlLamps(); }
+  if(VL.cruise && !VL.gas) VL.v += clamp((VL.cruiseAt-v)*.8,-4,6)*dt;
+  else { const thrust=VL.gas?9.5*Math.max(0,1-v/175):0, brake=VL.brake?24:0, drag=v>0?.5+v*.011:0; VL.v=Math.max(0, v+(thrust-brake-drag)*dt); }
+  if(VL.limit && VL.v>VL.limitAt) VL.v=VL.limitAt;
+  VL.trip+=VL.v/3600*dt*60; VL.odo+=VL.v/3600*dt*60;   // distance runs at 60× so trips add up
+  vlRender();
+  return VL.gas || VL.brake || VL.v>0.01;
+}
+function vlLamps(){
+  const L=(id,on)=>$(id).querySelector("i").classList.toggle("on",on);
+  L("vlCruise",VL.cruise); L("vlLimit",VL.limit); L("vlUnit",true);
+  $("vlCruise").setAttribute("aria-pressed",String(VL.cruise)); $("vlLimit").setAttribute("aria-pressed",String(VL.limit));
+  $("vlUnit").innerHTML=`<i class="on"></i>${VL.unit==="mph"?"MPH":"KM/H"}`; $("vlUnit").setAttribute("aria-label",`Units: ${VL.unit}. Switch to ${VL.unit==="mph"?"km/h":"mph"}`);
+  vlRender(true);
+}
+function vlPedal(btn, key){
+  const down=v=>{ if(VL[key]===v) return; VL[key]=v; btn.dataset.down=String(v); if(v){ tick(); addLoop(vlTick); } vlRender(true); };
+  btn.addEventListener("pointerdown", e=>{ try{ btn.setPointerCapture(e.pointerId); }catch(_){} down(true); });
+  ["pointerup","pointercancel","lostpointercapture"].forEach(ev=>btn.addEventListener(ev, ()=>down(false)));
+  btn.addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); down(true); } });
+  btn.addEventListener("keyup", e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); down(false); } });
+  return down;
+}
+const vlGas=vlPedal($("vlGas"),"gas"), vlBrk=vlPedal($("vlBrake"),"brake");
+$("vlScreen").addEventListener("keydown", e=>{ if(e.key==="ArrowUp"){ e.preventDefault(); vlGas(true); } else if(e.key==="ArrowDown"){ e.preventDefault(); vlBrk(true); } });
+$("vlScreen").addEventListener("keyup", e=>{ if(e.key==="ArrowUp") vlGas(false); else if(e.key==="ArrowDown") vlBrk(false); });
+$("vlScreen").addEventListener("blur", ()=>{ vlGas(false); vlBrk(false); });
+$("vlUnit").onclick=()=>{ VL.unit=VL.unit==="mph"?"kph":"mph"; clack(); vlBuild(); vlLamps(); };
+$("vlTrip").onclick=()=>{ VL.trip=0; tick(); const i=$("vlTrip").querySelector("i"); i.classList.add("on"); setTimeout(()=>i.classList.remove("on"),300); vlRender(true); };
+$("vlCruise").onclick=()=>{ if(!VL.cruise && VL.v<15){ click(520,.15,3); VL.tMode.textContent="CRUISE NEEDS 15+"; return; } VL.cruise=!VL.cruise; VL.cruiseAt=VL.v; thock(); vlLamps(); addLoop(vlTick); };
+$("vlLimit").onclick=()=>{ VL.limit=!VL.limit; VL.limitAt=Math.max(20,Math.round(VL.v/5)*5); thock(); vlLamps(); };
+bindFinish("vlFinish","vl");
+vlBuild(); vlLamps();
+
+/* ═════════ Triad system monitor ═════════ */
+const TR_CORES=Math.min(16, navigator.hardwareConcurrency||8), TR_RAM=navigator.deviceMemory ? Math.max(4,navigator.deviceMemory) : 16;
+const TR={ sel:"cpu", stress:0, cpu:.24, gpu:.12, ram:.58, tc:46, tg:44, t:0, cores:Array(TR_CORES).fill(.2), readAt:0 };
+const TR_R={ cpu:98, gpu:82, ram:66 }, trArcs={};
+(() => {
+  const svg=$("trSvg");
+  Object.entries(TR_R).forEach(([k,r])=>{
+    const C=2*Math.PI*r;
+    svgEl("circle",{ cx:120, cy:120, r, fill:"none", stroke:"#26262a", "stroke-width":9, "stroke-linecap":"round", "stroke-dasharray":`${C*.75} ${C}`, transform:"rotate(135 120 120)" }, svg);
+    trArcs[k]=svgEl("circle",{ cx:120, cy:120, r, fill:"none", stroke:"#f2f2f4", "stroke-width":9, "stroke-linecap":"round", "stroke-dasharray":`0 ${C}`, transform:"rotate(135 120 120)", style:"transition:stroke-dasharray .45s ease,stroke .3s" }, svg);
+    trArcs[k].C=C;
+    svgEl("text",{ x:120, y:120+r+3, "text-anchor":"middle", class:"g-lbl" }, svg).textContent=k.toUpperCase();
+  });
+  TR.tLbl=svgEl("text",{ x:120, y:92, "text-anchor":"middle", class:"g-lbl" }, svg);
+  TR.tBig=svgEl("text",{ x:120, y:134, "text-anchor":"middle", class:"g-big", style:"font-size:38px" }, svg);
+  TR.tD1=svgEl("text",{ x:120, y:152, "text-anchor":"middle", class:"g-small", style:"font-size:8.5px" }, svg);
+  TR.tD2=svgEl("text",{ x:120, y:164, "text-anchor":"middle", class:"g-lbl", style:"font-size:7px" }, svg);
+  for(let i=0;i<TR_CORES;i++) $("trCores").appendChild(document.createElement("i"));
+  $("trCores").setAttribute("aria-label",`${TR_CORES} cores`);
+  $("trTag").textContent = `demo data · ${TR_CORES} cores${navigator.deviceMemory?` and ~${TR_RAM} GB memory`:""} read from this device`;
+})();
+function trRender(){
+  Object.keys(TR_R).forEach(k=>{ const a=trArcs[k], v=TR[k]; a.setAttribute("stroke-dasharray",`${(a.C*.75*v).toFixed(1)} ${a.C}`); a.style.stroke = v>.85 ? "var(--accent)" : "#f2f2f4"; });
+  const k=TR.sel, pct=Math.round(TR[k]*100);
+  TR.tLbl.textContent = {cpu:"PROCESSOR",gpu:"GRAPHICS",ram:"MEMORY"}[k] + (TR.stress?" · STRESS":"");
+  TR.tBig.textContent=pct+"%"; TR.tBig.style.fill = TR[k]>.85 ? "var(--accent)" : "";
+  if(k==="cpu"){ TR.tD1.textContent=`${(2.2+TR.cpu*2.6).toFixed(1)} GHZ · ${TR_CORES} CORES`; TR.tD2.textContent=`${Math.round(TR.tc)}°C PACKAGE`; }
+  if(k==="gpu"){ TR.tD1.textContent=`${(.6+TR.gpu*1.4).toFixed(2)} GHZ · VRAM ${(1+TR.gpu*6).toFixed(1)}/8 GB`; TR.tD2.textContent=`${Math.round(TR.tg)}°C CORE`; }
+  if(k==="ram"){ TR.tD1.textContent=`${(TR.ram*TR_RAM).toFixed(1)} / ${TR_RAM} GB IN USE`; TR.tD2.textContent=`SWAP ${(Math.max(0,TR.ram-.78)*8).toFixed(1)} GB`; }
+  $$("#trCores i").forEach((b,i)=>{ b.style.setProperty("--v",(TR.cores[i]*100).toFixed(0)+"%"); b.classList.toggle("hot",TR.cores[i]>.85); });
+  $("trRead").innerHTML=["cpu","gpu","ram"].map(m=>m===TR.sel?`<b>${m.toUpperCase()} ${Math.round(TR[m]*100)}%</b>`:`${m.toUpperCase()} ${Math.round(TR[m]*100)}%`).join(" · ");
+}
+function trTick(dt, now){
+  TR.t+=dt;
+  if(TR.stress && now>TR.stress){ TR.stress=0; $("trLoad").setAttribute("aria-pressed","false"); $("trLoad").querySelector("i").classList.remove("on"); }
+  if(now-TR.readAt>450){
+    TR.readAt=now; const s=!!TR.stress, w=(x,lo,hi)=>clamp(x+(Math.random()-.5)*.12,lo,hi);
+    const tc=s?.95:.2+.12*Math.sin(TR.t/7)+.06*Math.sin(TR.t*1.3), tg=s?.97:.1+.1*Math.sin(TR.t/11+1), tm=s?.84:.56+.04*Math.sin(TR.t/19);
+    TR.cpu=clamp(TR.cpu+(tc-TR.cpu)*.35+(Math.random()-.5)*.08,.02,1); TR.gpu=clamp(TR.gpu+(tg-TR.gpu)*.3+(Math.random()-.5)*.06,.01,1); TR.ram=clamp(TR.ram+(tm-TR.ram)*.12+(Math.random()-.5)*.01,.2,.98);
+    TR.cores=TR.cores.map((c,i)=>w(c+(TR.cpu-c)*.5+(i%3===0?.08:0),0,1));
+    TR.tc+=(35+TR.cpu*55-TR.tc)*(1-Math.exp(-.45/6)); TR.tg+=(33+TR.gpu*50-TR.tg)*(1-Math.exp(-.45/6));
+    trRender();
+  }
+  return visible.get($("tr"));
+}
+watch($("tr"), ()=>addLoop(trTick));
+$$("#tr [data-metric]").forEach(b=>b.onclick=()=>{ TR.sel=b.dataset.metric; $$("#tr [data-metric]").forEach(x=>{ x.setAttribute("aria-pressed",String(x===b)); x.querySelector("i").classList.toggle("on",x===b); }); tick(); trRender(); });
+$("trLoad").onclick=()=>{ const on=!TR.stress; TR.stress=on?performance.now()+20000:0; $("trLoad").setAttribute("aria-pressed",String(on)); $("trLoad").querySelector("i").classList.toggle("on",on); thock(); addLoop(trTick); };
+bindFinish("trFinish","tr");
+trRender();
+
+/* ═════════ split-flap engine ═════════ */
+const DRUM=" ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-.#/";
+const flapBusy=new Set(); let flapSoundAt=0;
+function makeFlap(parent, len){
+  const cells=[];
+  for(let i=0;i<len;i++){ const el=document.createElement("span"); el.className="fc"; const t=document.createTextNode(" "); el.appendChild(t); const fl=document.createElement("i"); el.appendChild(fl); parent.appendChild(el); cells.push({ el, t, fl, at:0, target:0, next:0 }); }
+  return { len, set(str, cls){
+    str=String(str??"").toUpperCase().padEnd(len).slice(0,len);
+    cells.forEach((c,i)=>{ let idx=DRUM.indexOf(str[i]); if(idx<0) idx=0; c.el.className="fc"+(cls?" "+cls:"");
+      if(idx===c.target) return; c.target=idx;
+      if(reduce){ c.at=idx; c.t.nodeValue=DRUM[idx]; return; }
+      c.next=performance.now()+Math.random()*180; flapBusy.add(c); });
+    if(flapBusy.size) addLoop(flapTick);
+  } };
+}
+function flapTick(dt, now){
+  let steps=0;
+  for(const c of flapBusy){
+    if(c.at===c.target){ flapBusy.delete(c); continue; }
+    if(now<c.next) continue;
+    c.at=(c.at+1)%DRUM.length; c.t.nodeValue=DRUM[c.at]; c.next=now+38; steps++;
+    c.fl.animate([{ transform:"scaleY(1)", opacity:.9 },{ transform:"scaleY(0)", opacity:0 }],{ duration:70 });
+  }
+  if(steps && now-flapSoundAt>34){ flapSoundAt=now; click(2600+Math.random()*1200, Math.min(.045,.006+steps*.0015), 3); }
+  return flapBusy.size>0;
+}
+function boardCols(el, cols){ el.innerHTML=cols.map(([n,w])=>`<span style="width:calc(var(--cw) * ${w} + ${(w-1)*2}px)">${n}</span>`).join(""); }
+const hhmm=m=>{ m=((Math.floor(m)%1440)+1440)%1440; return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0"); };
+
+/* ═════════ Departures ═════════ */
+const FB_COLS=[["TIME",5],["DESTINATION",12],["FLIGHT",6],["GATE",3],["REMARKS",12]], FB_ROWS=8;
+const FB_CITIES=["NEW YORK","BERLIN","LONDON","TOKYO","HONG KONG","MADRID","SYDNEY","TORONTO","PARIS","ROME","SEOUL","LISBON","OSLO","DUBAI","SINGAPORE","MEXICO CITY","REYKJAVIK","NAIROBI","LIMA","ZURICH","CAPE TOWN","HELSINKI"];
+const FB_AIR=["UC","EN","AE","VG","HR","LX","SA","OR"];
+const now0=new Date(), FB={ t:now0.getHours()*60+now0.getMinutes(), speed:20, flights:[], lastMin:-1, rows:[] };
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function fbNew(dep){ return { dep, dest:FB_CITIES[rnd(0,FB_CITIES.length-1)], code:FB_AIR[rnd(0,FB_AIR.length-1)]+" "+rnd(100,989), gate:String(rnd(1,38)).padStart(2,"0"), delayed:false, cancelAt:null }; }
+(() => { let d=FB.t+4; for(let i=0;i<12;i++){ FB.flights.push(fbNew(d)); d+=rnd(5,13); } FB.flights[4].delayed=true; FB.flights[4].dep+=25; FB.flights[9].cancelAt=FB.t; })();
+const fbStatus=f=>{ if(f.cancelAt!==null) return "CANCELLED"; const d=f.dep-FB.t; if(d<=0) return "DEPARTED"; if(f.delayed && d>30) return "DELAYED"; if(d<=10) return "GATE CLOSING"; if(d<=30) return "BOARDING"; return "ON TIME"; };
+boardCols($("fbCols"), FB_COLS);
+const fbClock=makeFlap($("fbClock"),5);
+for(let r=0;r<FB_ROWS;r++){ const row=document.createElement("div"); row.className="board-row"; const g=FB_COLS.map(([,w])=>{ const s=document.createElement("span"); s.className="fgrp"; row.appendChild(s); return makeFlap(s,w); }); $("fbRows").appendChild(row); FB.rows.push(g); }
+function fbRender(){
+  fbClock.set(hhmm(FB.t));
+  FB.flights.sort((a,b)=>a.dep-b.dep);
+  const shown=FB.flights.slice(0,FB_ROWS);
+  FB.rows.forEach((g,i)=>{ const f=shown[i]; if(!f){ g.forEach(x=>x.set("")); return; }
+    const st=fbStatus(f), dim=st==="DEPARTED"||st==="CANCELLED";
+    g[0].set(hhmm(f.dep), dim?"dim":""); g[1].set(f.dest, dim?"dim":""); g[2].set(f.code, dim?"dim":""); g[3].set(f.gate, dim?"dim":"");
+    g[4].set(st, st==="DEPARTED"?"dim":(st==="GATE CLOSING"||st==="DELAYED"||st==="CANCELLED")?"red":""); });
+  const nb=FB.flights.find(f=>fbStatus(f)==="BOARDING"||fbStatus(f)==="GATE CLOSING");
+  $("fbRead").innerHTML=`<b>${hhmm(FB.t)}</b> · ${nb?`${nb.dest.toLowerCase()} ${fbStatus(nb).toLowerCase()} at gate ${nb.gate}`:"no flights boarding"}`;
+  $("fbFoot").innerHTML=`<b>${FB.flights.filter(f=>fbStatus(f)==="DELAYED").length}</b> delayed · <b>${FB.flights.filter(f=>fbStatus(f)==="CANCELLED").length}</b> cancelled · clock ×${FB.speed}`;
+}
+function fbMinute(){
+  FB.flights=FB.flights.filter(f=>!(fbStatus(f)==="DEPARTED" && FB.t-f.dep>4) && !(f.cancelAt!==null && FB.t-f.cancelAt>25));
+  while(FB.flights.length<14){ const last=FB.flights.reduce((m,f)=>Math.max(m,f.dep),FB.t+20); FB.flights.push(fbNew(last+rnd(4,13))); }
+  const pool=FB.flights.filter(f=>fbStatus(f)==="ON TIME" && !f.delayed);
+  if(pool.length && Math.random()<.035){ const f=pool[rnd(0,pool.length-1)]; f.delayed=true; f.dep+=rnd(15,40); }
+  if(pool.length && Math.random()<.008){ pool[rnd(0,pool.length-1)].cancelAt=FB.t; }
+  fbRender();
+}
+function fbTick(dt){
+  FB.t+=dt*FB.speed/60;
+  const m=Math.floor(FB.t); if(m!==FB.lastMin){ FB.lastMin=m; fbMinute(); }
+  return visible.get($("fb"));
+}
+watch($("fb"), ()=>addLoop(fbTick));
+$$("[data-fbs]").forEach(b=>b.onclick=()=>{ FB.speed=+b.dataset.fbs; $$("[data-fbs]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); tick(); fbRender(); });
+bindFinish("fbFinish","fb");
+fbRender();
+
+/* ═════════ Manifest task board ═════════ */
+const MF_COLS=[["ETA",5],["TASK",18],["TICKET",7],["PR",5],["STATUS",13]], MF_ROWS=8;
+const MF_AUTO={ QUEUED:"BUILDING", BUILDING:"TESTING", MERGING:"SHIPPED" };
+const MF_ACT={ "IN REVIEW":["MERGING","approve"], "CHECKS FAILED":["BUILDING","retry"], "BLOCKED":["QUEUED","unblock"] };
+const MF_LEFT={ QUEUED:4, BUILDING:3, TESTING:2, "IN REVIEW":1, MERGING:1, SHIPPED:0 };
+const MF={ t:FB.t, tasks:[], n:142, pr:1286, shipped:2, lastMin:-1, rows:[] };
+function mfNew(title, status="QUEUED"){ MF.n++; MF.pr++; return { title, ticket:`ENO-${MF.n}`, pr:`#${MF.pr}`, status, nextAt:MF.t+rnd(2,6), shippedAt:null }; }
+[["FIX AUTH REDIRECT","MERGING"],["SPLIT FLAP SOUND","IN REVIEW"],["AUDIT ARIA LABELS","TESTING"],["UPGRADE PLEX FONTS","CHECKS FAILED"],["TRIM BUNDLE SIZE","BUILDING"],["ADD DARK FINISH","QUEUED"],["WRITE REMIX GUIDE","QUEUED"]].forEach(([t,s])=>MF.tasks.push(mfNew(t,s)));
+boardCols($("mfCols"), MF_COLS);
+const mfClock=makeFlap($("mfClock"),5);
+for(let r=0;r<MF_ROWS;r++){
+  const row=document.createElement("div"); row.className="board-row"; row.dataset.i=r;
+  const g=MF_COLS.map(([,w])=>{ const s=document.createElement("span"); s.className="fgrp"; row.appendChild(s); return makeFlap(s,w); });
+  $("mfRows").appendChild(row); MF.rows.push({ row, g });
+  row.addEventListener("click", e=>mfAct(r, e.shiftKey?"block":"act"));
+  row.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); mfAct(r,"act"); } else if(e.key==="b"||e.key==="B"){ e.preventDefault(); mfAct(r,"block"); } else if(e.key==="Delete"||e.key==="Backspace"){ e.preventDefault(); mfAct(r,"remove"); } });
+}
+function mfAct(r, what){
+  const t=MF.tasks[r]; if(!t) return;
+  if(what==="remove"){ MF.tasks.splice(r,1); clack(); }
+  else if(what==="block"){ if(t.status==="SHIPPED") return; t.status = t.status==="BLOCKED" ? "QUEUED" : "BLOCKED"; t.nextAt=MF.t+2; thock(); }
+  else if(MF_ACT[t.status]){ t.status=MF_ACT[t.status][0]; t.nextAt=MF.t+rnd(2,5); thock(); }
+  else { click(520,.12,3); }
+  mfRender();
+  const nr=MF.rows[Math.min(r,MF.tasks.length-1)]; if(nr && document.activeElement && document.activeElement.closest && document.activeElement.closest("#mfRows")) nr.row.focus();
+}
+function mfRender(){
+  mfClock.set(hhmm(MF.t));
+  MF.rows.forEach(({row,g},i)=>{ const t=MF.tasks[i];
+    if(!t){ g.forEach(x=>x.set("")); row.removeAttribute("role"); row.removeAttribute("tabindex"); row.removeAttribute("aria-label"); return; }
+    const red=t.status==="CHECKS FAILED"||t.status==="BLOCKED", dim=t.status==="SHIPPED", c=dim?"dim":"";
+    const eta = t.status==="SHIPPED" ? "DONE" : MF_ACT[t.status] ? "--:--" : hhmm(MF.t+MF_LEFT[t.status]*5);
+    g[0].set(eta,c); g[1].set(t.title,c); g[2].set(t.ticket,c); g[3].set(t.pr,c); g[4].set(t.status, red?"red":c);
+    row.setAttribute("role","button"); row.tabIndex=0;
+    const act=MF_ACT[t.status]; row.setAttribute("aria-label",`${t.title}, ${t.ticket}, ${t.status.toLowerCase()}.${act?` Press Enter to ${act[1]}.`:""} Press B to ${t.status==="BLOCKED"?"unblock":"block"}, Delete to remove.`);
+  });
+  const c=s=>MF.tasks.filter(t=>t.status===s).length;
+  const inflight=MF.tasks.filter(t=>!["SHIPPED","BLOCKED"].includes(t.status)).length;
+  $("mfRead").innerHTML=`<b>${inflight} in flight</b> · ${c("IN REVIEW")} awaiting review · ${c("CHECKS FAILED")} failed · ${c("BLOCKED")} blocked`;
+  $("mfFoot").innerHTML=`<b>${MF.shipped}</b> shipped today`;
+}
+function mfMinute(){
+  MF.tasks.forEach(t=>{ if(MF.t<t.nextAt) return;
+    if(t.status==="TESTING"){ t.status=Math.random()<.25?"CHECKS FAILED":"IN REVIEW"; }
+    else if(MF_AUTO[t.status]){ t.status=MF_AUTO[t.status]; if(t.status==="SHIPPED"){ t.shippedAt=MF.t; MF.shipped++; } }
+    t.nextAt=MF.t+rnd(3,7); });
+  MF.tasks=MF.tasks.filter(t=>!(t.status==="SHIPPED" && MF.t-t.shippedAt>6));
+  mfRender();
+}
+function mfTick(dt){ MF.t+=dt*20/60; const m=Math.floor(MF.t); if(m!==MF.lastMin){ MF.lastMin=m; mfMinute(); } return visible.get($("mf")); }
+watch($("mf"), ()=>addLoop(mfTick));
+$("mfForm").addEventListener("submit", e=>{
+  e.preventDefault(); const v=$("mfInput").value.toUpperCase().replace(/[^A-Z0-9 :\-./#]/g,"").trim();
+  if(!v){ $("mfInput").focus(); return; }
+  if(MF.tasks.length>=MF_ROWS){ $("mfFoot").innerHTML=`<b>board full</b> · ship or remove a task first`; click(520,.15,3); return; }
+  MF.tasks.push(mfNew(v)); $("mfInput").value=""; thock(); mfRender();
+});
+bindFinish("mfFinish","mf");
+mfRender();
 
 paintAccent();
 })();

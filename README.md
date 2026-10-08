@@ -8,7 +8,7 @@ Volume I lives at [uncommoncore.web.app/enochian_knobs_keys](https://uncommoncor
 
 | Volume | Open | Contents |
 |---|---|---|
-| **II · signal, scale and sequence** | [`volume-2/index.html`](volume-2/index.html) | Lumen VU, Cantor Ladder, Meridian Fader, Regie Bank, Aperture Scale, Interlock Bank, Lantern Row, Strobe Platter, Lumen Pad, Transport Bank, Cadence Pads, Penumbra Deck, Tally Keypad, Sigil Remote, Orbit Wheel, Excursion Pair, Monitor Pair, Augur rangefinder, Lodestar compass, Climate thermostat |
+| **II · signal, scale and sequence** | [`volume-2/index.html`](volume-2/index.html) | Lumen VU, Cantor Ladder, Meridian Fader, Regie Bank, Aperture Scale, Interlock Bank, Lantern Row, Strobe Platter, Lumen Pad, Transport Bank, Cadence Pads, Penumbra Deck, Tally Keypad, Sigil Remote, Orbit Wheel, Excursion Pair, Monitor Pair, Augur rangefinder, Lodestar compass, Climate thermostat, Velocity speedometer, Triad system monitor, Departures and Manifest split-flap boards |
 | **III · after Drams** | [`volume-3/index.html`](volume-3/index.html) | Twenty small controls after the [Drams](https://drams.framer.website/) collection: OP-1 Keys, Bouncin' Ball, Rollin' Search, Fidget Poppin', Triple Switch, Standard Switch, Triple Push Buttons, Pinchin' Switch, Triple Light Switch, Pinchin' Track Switch, Coloured Switch, Trackin' Slider, LED Switch, Round On/Off Knob, Joypad Controller, Square Slider, Concaved Switch, Pushin' Click Button, Dimpled Slider, I/O Switch |
 
 Each `index.html` is a single self-contained file. Open it in a browser and it works, with no build step and no install.
