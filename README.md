@@ -24,6 +24,14 @@ Each `index.html` is a single self-contained file. Open it in a browser and it w
 - **Access:** every control works from the keyboard and exposes its state through ARIA.
 - **Portable:** no libraries and no hosted services. The springs, clicks, synth voices, drum kit and physics are written inline with the Web Audio and DOM APIs.
 
+## Use and remix
+
+To lift a single control into your own project, or to contribute a remix, see **[HOW_TO_USE_AND_REMIX.md](HOW_TO_USE_AND_REMIX.md)**. It covers where each control's code lives, the shared core it needs, and the checklist a remix should pass.
+
+## License
+
+[CC BY-NC 4.0](LICENSE.md). You are free to share and remix with credit, but not for commercial use.
+
 ## Credits
 
 Hardware lineage is noted on each card, for example Braun, Technics, Nakamichi, Leica, Work Louder and Teenage Engineering. Volume III is a homage to [Drams](https://drams.framer.website/) by [@mrblackstudio](https://x.com/mrblackstudio). Brand names appear only as design references, and every element carries the UnCommon Core mark instead.
