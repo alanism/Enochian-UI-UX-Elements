@@ -910,6 +910,24 @@
   .agl-scale{display:grid;grid-template-columns:96px minmax(0,1fr) 82px;gap:8px;font:500 8px var(--mono);color:var(--lad-ink)}
   .agl-scale span:nth-child(2){display:flex;justify-content:space-between}
   .agl-scale i{font-style:normal}
+  /* ── Triad Quota: subscription session / weekly / model caps with week pacing ── */
+  .qt-wrap{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:28px;align-items:center;width:100%;max-width:1040px}
+  @media (max-width:900px){.qt-wrap{grid-template-columns:minmax(0,1fr);justify-items:center}}
+  .qt-panel{display:grid;gap:14px;min-width:0;width:100%;max-width:520px}
+  .qt-chart{border-radius:10px;background:#111113;padding:12px 12px 8px;box-shadow:inset 0 2px 8px rgba(0,0,0,.6)}
+  .qt-chart svg{display:block;width:100%;height:auto}
+  .qt-chart .c-grid{stroke:#26262a} .qt-chart .c-day{fill:#8d8d92;font:600 8px var(--mono);letter-spacing:1px}
+  .qt-chart .c-ideal{stroke:#5a5a60;stroke-dasharray:3 4;fill:none} .qt-chart .c-cap{stroke:var(--accent);stroke-width:1;opacity:.6}
+  .qt-chart .c-used{stroke:#f2f2f4;stroke-width:2.2;fill:none;stroke-linejoin:round} .qt-chart .c-fill{fill:rgba(242,242,244,.07)}
+  .qt-chart .c-proj{stroke-width:2;fill:none;stroke-dasharray:5 4} .qt-chart .c-now{stroke:#f2f2f4;stroke-width:1;opacity:.5}
+  .qt-chart .c-pct{fill:#8d8d92;font:500 8px var(--mono)}
+  .qt-fc{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:baseline}
+  .qt-fc .k{font:600 9px var(--mono);letter-spacing:1.4px;color:var(--muted);text-transform:uppercase}
+  .qt-fc .v{font:500 13px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+  .qt-verdict{font:600 15px var(--sans);letter-spacing:.2px;padding:10px 12px;border-radius:8px;border:1px solid #d8d8dc;background:#fff;color:var(--ink)}
+  .qt-verdict.over{border-color:var(--accent);color:var(--accent)}
+  .qt-verdict.near{border-color:#F4A934}
+  .qt-verdict small{display:block;font:500 11px var(--mono);color:var(--muted);margin-top:3px;letter-spacing:.3px}
   .finish-line{margin-block:48px 56px;padding-block:28px 0;border-top:1px solid var(--line);max-width:860px}
   .finish-line h2{font-size:18px;margin:0 0 10px}.finish-line p{color:var(--muted);font-size:14px;line-height:1.6;max-width:70ch}
   .finish-line blockquote{margin:18px 0 0;padding-left:15px;border-left:3px solid var(--accent);font-weight:700}
@@ -950,6 +968,7 @@
       <li><b>Show a live schedule or queue</b> with the Departures and Manifest split-flap boards.</li>
       <li><b>Talk to a voice AI and see who is speaking</b> with Aemeth, the angel channel.</li>
       <li><b>Watch a context window fill</b> with Lumen Context, Triad Context or Velocity Context, and <b>see which agents are working</b> with Cantor Agents.</li>
+      <li><b>Pace a subscription's session and weekly limits</b> with Triad Quota.</li>
     </ul>
   </div>
   <div class="accentrow">
@@ -2168,6 +2187,47 @@ arc.setAttribute("stroke-dasharray", `${C * 0.75 * f} ${C}`);</code></pre></sect
 rate += (instantRate - rate) * (1 - Math.exp(-dt / 2));        // tokens per second, smoothed
 const toAdvice = (ADVISE * windowSize - used) / Math.max(rate, 1);
 eta.textContent = toAdvice &gt; 0 ? `COMPACT IN ~${Math.ceil(toAdvice / 60)} MIN` : "COMPACT ADVISED";</code></pre></section>
+    </div>
+  </article>
+  <article class="unit wide" id="c-quota">
+    <div class="cap"><span>Triad Quota · subscription limit monitor</span><span class="pill">SESSION · WEEKLY · MODEL CAP · PACING</span></div>
+    <div class="card">
+      <p class="component-copy">The Triad rings, measuring a subscription instead of a context window. The outer ring is the <strong>session limit</strong> (a rolling 5-hour window), the middle ring the <strong>weekly limit</strong>, and the inner ring the separate cap on the premium model. A white notch on the weekly ring shows where even pacing would put you right now. The dashed arc projects your current pace to the reset. The chart answers the real question: <strong>at this pace, do you run out before the week resets, or finish with some left?</strong></p>
+      <div class="rthemes" id="qtFinish" role="group" aria-label="Triad Quota finish"><button type="button" data-finish="ivory" aria-pressed="false">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="true">OBSIDIAN</button></div>
+      <div class="qt-wrap">
+        <div class="th" id="qt" data-finish="obsidian">
+          <div class="th-screen gauge-scr" role="img" aria-label="Quota rings" id="qtScreen"><svg viewBox="0 0 240 240" id="qtSvg" aria-hidden="true"></svg></div>
+          <button type="button" class="th-c tl" data-qring="s" aria-pressed="true"><i class="on"></i>SESSION</button>
+          <button type="button" class="th-c tr" data-qring="w" aria-pressed="false"><i></i>WEEKLY</button>
+          <button type="button" class="th-c bl" data-qring="m" aria-pressed="false"><i></i>MODEL</button>
+          <button type="button" class="th-c br" id="qtProv" aria-label="Change provider"><i class="on"></i>PLAN</button>
+        </div>
+        <div class="qt-panel">
+          <div class="ctx-bar" style="justify-content:flex-start"><span class="ctx-lbl">plan</span><span class="stepbar" role="group" aria-label="Provider"><button type="button" data-qprov="0" aria-pressed="true">CLAUDE</button><button type="button" data-qprov="1" aria-pressed="false">CHATGPT</button><button type="button" data-qprov="2" aria-pressed="false">OTHER</button></span></div>
+          <div class="ctx-bar" style="justify-content:flex-start"><span class="ctx-lbl">usage</span><span class="stepbar" role="group" aria-label="Usage style"><button type="button" data-qstyle="0" aria-pressed="false">LIGHT</button><button type="button" data-qstyle="1" aria-pressed="true">STEADY</button><button type="button" data-qstyle="2" aria-pressed="false">HEAVY</button></span>
+            <span class="stepbar"><button type="button" data-qspeed aria-pressed="false">1 HR / SEC</button><button type="button" id="qtWeek">NEW WEEK</button></span></div>
+          <div class="qt-chart"><svg viewBox="0 0 420 170" id="qtChart" role="img" aria-label="Weekly usage against even pacing, with projection"></svg></div>
+          <div class="qt-verdict" id="qtVerdict">On pace<small>~84% used by the reset</small></div>
+          <div class="qt-fc">
+            <span class="k">session</span><span class="v" id="qtS">63% · resets in 2h 10m</span>
+            <span class="k">weekly</span><span class="v" id="qtW">48% · resets Mon 09:00</span>
+            <span class="k">model cap</span><span class="v" id="qtM">55% · Opus weekly</span>
+            <span class="k">pace</span><span class="v" id="qtP">ideal 36% by now · you're 12 pts ahead</span>
+          </div>
+        </div>
+      </div>
+      <div class="readout" id="qtRead"><b>SESSION 63%</b> · WEEKLY 48% · MODEL 55%</div>
+      <div class="hint">simulated week starting Wednesday 14:00 · 1 HR / SEC speeds the clock up · limits are shown as percentages, so plug in any plan's real numbers through QuotaGauge.set()</div>
+      <section class="code-snippet" inert aria-hidden="true"><div class="code-snippet-head"><span>Triad Quota</span><button type="button" class="copy-code">COPY</button></div><pre><code>// Forecast: weight the last 24 hours over the week so far, then project to the reset.
+const weekRate   = used / elapsedH;                         // % per hour since the reset
+const recentRate = used24h / 24;
+const rate = 0.6 * recentRate + 0.4 * weekRate;
+const projected = used + rate * (168 - elapsedH);
+const runOutAt  = projected &gt; 100 ? elapsedH + (100 - used) / rate : null;   // hours into the week
+const verdict = runOutAt ? `Runs out ${weekday(runOutAt)}` :
+                projected &gt; 90 ? "Tight finish" : `~${Math.round(100 - projected)}% left at reset`;
+// Pace notch: where even use would put you right now.
+notch.setAttribute("transform", `rotate(${135 + (elapsedH / 168) * 270} 120 120)`);</code></pre></section>
     </div>
   </article>
 </div>
@@ -4582,6 +4642,134 @@ mfRender();
   syncControls();
   window.ContextGauges={ get state(){ return { pair:PAIRS[S.pair], window:S.win, think:S.a.used, build:S.b.used, agents:S.agents.length }; },
     set(think, build){ if(think!=null) S.a.used=+think; if(build!=null) S.b.used=+build; paintAll(true); }, pause(){ S.run=false; paintAll(true); } };
+})();
+
+/* ═════════ Triad Quota: session / weekly / model cap with week pacing ═════════ */
+(() => {
+  const PROV=[{ name:"CLAUDE", model:"OPUS", modelLong:"Opus weekly" },{ name:"CHATGPT", model:"REASONING", modelLong:"reasoning models" },{ name:"OTHER", model:"PREMIUM", modelLong:"premium model" }];
+  const STYLE=[{ name:"light", rate:.95, p:.55, share:.3 },{ name:"steady", rate:1.55, p:.75, share:.45 },{ name:"heavy", rate:2.6, p:.9, share:.62 }];
+  const WEEK=168, SCAP=15, MCAP=50, DAYS=["MON","TUE","WED","THU","FRI","SAT","SUN"];
+  const Q={ prov:0, style:1, t:0, w:0, m:0, sStart:-99, sUsed:0, log:[], hist:[], speed:1/30, sel:"s", manual:null, lastHist:-1, readAt:0, wasBlocked:"" };
+  const hourOf=t=>(9+t)%24, dayOf=t=>Math.floor(t/24)%7;
+  const when=t=>{ const h=9+t, d=Math.floor(h/24)%7, hh=Math.floor(h%24), mm=Math.floor((h%1)*60); return `${DAYS[d][0]+DAYS[d].slice(1).toLowerCase()} ${String(hh).padStart(2,"0")}:${String(mm).padStart(2,"0")}`; };
+  const dur=h=>{ h=Math.max(0,h); const d=Math.floor(h/24), r=h-d*24, hh=Math.floor(r), mm=Math.round((r-hh)*60); return d?`${d}d ${hh}h`:`${hh}h ${String(mm).padStart(2,"0")}m`; };
+  /* session: starts at the first message, resets in full five hours later */
+  const sess=()=>Q.t<Q.sStart+5 ? Q.sUsed/SCAP*100 : 0;
+  const sResetIn=()=>Q.t<Q.sStart+5 ? Q.sStart+5-Q.t : 0;
+  const used24=()=>Q.log.filter(e=>e.t>Q.t-24).reduce((s,e)=>s+e.a,0);
+  function stepSim(dh){
+    const st=STYLE[Q.style], h=hourOf(Q.t), day=dayOf(Q.t);
+    const active = h>=9 && h<19 && !(day>=5 && Math.random()<.6);
+    if(Q.w>=100 || sess()>=99.5) return;
+    if(active && Math.random()<st.p+.2){ if(Q.t>=Q.sStart+5){ Q.sStart=Q.t; Q.sUsed=0; } const a=Math.min(st.rate*dh*(.5+Math.random()), SCAP-Q.sUsed); if(a<=0) return; Q.sUsed+=a; Q.log.push({ t:Q.t, a }); Q.w=Math.min(100,Q.w+a); Q.m=Math.min(MCAP,Q.m+a*st.share*(MCAP/100)*2); }
+  }
+  function advance(dh){
+    let left=dh; while(left>0){ const s=Math.min(.05,left); Q.t+=s; left-=s; if(Q.t>=WEEK){ newWeek(); return; } stepSim(s);
+      if(Q.t-Q.lastHist>=.5){ Q.hist.push({ t:Q.t, w:Q.w }); Q.lastHist=Q.t; } }
+    Q.log=Q.log.filter(e=>e.t>Q.t-24.5);
+  }
+  function newWeek(){ Q.t=0; Q.w=0; Q.m=0; Q.sStart=-99; Q.sUsed=0; Q.log=[]; Q.hist=[{ t:0, w:0 }]; Q.lastHist=0; }
+  function seed(){
+    newWeek(); const keep=Q.speed; for(let i=0;i<53/.05;i++){ Q.t+=.05; stepSim(.05); if(Q.t-Q.lastHist>=.5){ Q.hist.push({ t:Q.t, w:Q.w }); Q.lastHist=Q.t; } }
+    const k=Q.w>0?38/Q.w:1; Q.w=38; Q.sStart=Q.t-2.9; Q.sUsed=SCAP*.61; Q.hist.forEach(p=>p.w*=k); Q.log.forEach(e=>e.a*=k); Q.log=Q.log.filter(e=>e.t>Q.t-24.5); Q.m=MCAP*.55; Q.speed=keep;
+  }
+  function forecast(){
+    const t=Math.max(Q.t,.5), weekRate=Q.w/t, recent=Q.t>=24 ? used24()/24 : weekRate, hist=.6*recent+.4*weekRate;
+    // the usage style is the plan for the rest of the week: blend it with history (real data uses history only)
+    const st=STYLE[Q.style], planRate=st.rate*Math.min(1,st.p+.2)*(10/24)*((5+2*.4)/7);
+    const rate=Math.max(.01, Q.manual ? hist : .5*hist+.5*planRate);
+    const projected=Q.w+rate*(WEEK-Q.t), out=projected>100 ? Q.t+(100-Q.w)/rate : null;
+    return { rate, projected, out, ideal:Q.t/WEEK*100 };
+  }
+
+  /* rings */
+  const svg=$("qtSvg"), R={ s:98, w:82, m:66 }, arcs={}; const lbls={};
+  Object.entries(R).forEach(([k,r])=>{ const C=2*Math.PI*r;
+    svgEl("circle",{ cx:120, cy:120, r, fill:"none", stroke:"#26262a", "stroke-width":9, "stroke-linecap":"round", "stroke-dasharray":`${C*.75} ${C}`, transform:"rotate(135 120 120)" }, svg);
+    arcs[k]=svgEl("circle",{ cx:120, cy:120, r, fill:"none", stroke:"#f2f2f4", "stroke-width":9, "stroke-linecap":"round", "stroke-dasharray":`0 ${C}`, transform:"rotate(135 120 120)", style:"transition:stroke-dasharray .45s ease,stroke .3s" }, svg); arcs[k].C=C;
+    lbls[k]=svgEl("text",{ x:120, y:120+r+3, "text-anchor":"middle", class:"g-lbl" }, svg); });
+  const proj=svgEl("path",{ fill:"none", "stroke-width":3, "stroke-dasharray":"4 4", "stroke-linecap":"butt" }, svg);
+  const notch=svgEl("line",{ x1:120, y1:120-82-8, x2:120, y2:120-82+8, stroke:"#f2f2f4", "stroke-width":2.4 }, svg);
+  const tL=svgEl("text",{ x:120, y:90, "text-anchor":"middle", class:"g-lbl" }, svg), tB=svgEl("text",{ x:120, y:130, "text-anchor":"middle", class:"g-big", style:"font-size:34px" }, svg),
+    tD1=svgEl("text",{ x:120, y:148, "text-anchor":"middle", class:"g-small", style:"font-size:7.2px" }, svg), tD2=svgEl("text",{ x:120, y:161, "text-anchor":"middle", class:"g-lbl", style:"font-size:7px" }, svg);
+  const angAt=f=>135+clamp(f,0,1)*270;
+  const arcPath=(r,f0,f1)=>{ const a0=angAt(f0)*Math.PI/180, a1=angAt(f1)*Math.PI/180; const large=(a1-a0)>Math.PI?1:0;
+    return `M${(120+r*Math.cos(a0)).toFixed(2)} ${(120+r*Math.sin(a0)).toFixed(2)}A${r} ${r} 0 ${large} 1 ${(120+r*Math.cos(a1)).toFixed(2)} ${(120+r*Math.sin(a1)).toFixed(2)}`; };
+
+  /* week chart */
+  const ch=$("qtChart"), X0=36, X1=410, Y0=14, Y1=144, x=t=>X0+t/WEEK*(X1-X0), y=p=>Y1-clamp(p,0,112)/112*(Y1-Y0);
+  const g={};
+  (() => {
+    for(let d=0;d<=7;d++) svgEl("line",{ x1:x(d*24), y1:Y0, x2:x(d*24), y2:Y1, class:"c-grid" }, ch);
+    for(let d=0;d<7;d++) svgEl("text",{ x:x(d*24+12), y:160, "text-anchor":"middle", class:"c-day" }, ch).textContent=DAYS[d];
+    [0,50,100].forEach(p=>{ svgEl("line",{ x1:X0, y1:y(p), x2:X1, y2:y(p), class:"c-grid" }, ch); svgEl("text",{ x:X0-6, y:y(p)+3, "text-anchor":"end", class:"c-pct" }, ch).textContent=p+"%"; });
+    svgEl("line",{ x1:X0, y1:y(100), x2:X1, y2:y(100), class:"c-cap" }, ch);
+    svgEl("path",{ d:`M${x(0)} ${y(0)}L${x(WEEK)} ${y(100)}`, class:"c-ideal" }, ch);
+    g.fill=svgEl("path",{ class:"c-fill" }, ch); g.used=svgEl("path",{ class:"c-used" }, ch); g.proj=svgEl("path",{ class:"c-proj" }, ch);
+    g.now=svgEl("line",{ y1:Y0, y2:Y1, class:"c-now" }, ch); g.dot=svgEl("circle",{ r:3.5, fill:"#f2f2f4" }, ch);
+    g.out=svgEl("circle",{ r:4, style:"fill:var(--accent)" }, ch); g.outT=svgEl("text",{ "text-anchor":"middle", class:"c-pct", style:"fill:var(--accent);font-weight:600" }, ch);
+  })();
+
+  function colS(f){ return f>=.9?"var(--accent)":f>=.7?"#F4A934":"#f2f2f4"; }
+  function paint(force){
+    const now=performance.now(); if(!force && now-Q.readAt<350) return; Q.readAt=now;
+    const P=PROV[Q.prov], fc=forecast(), S=sess(), F={ s:S/100, w:Q.w/100, m:Q.m/MCAP };
+    const colW = fc.projected>100||F.w>=.9 ? "var(--accent)" : (Q.w-fc.ideal>10||F.w>=.7) ? "#F4A934" : "#f2f2f4";
+    Object.keys(R).forEach(k=>{ const f=clamp(F[k],0,1); arcs[k].setAttribute("stroke-dasharray",`${(arcs[k].C*.75*f).toFixed(1)} ${arcs[k].C}`); arcs[k].style.stroke = k==="w"?colW:colS(f); });
+    lbls.s.textContent="SESSION"; lbls.w.textContent="WEEKLY"; lbls.m.textContent=P.model;
+    const pf=Math.min(fc.projected,100)/100;
+    if(pf>F.w+.005){ proj.setAttribute("d",arcPath(82,F.w,pf)); proj.style.stroke = fc.projected>100?"var(--accent)":fc.projected>90?"#F4A934":"rgba(242,242,244,.45)"; proj.style.display=""; } else proj.style.display="none";
+    notch.setAttribute("transform",`rotate(${(angAt(fc.ideal/100)+90).toFixed(2)} 120 120)`);
+    const sRe=sResetIn();
+    const sel=Q.sel, f=F[sel];
+    tL.textContent = sel==="s" ? "SESSION · 5 H" : sel==="w" ? "WEEKLY" : `${P.model} CAP`;
+    tB.textContent = Math.round(clamp(f,0,1)*100)+"%"; tB.style.fill = sel==="w" ? (colW==="#f2f2f4"?"":colW) : (f>=.7?colS(f):"");
+    tD1.textContent = sel==="s" ? (S>=100?"SESSION LIMIT REACHED":`${Math.round(100-S)}% LEFT THIS SESSION`) : sel==="w" ? `${Math.round(fc.projected)}% PROJECTED AT RESET` : `${(Q.m).toFixed(1)} / ${MCAP} · ${P.modelLong.toUpperCase()}`;
+    tD2.textContent = sel==="s" ? (sRe>0?`RESETS IN ${dur(sRe).toUpperCase()}`:"STARTS WITH YOUR NEXT MESSAGE") : sel==="w" ? `RESETS MON 09:00 · IN ${dur(WEEK-Q.t).toUpperCase()}` : (F.m>=.9?"SWITCH TO A LIGHTER MODEL":"SHARE OF WEEKLY TOP MODEL");
+    /* chart */
+    const pts=[...Q.hist,{ t:Q.t, w:Q.w }];
+    const d=pts.map((p,i)=>`${i?"L":"M"}${x(p.t).toFixed(1)} ${y(p.w).toFixed(1)}`).join("");
+    g.used.setAttribute("d",d); g.fill.setAttribute("d",`${d}L${x(Q.t).toFixed(1)} ${y(0)}L${x(0)} ${y(0)}Z`);
+    g.now.setAttribute("x1",x(Q.t)); g.now.setAttribute("x2",x(Q.t)); g.dot.setAttribute("cx",x(Q.t)); g.dot.setAttribute("cy",y(Q.w));
+    const endT = fc.out ?? WEEK, endP = fc.out ? 100 : fc.projected;
+    g.proj.setAttribute("d",`M${x(Q.t).toFixed(1)} ${y(Q.w).toFixed(1)}L${x(endT).toFixed(1)} ${y(endP).toFixed(1)}`);
+    g.proj.style.stroke = fc.out ? "var(--accent)" : fc.projected>90 ? "#F4A934" : "rgba(242,242,244,.55)";
+    g.out.style.display=g.outT.style.display = fc.out ? "" : "none";
+    if(fc.out){ g.out.setAttribute("cx",x(fc.out)); g.out.setAttribute("cy",y(100)); g.outT.setAttribute("x",clamp(x(fc.out),X0+30,X1-30)); g.outT.setAttribute("y",y(100)-8); g.outT.textContent=`OUT ${when(fc.out).toUpperCase()}`; }
+    /* verdict and details */
+    const v=$("qtVerdict");
+    if(Q.w>=100){ v.className="qt-verdict over"; v.innerHTML=`Weekly limit reached<small>access returns Mon 09:00 · in ${dur(WEEK-Q.t)}</small>`; }
+    else if(fc.out){ v.className="qt-verdict over"; v.innerHTML=`Runs out ${when(fc.out)}<small>then ~${dur(WEEK-fc.out)} without access · ease off by ~${Math.round((1-(100-Q.w)/(fc.rate*(WEEK-Q.t)))*100)}% to make it</small>`; }
+    else if(fc.projected>90){ v.className="qt-verdict near"; v.innerHTML=`Tight finish<small>~${Math.round(fc.projected)}% used by the reset · little room for heavy days</small>`; }
+    else { v.className="qt-verdict"; const left=Math.round(100-fc.projected); v.innerHTML=`~${left}% left at the reset<small>${left>35?"room to lean on the top model more":"on pace for the week"}</small>`; }
+    $("qtS").textContent = S>=99.5 ? `100% · session limit, resets in ${dur(sRe)}` : `${Math.round(S)}% · ${sRe>0?`resets in ${dur(sRe)}`:"starts with your next message"}`;
+    $("qtW").textContent = `${Math.round(Q.w)}% · resets Mon 09:00, in ${dur(WEEK-Q.t)}`;
+    $("qtM").textContent = `${Math.round(F.m*100)}% · ${P.modelLong}`;
+    const diff=Math.round(Q.w-fc.ideal);
+    $("qtP").textContent = `ideal ${Math.round(fc.ideal)}% by ${when(Q.t)} · you're ${Math.abs(diff)} pts ${diff>=0?"ahead":"behind"} · ${fc.rate.toFixed(2)}%/h`;
+    $("qtRead").innerHTML=[["s","SESSION",S],["w","WEEKLY",Q.w],["m",P.model,F.m*100]].map(([k,n,p])=>k===Q.sel?`<b>${n} ${Math.round(p)}%</b>`:`${n} ${Math.round(p)}%`).join(" · ");
+    const blocked = Q.w>=100 ? "weekly" : S>=99.5 ? "session" : "";
+    if(blocked && blocked!==Q.wasBlocked) clack(); Q.wasBlocked=blocked;
+  }
+  function qtTick(dt){ if(!Q.manual) advance(dt*Q.speed); paint(); return visible.get($("qt")); }
+  $$("[data-qring]").forEach(b=>b.onclick=()=>{ Q.sel=b.dataset.qring; $$("[data-qring]").forEach(x=>{ x.setAttribute("aria-pressed",String(x===b)); x.querySelector("i").classList.toggle("on",x===b); }); tick(); paint(true); });
+  const setProv=i=>{ Q.prov=i; $$("[data-qprov]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.qprov===i))); tick(); paint(true); };
+  $$("[data-qprov]").forEach(b=>b.onclick=()=>setProv(+b.dataset.qprov));
+  $("qtProv").onclick=()=>setProv((Q.prov+1)%PROV.length);
+  $$("[data-qstyle]").forEach(b=>b.onclick=()=>{ Q.style=+b.dataset.qstyle; $$("[data-qstyle]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); tick(); paint(true); });
+  $$("[data-qspeed]").forEach(b=>b.onclick=()=>{ const fast=Q.speed<1; Q.speed=fast?1:1/30; b.setAttribute("aria-pressed",String(fast)); tick(); });
+  $("qtWeek").onclick=()=>{ Q.manual=null; newWeek(); clack(); paint(true); };
+  window.QuotaGauge={
+    set({ session, weekly, model, elapsedHours, provider, sessionResetsInHours }={}){ Q.manual=true;
+      if(elapsedHours!=null){ Q.t=clamp(+elapsedHours,0,WEEK); }
+      if(weekly!=null){ Q.w=clamp(+weekly,0,100); Q.hist.push({ t:Q.t, w:Q.w }); }
+      if(session!=null){ Q.sUsed=clamp(+session,0,100)/100*SCAP; Q.sStart=Q.t-(5-clamp(+(sessionResetsInHours??5),0,5)); }
+      if(model!=null){ Q.m=clamp(+model,0,100)/100*MCAP; }
+      if(provider!=null){ const i=PROV.findIndex(p=>p.name===String(provider).toUpperCase()); if(i>=0) setProv(i); }
+      paint(true); },
+    simulate(){ Q.manual=null; }
+  };
+  seed(); bindFinish("qtFinish","qt"); watch($("qt"), ()=>addLoop(qtTick)); paint(true);
 })();
 
 paintAccent();
