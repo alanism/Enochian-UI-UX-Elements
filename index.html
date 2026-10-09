@@ -215,6 +215,10 @@
   .timer-svg .timer-dot{fill:none;stroke:var(--timer-ink)}
   .timer-svg .timer-dot.on{fill:#CC0000;stroke:#CC0000}
   .timer-control[aria-pressed="true"] span{color:#CC0000}
+  .timercase[data-pressure="hot"] .timer-digital{color:#CC0000;animation:pressurePulse 1s steps(2) infinite}
+  .timercase[data-pressure="hot"] .timer-state{color:#CC0000}
+  @keyframes pressurePulse{50%{opacity:.55}}
+  @media (prefers-reduced-motion:reduce){.timercase[data-pressure="hot"] .timer-digital{animation:none}}
   /* arcade push-buttons: glossy domes + LED dots */
   .abtns{display:flex;gap:44px;justify-content:center}
   .abunit{display:flex;flex-direction:column;align-items:center;gap:16px}
@@ -464,6 +468,7 @@
     <button type="button" data-seconds="300" aria-pressed="false">5 MIN</button>
     <button type="button" data-seconds="600" aria-pressed="false">10 MIN</button>
     <button type="button" data-seconds="1500" aria-pressed="false">25 MIN</button>
+    <button type="button" id="timerPressure" aria-pressed="false">PRESSURE SOUND · OFF</button>
   </div>
   <div class="timercase" id="timerCase" data-theme="white" data-progress="0" role="group" aria-label="Vigil Clock countdown timer">
     <div class="timerdial">
@@ -493,6 +498,7 @@
     <button type="button" data-rounds="1" aria-pressed="true">ONCE</button>
     <button type="button" data-rounds="4" aria-pressed="false">× 4 ROUNDS</button>
     <button type="button" data-rounds="0" aria-pressed="false">LOOP</button>
+    <button type="button" id="v90Pressure" aria-pressed="false">PRESSURE SOUND · OFF</button>
   </div>
   <div class="timercase" id="v90Case" data-theme="white" role="group" aria-label="Vigil 90 interval timer">
     <div class="timerdial">
@@ -1043,6 +1049,47 @@ $("timerStart").onclick=()=>{ensureAudio();if(AC)AC.resume();
 $("timerReset").onclick=()=>{timerRemaining=timerDuration;timerMode="ready";timerAlarmed=false;renderTimer();};
 (function timerLoop(){renderTimer();requestAnimationFrame(timerLoop);})();
 
+/* Pressure sound: an original synthesized countdown in the spirit of TV-thriller clocks (no recorded audio).
+   Every second: a hard electronic tick over a low thump. Last 10 s: double time, higher, digits red. Zero: a low boom. */
+function pressureVoice(t,freq,gain,thump){
+  if(!AC||globalThis.__enochianSoundEnabled===false) return;
+  const o=AC.createOscillator(),o2=AC.createOscillator(),bp=AC.createBiquadFilter(),g=AC.createGain();
+  o.type="square";o.frequency.setValueAtTime(freq,t);o2.type="square";o2.frequency.setValueAtTime(freq*1.498,t);
+  bp.type="bandpass";bp.frequency.value=freq*1.6;bp.Q.value=2.2;
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(gain,t+.003);g.gain.exponentialRampToValueAtTime(.0001,t+.085);
+  o.connect(bp);o2.connect(bp);bp.connect(g);g.connect(AC.destination);o.start(t);o2.start(t);o.stop(t+.1);o2.stop(t+.1);
+  if(thump){const s=AC.createOscillator(),sg=AC.createGain();s.type="sine";s.frequency.setValueAtTime(130,t);s.frequency.exponentialRampToValueAtTime(52,t+.11);
+    sg.gain.setValueAtTime(.0001,t);sg.gain.exponentialRampToValueAtTime(thump,t+.004);sg.gain.exponentialRampToValueAtTime(.0001,t+.16);s.connect(sg);sg.connect(AC.destination);s.start(t);s.stop(t+.18);}
+}
+function pressureTick(secLeft){
+  if(!AC) return; const t=AC.currentTime+.005, hot=secLeft<=10, last=secLeft<=3;
+  pressureVoice(t, hot?1180:940, last?.16:hot?.12:.09, hot?.22:.14);
+  if(hot) pressureVoice(t+.5, hot?1320:1050, last?.12:.08, 0);   // the second, off-beat tick of the final ten
+}
+function pressureBoom(){
+  if(!AC||globalThis.__enochianSoundEnabled===false) return; const t=AC.currentTime+.01;
+  const o=AC.createOscillator(),g=AC.createGain();o.type="sine";o.frequency.setValueAtTime(70,t);o.frequency.exponentialRampToValueAtTime(34,t+1.1);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.38,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+1.4);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+1.5);
+  const len=AC.sampleRate*.6|0,b=AC.createBuffer(1,len,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
+  const n=AC.createBufferSource(),f=AC.createBiquadFilter(),ng=AC.createGain();n.buffer=b;f.type="lowpass";f.frequency.value=420;ng.gain.value=.3;n.connect(f);f.connect(ng);ng.connect(AC.destination);n.start(t);
+}
+function pressureToggle(btnId,caseId,get,set){
+  $(btnId).onclick=()=>{ensureAudio();if(AC)AC.resume();const on=!get();set(on);$(btnId).setAttribute("aria-pressed",String(on));
+    $(btnId).textContent=on?"PRESSURE SOUND · ON":"PRESSURE SOUND · OFF";if(!on)$(caseId).dataset.pressure="";if(on)pressureTick(30);};
+}
+/* Vigil Clock (60 s and up): watch its countdown from outside, so the original timer code stays untouched */
+(function(){
+  let on=false,lastSec=-1,lastMode="ready";
+  pressureToggle("timerPressure","timerCase",()=>on,v=>on=v);
+  (function watch(){
+    const sec=Math.ceil(timerRemaining/1000);
+    if(on&&timerMode==="running"&&sec!==lastSec&&sec>0){pressureTick(sec);}
+    if(on&&lastMode==="running"&&timerMode==="done")pressureBoom();
+    $("timerCase").dataset.pressure = on&&timerMode==="running"&&sec<=10 ? "hot" : "";
+    lastSec=sec;lastMode=timerMode;requestAnimationFrame(watch);
+  })();
+})();
+
 /* shared builders for the Vigil family: face ring, progress arc, hands, hubs */
 function vigilEl(svg,name,attrs){const e=document.createElementNS(NS,name);for(const k in attrs)e.setAttribute(k,attrs[k]);svg.appendChild(e);return e;}
 function vigilArcPath(cx,cy,r,a0,a1){const [x0,y0]=polar(cx,cy,r,a0),[x1,y1]=polar(cx,cy,r,a1);return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;}
@@ -1071,15 +1118,19 @@ function vigilFormat(ms){const tenths=Math.max(0,Math.ceil(ms/100)),mins=Math.fl
   vigilEl(svg,"circle",{cx:CX,cy:SCY,r:5,class:"timer-hub-outer","stroke-width":2});
   vigilEl(svg,"circle",{cx:CX,cy:CY,r:12,class:"timer-hub-outer","stroke-width":2});
   vigilEl(svg,"circle",{cx:CX,cy:CY,r:5,class:"timer-hub-inner"});
-  const V={dur:90000,rem:90000,end:0,mode:"ready",rounds:1,round:1,done:0,tickAt:-1};
+  const V={dur:90000,rem:90000,end:0,mode:"ready",rounds:1,round:1,done:0,tickAt:-1,pressure:false,pSec:-1};
+  pressureToggle("v90Pressure","v90Case",()=>V.pressure,v=>V.pressure=v);
   const setLine=(l,cx,cy,r,a)=>{const [x,y]=polar(cx,cy,r,a);l.setAttribute("x2",x);l.setAttribute("y2",y);};
   const roundsText=()=>V.rounds===1?"":V.rounds?` · ROUND ${V.round} OF ${V.rounds}`:` · ROUND ${V.round}`;
   function render(){
     if(V.mode==="running"){V.rem=Math.max(0,V.end-Date.now());
-      const s=Math.ceil(V.rem/1000);if(s<=3&&s>0&&s!==V.tickAt){V.tickAt=s;blip(1320);}
+      const s=Math.ceil(V.rem/1000);
+      if(V.pressure){if(s>0&&s!==V.pSec){V.pSec=s;pressureTick(s);}}
+      else if(s<=3&&s>0&&s!==V.tickAt){V.tickAt=s;blip(1320);}
       if(V.rem<=0){V.done++;
         if(V.rounds===0||V.round<V.rounds){V.round++;V.rem=V.dur;V.end=Date.now()+V.dur;V.tickAt=-1;blip(880);setTimeout(()=>blip(1100),140);}
-        else{V.mode="done";blip(880);setTimeout(()=>blip(1100),150);setTimeout(()=>blip(1320),300);}}}
+        else{V.mode="done";if(V.pressure)pressureBoom();else{blip(880);setTimeout(()=>blip(1100),150);setTimeout(()=>blip(1320),300);}}}}
+    $("v90Case").dataset.pressure = V.pressure&&V.mode==="running"&&Math.ceil(V.rem/1000)<=10 ? "hot" : "";
     const p=clamp01(1-V.rem/V.dur);
     prog.setAttribute("stroke-dashoffset",C*(1-p));
     setLine(hand,CX,CY,116,p*360);setLine(sub,CX,SCY,27,(V.done%12)*30);
@@ -1360,6 +1411,14 @@ secondHand.setAttribute("transform", "rotate(" + angle + " 152 152)");
 const s = Math.ceil(remainingMs / 1000);
 if (s <= 3 && s > 0 && s !== lastTick) { lastTick = s; blip(1320); }
 if (remainingMs <= 0 && (loop || round < rounds)) { round++; endAt = Date.now() + 90000; }`},
+  {id:"timerPressure",title:"Pressure sound",code:String.raw`// Original synthesized countdown, no recorded audio: tick + thump each second,
+// double time and higher pitch in the last ten, a low boom at zero.
+function pressureTick(secLeft) {
+  const hot = secLeft <= 10, t = ctx.currentTime;
+  voice(t, hot ? 1180 : 940, hot ? .12 : .09, hot ? .22 : .14);   // square pair → band-pass + sine thump
+  if (hot) voice(t + .5, 1320, .08, 0);                           // off-beat tick
+}
+timerCase.dataset.pressure = running && secLeft <= 10 ? "hot" : ""; // digits go red`},
   {id:"pomoCase",title:"Pomodoro Vigil",code:String.raw`// One face is one cycle: focus + break minutes around 360°.
 const deg = 360 / (focus + brk);
 const pos = phase === "focus" ? frac * focus : focus + frac * brk;   // minutes into the cycle
