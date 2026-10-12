@@ -73,3 +73,16 @@ python tests/capture_controllers.py
 Local server paths: `/keyboard/` and `/midi-pad/`. Details are in each study's README. Real browser captures and independent probes are saved under `.qa/controllers/`. These additions leave the original 55-control showcase unchanged.
 
 White/Obsidian palette and responsive checks for DJ-Decks and Keyboard: `python tests/capture_finishes.py`. Captures and geometry results are saved under `.qa/finishes/` (ignored by git).
+
+## Blank device-frame studies
+
+[`apple-devices/index.html`](apple-devices/index.html) adds the five Apple-hardware-inspired compositions from the supplied references: **display + Mac mini**, **iMac + keyboard/mouse**, **MacBook**, **iPad + Pencil**, and **iPhone**. All nine bodies have matching White/Ivory and Obsidian materials. The five screens are completely empty—no built-in images, wallpapers, lock-screen UI, or app content. Named `[data-screen]` containers are ready for your own content; see [`apple-devices/README.md`](apple-devices/README.md) for insertion selectors and ratios.
+
+Open directly or use `/apple-devices/` on the existing local server. Finish selection is accessible and remembers its own isolated preference. These additive CSS/HTML frames are not Apple products or OS emulators, and leave the original 55-control showcase count unchanged.
+
+```bash
+python -m unittest tests.test_apple_devices -v
+python tests/capture_apple_devices.py
+```
+
+Device captures and geometry evidence go under `.qa/apple-devices/` (ignored by git).
