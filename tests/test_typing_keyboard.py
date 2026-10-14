@@ -53,6 +53,22 @@ class TypingKeyboardTests(unittest.TestCase):
             box = self.root.locator('.mk-board').bounding_box()
             self.assertAlmostEqual(box['width']/box['height'], 2.54, delta=.005)
 
+    def test_right_arrow_shares_the_bottom_row_and_arrow_spacing(self):
+        for width in [390, 1440, 2048]:
+            self.page.set_viewport_size({'width':width,'height':1152})
+            for finish in ['ivory', 'obsidian']:
+                self.root.locator(f'[data-finish-choice={finish}]').click()
+                left, down, right = [self.key(code).bounding_box() for code in ['ArrowLeft','ArrowDown','ArrowRight']]
+                self.assertAlmostEqual(right['y'], down['y'], delta=.1)
+                self.assertAlmostEqual(right['height'], down['height'], delta=.1)
+                self.assertAlmostEqual(right['x']-down['x']-down['width'], down['x']-left['x']-left['width'], delta=.1)
+
+    def test_display_is_clear_of_parameter_readouts(self):
+        screen = self.root.locator('.mk-screen')
+        self.assertEqual(screen.locator('.mk-levels,[data-volume-value],[data-light-value]').count(), 0)
+        self.assertNotRegex(screen.inner_text(), r'(?i)\bvol(?:ume)?\b|\blight\b')
+        self.assertRegex(screen.locator('[data-clock]').inner_text(), r'\d{1,2}:\d{2}')
+
     def test_virtual_typing_edits_the_caret_selection_and_modifiers(self):
         self.key('KeyA').click()
         self.key('KeyB').click()
@@ -103,7 +119,7 @@ class TypingKeyboardTests(unittest.TestCase):
         self.page.keyboard.press('Home')
         self.page.keyboard.press('PageUp')
         self.assertEqual(light.get_attribute('aria-valuenow'), '10')
-        self.assertEqual(self.root.locator('[data-light-value]').inner_text(), '10')
+        self.assertAlmostEqual(float(self.root.evaluate("e=>getComputedStyle(e).getPropertyValue('--mk-light')")), .172)
         box = light.bounding_box()
         self.page.mouse.move(box['x']+box['width']/2, box['y']+box['height']/2)
         self.page.mouse.down()
@@ -115,7 +131,7 @@ class TypingKeyboardTests(unittest.TestCase):
         self.page.get_by_role('button', name='Obsidian', exact=True).click()
         self.assertEqual(self.root.get_attribute('data-finish'), 'obsidian')
         self.assertEqual(volume.get_attribute('aria-valuenow'), '100')
-        self.assertEqual(self.root.locator('[data-volume-value]').inner_text(), '100')
+        self.assertEqual(volume.get_attribute('aria-valuetext'), '100 percent')
         self.assertTrue(self.page.evaluate("keyboardEvents.some(e=>e.name==='parameter'&&e.parameter==='volume'&&e.value===100)"))
         self.assertEqual(self.errors, [])
 

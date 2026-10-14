@@ -6,7 +6,7 @@ The requested deliverable is a reusable UI element and standalone page. The gall
 
 The initial six acceptance checks failed because `typing-keyboard/index.html` was missing. After implementation they passed. Further failing probes caught physical Shift not affecting virtual typing, Unicode Backspace splitting an emoji sequence, the focused mobile scroll region intercepting its own native arrow navigation, key event payloads using visual labels instead of semantic key values, and the knob rail's intrinsic size inflating the chassis height. Scoped regression checks now cover all five. Existing lint/type/rule/harness files were not changed.
 
-Final command: `python -m unittest tests.test_typing_keyboard -q` — **13 tests passed in under 10 seconds**. Existing atlas smoke: `python -m unittest tests.test_atlas_smoke -q` — **2 tests passed**. The added test module observes real Chromium; its audio audit wraps real native Web Audio nodes rather than replacing synthesis.
+Final command: `python -m unittest tests.test_typing_keyboard -q` — **15 tests passed in under 10 seconds**. Existing atlas smoke: `python -m unittest tests.test_atlas_smoke -q` — **2 tests passed**. The added test module observes real Chromium; its audio audit wraps real native Web Audio nodes rather than replacing synthesis.
 
 Covered: reference layout, five red keys, two slider knobs, offline/silent initialization, selection/caret editing, grapheme-safe deletion, physical/virtual Shift and Caps, keyboard activation, parameter events, pointer drag/reset/cancellation, finish state preservation, blur cleanup, opt-in audio and node teardown, multiple component instances, idempotent mounting, destroy, responsive containment, and hit-target reachability.
 
@@ -23,9 +23,15 @@ The supplied 2048×1152 reference and the final browser captures were inspected 
 | Knobs | Concentric raised caps, separate bases, dot tick scales, red bar and dot markers from the atlas dial vocabulary. |
 | Key material | Dished caps, illuminated rims, deep deck sockets, homing bars, and visible three-pixel key travel. The ISO Enter cap was corrected to follow its stepped outline. |
 | Type and icons | Key legends remain code-native, using the IBM Plex font stacks with local fallbacks. Arrow icons are inline SVG. |
-| Display | Live local clock/date, red-to-white backlight, visible parameter readouts; clock remains legible when illumination is dimmed. |
+| Display | Live local clock/date and an uninterrupted red-to-white backlight surface; clock remains legible when illumination is dimmed. Parameter values remain available through slider ARIA state and events. |
 | Responsive behavior | The hardware proportions and targets remain intact; horizontal panning replaces shrinking on small screens. |
 
 The standalone page adds the demo textarea, finish/sound/clear controls, status, and a collapsed reuse guide. These are functional study controls. The reference's decorative cable/studio background is omitted. The bar and dot knobs replace its diagonal-ridge knobs. These are intentional adaptations for a usable Enochian UI element. No generated image is used as interface content.
 
 Remaining limits: tested in Chromium, with pointer and simulated keyboard input. Real touch hardware, Safari/Firefox, external app integrations, and OS-level media commands were not exercised. Function/modifier keys emit events for application integration; the component does not execute OS commands. Virtual text edits do not implement an undo stack.
+
+## Arrow row and display refinement
+
+The user's corner screenshot exposed a 2.67-pixel vertical offset on the right arrow and an extra four pixels of separation from the down arrow. Two new acceptance checks failed before the fix. The main deck and control rail now share one inset token, aligning their six grid rows and keeping the arrow spacing consistent. In the live in-app preview, down/right both measured y=615.078125 and height=55.265625; their horizontal gap matched the left/down gap at approximately six pixels. Geometry checks cover both finishes at 390, 1440, and 2048 pixels.
+
+The VOL/LIGHT display overlay and its orphaned styles/DOM updates were removed. The clock and uninterrupted illumination surface remain. Knob checks now verify illumination and ARIA/event values directly, preserving behavioral coverage without requiring the removed labels. All 15 acceptance checks passed in 8.25 seconds, and the live preview showed no console warnings/errors.

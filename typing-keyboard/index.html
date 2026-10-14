@@ -24,7 +24,7 @@ html.embedded .page-heading,html.embedded .reuse,html.embedded footer{display:no
 
 /* Enochian typing keyboard — copy this scoped block with its markup and script. */
 .mk-rig,.mk-rig *{box-sizing:border-box}
-.mk-rig{font-family:"IBM Plex Sans",Arial,sans-serif}
+.mk-rig{--mk-deck-inset:4px;font-family:"IBM Plex Sans",Arial,sans-serif}
 .mk-rig{--mk-accent:#CC0000;--mk-case:#a8a8aa;--mk-case-high:#d6d6d8;--mk-case-low:#919194;--mk-cap:#e9e9eb;--mk-cap-high:#fafafa;--mk-cap-low:#c9c9cd;--mk-ink:#36363a;--mk-edge:#aeafb3;--mk-highlight:rgba(255,255,255,.85);--mk-dish:rgba(60,60,65,.18);--mk-light:.8;--mk-knob-high:#fff;--mk-knob-low:#e4e4e7;--mk-ring:#e4e4e7;--mk-tick:#333337;width:100%;min-width:0}
 .mk-rig[data-finish="obsidian"]{--mk-case:#555559;--mk-case-high:#727276;--mk-case-low:#424246;--mk-cap:#29292d;--mk-cap-high:#444448;--mk-cap-low:#19191c;--mk-ink:#f3f3f5;--mk-edge:#161619;--mk-highlight:rgba(255,255,255,.17);--mk-dish:rgba(0,0,0,.6);--mk-knob-high:#3b3b3f;--mk-knob-low:#171719;--mk-ring:#39393d;--mk-tick:#e1e1e4}
 .mk-toolbar{display:flex;justify-content:space-between;gap:12px;margin:0 0 16px;flex-wrap:wrap}
@@ -39,7 +39,7 @@ html.embedded .page-heading,html.embedded .reuse,html.embedded footer{display:no
 .mk-board{position:relative;display:grid;grid-template-columns:60fr 4fr;gap:6px;aspect-ratio:2.54;width:100%;min-width:1020px;padding:15px;border-radius:21px;border:1px solid #818186;background:linear-gradient(155deg,var(--mk-case-high),var(--mk-case) 32%,var(--mk-case-low));box-shadow:inset 0 1px 2px #fff,inset 0 -2px 2px rgba(0,0,0,.25),0 5px 0 #747479,0 21px 28px -9px rgba(0,0,0,.29),0 40px 40px -25px rgba(0,0,0,.18);isolation:isolate}
 .mk-board:focus-visible{outline:3px solid var(--mk-accent);outline-offset:6px}
 .mk-board::before{content:"";position:absolute;width:13px;height:5px;top:-5px;left:6%;background:var(--mk-accent);border-radius:2px 2px 0 0;box-shadow:inset 0 1px 1px rgba(255,255,255,.4)}
-.mk-keys{display:grid;grid-template-columns:repeat(60,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));gap:6px;padding:4px;border-radius:8px;background:#19191c;box-shadow:0 0 0 1px #75757a,inset 0 2px 5px #050506;min-height:0}
+.mk-keys{display:grid;grid-template-columns:repeat(60,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));gap:6px;padding:var(--mk-deck-inset);border-radius:8px;background:#19191c;box-shadow:0 0 0 1px #75757a,inset 0 2px 5px #050506;min-height:0}
 .mk-key{position:relative;min-width:0;min-height:0;padding:0;border:1px solid var(--mk-edge);border-radius:7px;background:linear-gradient(150deg,var(--mk-cap-high),var(--mk-cap) 42%,var(--mk-cap-low));color:var(--mk-ink);font:400 13px "IBM Plex Sans",Arial,sans-serif;cursor:pointer;touch-action:manipulation;box-shadow:0 3px 0 #707076,0 4px 5px rgba(0,0,0,.6),inset 0 1px 1px var(--mk-highlight);transition:transform 90ms ease,box-shadow 90ms ease;user-select:none;-webkit-user-select:none}
 .mk-key::before{content:"";position:absolute;inset:5px 5px 7px;border-radius:9px;background:radial-gradient(ellipse at 50% 40%,var(--mk-cap) 30%,var(--mk-cap-low) 100%);box-shadow:inset 3px 4px 6px var(--mk-dish),inset -3px -3px 5px var(--mk-highlight),0 1px 2px var(--mk-highlight);pointer-events:none}
 .mk-key[data-accent]{--mk-cap:#CC0000;--mk-cap-high:#e93939;--mk-cap-low:#930000;--mk-edge:#6d0000;--mk-ink:#fff;--mk-highlight:rgba(255,255,255,.28);--mk-dish:rgba(75,0,0,.35);box-shadow:0 3px 0 #650000,0 4px 5px rgba(0,0,0,.6),inset 0 1px 1px var(--mk-highlight)}
@@ -57,7 +57,7 @@ html.embedded .page-heading,html.embedded .reuse,html.embedded footer{display:no
 .mk-arrow .mk-primary{top:36%}
 .mk-icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
 .mk-meta{font-weight:600;font-size:16px}
-.mk-rail{display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:6px;min-width:0;min-height:0}
+.mk-rail{display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:6px;min-width:0;min-height:0;padding:var(--mk-deck-inset) var(--mk-deck-inset) var(--mk-deck-inset) 0;margin-left:calc(0px - var(--mk-deck-inset))}
 .mk-dial{position:relative;touch-action:none;cursor:grab;min-width:0;min-height:0;align-self:center;justify-self:center;aspect-ratio:1;height:100%;width:auto;max-width:100%;border-radius:50%;--mk-angle:-27deg}
 .mk-dial:active{cursor:grabbing}.mk-dial:focus-visible{outline:2px solid var(--mk-accent);outline-offset:2px}
 .mk-ticks{position:absolute;inset:0;overflow:visible;pointer-events:none;color:var(--mk-tick)}
@@ -70,8 +70,6 @@ html.embedded .page-heading,html.embedded .reuse,html.embedded footer{display:no
 .mk-clock{position:relative;border-radius:13px;background:#0b0b0d;color:#fff;min-height:42px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:7px 0;line-height:1.2}
 .mk-clock time{font-size:19px;font-weight:500;letter-spacing:-.8px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .mk-clock small{font-size:7px;white-space:nowrap;color:#dedee2;margin-top:2px}
-.mk-levels{position:absolute;left:0;right:0;bottom:13px;font:600 7px/1.8 "IBM Plex Mono",monospace;text-align:center;letter-spacing:.4px;color:#2c2c30;background:rgba(255,255,255,.85);padding:4px 0}
-.mk-levels span{font-variant-numeric:tabular-nums}
 .mk-rail>.mk-key{grid-row:6}
 .mk-status{display:flex;justify-content:space-between;gap:14px;margin-top:0;font:11px/1.7 "IBM Plex Mono",monospace;color:#5b5b62}
 .mk-status [data-keyboard-status]{color:#29292e}
@@ -96,7 +94,7 @@ html.embedded .page-heading,html.embedded .reuse,html.embedded footer{display:no
       <div class="mk-rail">
         <div class="mk-dial" data-parameter="volume" role="slider" tabindex="0" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" aria-valuetext="40 percent"><svg class="mk-ticks" viewBox="0 0 100 100" aria-hidden="true"></svg><span class="mk-base"></span><span class="mk-knob"><span class="mk-marker"></span></span></div>
         <div class="mk-dial mk-dot" data-parameter="backlight" role="slider" tabindex="0" aria-label="Backlight" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" aria-valuetext="80 percent"><svg class="mk-ticks" viewBox="0 0 100 100" aria-hidden="true"></svg><span class="mk-base"></span><span class="mk-knob"><span class="mk-marker"></span></span></div>
-        <div class="mk-screen"><div class="mk-illumination"></div><div class="mk-clock"><time data-clock></time><small data-clock-date></small></div><div class="mk-levels">VOL <span data-volume-value>40</span><br>LIGHT <span data-light-value>80</span></div></div>
+        <div class="mk-screen"><div class="mk-illumination"></div><div class="mk-clock"><time data-clock></time><small data-clock-date></small></div></div>
       </div>
     </div>
   </div>
@@ -243,7 +241,6 @@ root.addEventListener('enochian:keyboard-parameter', ({ detail }) =&gt; {
     function setParameter(name,value,notify=true){
       parameters[name]=Math.max(0,Math.min(100,Math.round(value)));
       const el=$('[data-parameter="'+name+'"]');el.setAttribute('aria-valuenow',parameters[name]);el.setAttribute('aria-valuetext',parameters[name]+' percent');el.style.setProperty('--mk-angle',(-135+parameters[name]*2.7)+'deg');
-      $('[data-'+(name==='volume'?'volume':'light')+'-value]').textContent=parameters[name];
       if(name==='backlight')root.style.setProperty('--mk-light',.08+parameters[name]/100*.92);
       if(notify){status(name.toUpperCase()+' · '+parameters[name]+'%');emit('parameter',{parameter:name,value:parameters[name]});}
     }
