@@ -14,6 +14,12 @@ Black, white, and Cinnabar `#CC0000` define the palette. Ivory and Obsidian are 
 
 See [`HOW_TO_USE_AND_REMIX.md`](HOW_TO_USE_AND_REMIX.md) for implementation details and [`LICENSE.md`](LICENSE.md) for source terms.
 
+## Standalone typing keyboard
+
+[`typing-keyboard/index.html`](typing-keyboard/index.html) adds the reference-inspired 79-key mechanical typing surface: Cinnabar Escape/arrows, two Enochian rotary knobs, a live clock, and Ivory/Obsidian finishes. Keys edit real text; the knobs adjust local key-sound volume and display backlight. It is an offline single-file component with scoped input/key/parameter events for reuse. The showcase can add it as a device study from its separate source checkout. See [`typing-keyboard/README.md`](typing-keyboard/README.md) for embedding, extraction, controls, and acceptance checks.
+
+`python -m unittest tests.test_typing_keyboard -q`
+
 ## Composed instrument study
 
 [`op-1/index.html`](op-1/index.html) combines the Canticle Keys, spring-driven encoders, and interlocked transport into a Teenage Engineering OP-1-inspired Enochian control surface. This is an additional study, not a replacement for the existing sources or part of the 55-control showcase count.

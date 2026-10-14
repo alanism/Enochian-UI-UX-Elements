@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Enochian Typing Keyboard</title>
+<script>if(new URLSearchParams(location.search).has('embedded'))document.documentElement.classList.add('embedded');</script>
+<style>
+/* Page wrapper — the component styles begin below. */
+*{box-sizing:border-box}
+body{margin:0;background:#f5f6f7;color:#252527;font-family:"IBM Plex Sans",Arial,sans-serif}
+main{max-width:1320px;margin:auto;padding:48px 32px 30px}
+.page-heading{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:28px}
+h1{font-size:25px;font-weight:500;letter-spacing:-.7px;margin:0}
+.page-heading p{font-size:12px;color:#636367;margin:0}
+.reuse{margin-top:30px;border-top:1px solid #d4d4d7;padding-top:18px;font-size:13px;color:#56565a}
+.reuse summary{cursor:pointer;min-height:44px;display:flex;align-items:center;width:fit-content}
+.reuse p{max-width:760px;line-height:1.7}
+.reuse pre{overflow:auto;padding:18px;background:#e8e8eb;font:12px/1.7 "IBM Plex Mono",monospace}
+footer{margin-top:24px;color:#6b6b70;font-size:11px;line-height:1.7}
+html.embedded main{padding:20px}
+html.embedded .page-heading,html.embedded .reuse,html.embedded footer{display:none}
+@media(max-width:700px){main{padding:24px 16px}.page-heading{display:block}.page-heading p{margin-top:10px}h1{font-size:22px}html.embedded main{padding:12px}}
+
+/* Enochian typing keyboard — copy this scoped block with its markup and script. */
+.mk-rig,.mk-rig *{box-sizing:border-box}
+.mk-rig{font-family:"IBM Plex Sans",Arial,sans-serif}
+.mk-rig{--mk-accent:#CC0000;--mk-case:#a8a8aa;--mk-case-high:#d6d6d8;--mk-case-low:#919194;--mk-cap:#e9e9eb;--mk-cap-high:#fafafa;--mk-cap-low:#c9c9cd;--mk-ink:#36363a;--mk-edge:#aeafb3;--mk-highlight:rgba(255,255,255,.85);--mk-dish:rgba(60,60,65,.18);--mk-light:.8;--mk-knob-high:#fff;--mk-knob-low:#e4e4e7;--mk-ring:#e4e4e7;--mk-tick:#333337;width:100%;min-width:0}
+.mk-rig[data-finish="obsidian"]{--mk-case:#555559;--mk-case-high:#727276;--mk-case-low:#424246;--mk-cap:#29292d;--mk-cap-high:#444448;--mk-cap-low:#19191c;--mk-ink:#f3f3f5;--mk-edge:#161619;--mk-highlight:rgba(255,255,255,.17);--mk-dish:rgba(0,0,0,.6);--mk-knob-high:#3b3b3f;--mk-knob-low:#171719;--mk-ring:#39393d;--mk-tick:#e1e1e4}
+.mk-toolbar{display:flex;justify-content:space-between;gap:12px;margin:0 0 16px;flex-wrap:wrap}
+.mk-finishes,.mk-actions{display:flex;gap:5px}
+.mk-toolbar button{min-width:64px;min-height:44px;padding:8px 14px;border:1px solid #d0d0d4;border-radius:4px;background:transparent;color:#4d4d52;font:600 10px "IBM Plex Mono",monospace;letter-spacing:.8px;cursor:pointer}
+.mk-toolbar button[aria-pressed="true"]{background:#252527;color:#fff;border-color:#252527}
+.mk-toolbar button:focus-visible,.mk-scroll:focus-visible{outline:2px solid var(--mk-accent);outline-offset:3px}
+.mk-output{display:block;resize:vertical;width:100%;min-height:82px;max-height:240px;margin:0 0 26px;padding:18px 22px;border:1px solid #d2d2d6;border-radius:9px;color:#303034;background:#fff;box-shadow:inset 0 2px 5px rgba(0,0,0,.045);font:15px/1.6 "IBM Plex Mono",monospace;caret-color:var(--mk-accent)}
+.mk-output::placeholder{color:#74747a}
+.mk-output:focus{outline:2px solid var(--mk-accent);outline-offset:2px}
+.mk-scroll{width:100%;overflow-x:auto;padding:14px 4px 40px;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#99999f transparent}
+.mk-board{position:relative;display:grid;grid-template-columns:60fr 4fr;gap:6px;aspect-ratio:2.54;width:100%;min-width:1020px;padding:15px;border-radius:21px;border:1px solid #818186;background:linear-gradient(155deg,var(--mk-case-high),var(--mk-case) 32%,var(--mk-case-low));box-shadow:inset 0 1px 2px #fff,inset 0 -2px 2px rgba(0,0,0,.25),0 5px 0 #747479,0 21px 28px -9px rgba(0,0,0,.29),0 40px 40px -25px rgba(0,0,0,.18);isolation:isolate}
+.mk-board:focus-visible{outline:3px solid var(--mk-accent);outline-offset:6px}
+.mk-board::before{content:"";position:absolute;width:13px;height:5px;top:-5px;left:6%;background:var(--mk-accent);border-radius:2px 2px 0 0;box-shadow:inset 0 1px 1px rgba(255,255,255,.4)}
+.mk-keys{display:grid;grid-template-columns:repeat(60,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));gap:6px;padding:4px;border-radius:8px;background:#19191c;box-shadow:0 0 0 1px #75757a,inset 0 2px 5px #050506;min-height:0}
+.mk-key{position:relative;min-width:0;min-height:0;padding:0;border:1px solid var(--mk-edge);border-radius:7px;background:linear-gradient(150deg,var(--mk-cap-high),var(--mk-cap) 42%,var(--mk-cap-low));color:var(--mk-ink);font:400 13px "IBM Plex Sans",Arial,sans-serif;cursor:pointer;touch-action:manipulation;box-shadow:0 3px 0 #707076,0 4px 5px rgba(0,0,0,.6),inset 0 1px 1px var(--mk-highlight);transition:transform 90ms ease,box-shadow 90ms ease;user-select:none;-webkit-user-select:none}
+.mk-key::before{content:"";position:absolute;inset:5px 5px 7px;border-radius:9px;background:radial-gradient(ellipse at 50% 40%,var(--mk-cap) 30%,var(--mk-cap-low) 100%);box-shadow:inset 3px 4px 6px var(--mk-dish),inset -3px -3px 5px var(--mk-highlight),0 1px 2px var(--mk-highlight);pointer-events:none}
+.mk-key[data-accent]{--mk-cap:#CC0000;--mk-cap-high:#e93939;--mk-cap-low:#930000;--mk-edge:#6d0000;--mk-ink:#fff;--mk-highlight:rgba(255,255,255,.28);--mk-dish:rgba(75,0,0,.35);box-shadow:0 3px 0 #650000,0 4px 5px rgba(0,0,0,.6),inset 0 1px 1px var(--mk-highlight)}
+.mk-key[data-down="true"]{transform:translateY(3px);box-shadow:0 0 0 #555,0 1px 2px rgba(0,0,0,.6),inset 0 3px 5px var(--mk-dish)}
+.mk-key:focus-visible{outline:2px solid var(--mk-accent);outline-offset:2px;z-index:3}
+.mk-key[aria-pressed="true"] .mk-primary::after{content:"";position:absolute;left:50%;top:20px;width:5px;height:5px;border-radius:50%;background:var(--mk-accent)}
+.mk-primary,.mk-secondary{position:absolute;left:0;right:0;z-index:1;text-align:center;pointer-events:none}
+.mk-primary{top:22%;line-height:1.1}.mk-secondary{bottom:23%;font-size:12px;line-height:1;opacity:.88}
+.mk-key[data-wide] .mk-primary{top:31%}
+.mk-key[data-code="Space"] .mk-primary{display:none}
+.mk-key[data-code="KeyF"]::after,.mk-key[data-code="KeyJ"]::after{content:"";position:absolute;bottom:14%;left:35%;right:35%;height:3px;border-radius:3px;background:var(--mk-cap-high);box-shadow:0 1px 2px rgba(0,0,0,.38);pointer-events:none}
+.mk-enter{clip-path:polygon(0 0,100% 0,100% 100%,21% 100%,21% 49%,0 49%);border-radius:7px}
+.mk-enter::before{inset:5px 5px 7px;clip-path:polygon(0 0,100% 0,100% 100%,21% 100%,21% 49%,0 49%);border-radius:8px}
+.mk-enter .mk-primary{top:13%;left:10%}
+.mk-arrow .mk-primary{top:36%}
+.mk-icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+.mk-meta{font-weight:600;font-size:16px}
+.mk-rail{display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:6px;min-width:0;min-height:0}
+.mk-dial{position:relative;touch-action:none;cursor:grab;min-width:0;min-height:0;align-self:center;justify-self:center;aspect-ratio:1;height:100%;width:auto;max-width:100%;border-radius:50%;--mk-angle:-27deg}
+.mk-dial:active{cursor:grabbing}.mk-dial:focus-visible{outline:2px solid var(--mk-accent);outline-offset:2px}
+.mk-ticks{position:absolute;inset:0;overflow:visible;pointer-events:none;color:var(--mk-tick)}
+.mk-base{position:absolute;inset:8%;border-radius:50%;background:linear-gradient(145deg,var(--mk-knob-high),var(--mk-ring) 75%);border:1px solid #d2d2d5;box-shadow:3px 5px 7px rgba(0,0,0,.3),inset 0 1px 1px var(--mk-highlight)}
+.mk-knob{position:absolute;inset:24%;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--mk-knob-high),var(--mk-knob-low) 75%);box-shadow:3px 4px 5px rgba(0,0,0,.32),inset 0 1px 1px var(--mk-highlight);transform:rotate(var(--mk-angle));pointer-events:none}
+.mk-marker{position:absolute;left:50%;top:13%;width:3px;height:10px;border-radius:3px;background:var(--mk-accent);transform:translateX(-50%)}
+.mk-dot .mk-marker{width:5px;height:5px;top:14%;border-radius:50%}
+.mk-screen{grid-row:3/span 3;position:relative;overflow:hidden;border:1px solid #d3d3d5;border-radius:19px;padding:5px;background:#0e0e10;box-shadow:0 0 0 2px #363639,inset 0 1px 2px #050506}
+.mk-illumination{position:absolute;inset:5px;border-radius:14px;background:linear-gradient(180deg,var(--mk-accent),#ed9494 42%,#f4f4f6 94%);opacity:var(--mk-light);transition:opacity 160ms ease;pointer-events:none}
+.mk-clock{position:relative;border-radius:13px;background:#0b0b0d;color:#fff;min-height:42px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:7px 0;line-height:1.2}
+.mk-clock time{font-size:19px;font-weight:500;letter-spacing:-.8px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mk-clock small{font-size:7px;white-space:nowrap;color:#dedee2;margin-top:2px}
+.mk-levels{position:absolute;left:0;right:0;bottom:13px;font:600 7px/1.8 "IBM Plex Mono",monospace;text-align:center;letter-spacing:.4px;color:#2c2c30;background:rgba(255,255,255,.85);padding:4px 0}
+.mk-levels span{font-variant-numeric:tabular-nums}
+.mk-rail>.mk-key{grid-row:6}
+.mk-status{display:flex;justify-content:space-between;gap:14px;margin-top:0;font:11px/1.7 "IBM Plex Mono",monospace;color:#5b5b62}
+.mk-status [data-keyboard-status]{color:#29292e}
+.mk-pan-hint{display:none}
+@media(max-width:1070px){.mk-pan-hint{display:inline}.mk-status{flex-wrap:wrap}.mk-output{font-size:14px}.mk-key{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.mk-rig *{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header class="page-heading"><h1>Enochian Typing Keyboard</h1><p>MECHANICAL KEYS / TWO ROTARY CONTROLS</p></header>
+<!-- Component markup. Identifiers and events are scoped to this root. -->
+<section class="mk-rig" data-enochian-keyboard data-finish="ivory" aria-label="Enochian typing keyboard">
+  <div class="mk-toolbar">
+    <div class="mk-finishes" role="group" aria-label="Keyboard finish"><button type="button" data-finish-choice="ivory" aria-pressed="true">Ivory</button><button type="button" data-finish-choice="obsidian" aria-pressed="false">Obsidian</button></div>
+    <div class="mk-actions"><button type="button" data-keyboard-sound aria-pressed="false" aria-label="Sound off">SOUND OFF</button><button type="button" data-keyboard-clear>Clear</button></div>
+  </div>
+  <textarea class="mk-output" data-keyboard-output aria-label="Keyboard text" placeholder="Type here, or press the keys below." spellcheck="false"></textarea>
+  <div class="mk-scroll" tabindex="0" role="region" aria-label="Keyboard surface; scroll horizontally on smaller screens">
+    <div class="mk-board" tabindex="0" role="group" aria-label="Mechanical keyboard; type while focused">
+      <div class="mk-keys" data-keyboard-keys></div>
+      <div class="mk-rail">
+        <div class="mk-dial" data-parameter="volume" role="slider" tabindex="0" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" aria-valuetext="40 percent"><svg class="mk-ticks" viewBox="0 0 100 100" aria-hidden="true"></svg><span class="mk-base"></span><span class="mk-knob"><span class="mk-marker"></span></span></div>
+        <div class="mk-dial mk-dot" data-parameter="backlight" role="slider" tabindex="0" aria-label="Backlight" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" aria-valuetext="80 percent"><svg class="mk-ticks" viewBox="0 0 100 100" aria-hidden="true"></svg><span class="mk-base"></span><span class="mk-knob"><span class="mk-marker"></span></span></div>
+        <div class="mk-screen"><div class="mk-illumination"></div><div class="mk-clock"><time data-clock></time><small data-clock-date></small></div><div class="mk-levels">VOL <span data-volume-value>40</span><br>LIGHT <span data-light-value>80</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="mk-status"><span data-keyboard-status role="status">READY · SOUND OFF</span><span>KNOBS: DRAG ↕ / ARROWS <span class="mk-pan-hint">· PAN THE BOARD ↔</span></span></div>
+</section>
+<details class="reuse"><summary>Code &amp; reuse</summary><p>Every key, cap, knob, and display is HTML, CSS, or SVG. Copy the marked component styles, markup, and script into a project, then mount its root. Pass your own textarea as the second argument, or listen for the events below. The page also supports <code>?embedded</code> for a gallery iframe.</p><pre>const keyboard = EnochianKeyboard.mount(root, yourTextarea);
+root.addEventListener('enochian:keyboard-input', ({ detail }) =&gt; {
+  console.log(detail.value); // edited text and selection range
+});
+root.addEventListener('enochian:keyboard-parameter', ({ detail }) =&gt; {
+  console.log(detail.parameter, detail.value); // volume / backlight, 0–100
+});
+// Call keyboard.destroy() when removing the component.</pre><p>Space / Enter activates a focused key. Physical typing works within the keyboard or its textarea. Caps and Shift alter virtual typing; Shift releases after one key. Fn + F1/F2 changes backlight; Fn + F10 toggles sound; Fn + F11/F12 changes volume. Other function and modifier keys emit key events for your application. Sound is opt-in and synthesized locally.</p></details>
+<footer>ENOCHIAN / CONTROL ATLAS · Independent study based on the supplied compact mechanical-keyboard references.<br>Based on Enochian UI UX Elements by alanism / UnCommon Core. CC BY-NC 4.0.</footer>
+</main>
+<script>
+/* Reusable component behavior — no imports, assets, network, or storage. */
+(() => {
+  'use strict';
+  function mount(root, output = root.querySelector('[data-keyboard-output]')) {
+    if (root.enochianKeyboard) return root.enochianKeyboard;
+    const $ = selector => root.querySelector(selector);
+    const listenController = new AbortController();
+    const on = (el, name, fn) => el.addEventListener(name, fn, {signal:listenController.signal});
+    const emit = (name, detail) => root.dispatchEvent(new CustomEvent('enochian:keyboard-'+name, {bubbles:true, detail}));
+    const status = text => $('[data-keyboard-status]').textContent = text;
+    const keys = new Map(), held = new Map(), physical = new Map(), drags = new Map();
+    const parameters = {volume:40, backlight:80};
+    let caps=false, shift=false, fn=false, sound=false, audio=null, clockTimer=null, destroyed=false;
+    const arrows = {ArrowLeft:'M12 3 5 8l7 5M5 8h10',ArrowDown:'M3 6l5 7 5-7M8 2v11',ArrowUp:'M3 10l5-7 5 7M8 3v11',ArrowRight:'M4 3l7 5-7 5M1 8h10'};
+    const icon = path => '<svg class="mk-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="'+path+'"/></svg>';
+    const functions = ['☼','☼','▯▯','⠿','· ·','⌁','⏮','⏯','⏭','×','−','+'];
+    const rows = [
+      [['esc','Escape',6,'',true], ...Array.from({length:12},(_,i)=>['F'+(i+1),'F'+(i+1),4,functions[i]]), ['del','Delete',6]],
+      [['§','Backquote',4,'±'], ...'1234567890'.split('').map((x,i)=>[x,'Digit'+x,4,'!@#$%^&*()'[i]]), ['-','Minus',4,'_'],['=','Equal',4,'+'],['backspace','Backspace',8]],
+      [['tab','Tab',7], ...'QWERTYUIOP'.split('').map(x=>[x,'Key'+x,4]), ['[','BracketLeft',4,'{'],[']','BracketRight',4,'}'],['↵','Enter',5]],
+      [['caps','CapsLock',8], ...'ASDFGHJKL'.split('').map(x=>[x,'Key'+x,4]), [';','Semicolon',4,':'],["'",'Quote',4,'"'],['\\','Backslash',4,'|']],
+      [['shift','ShiftLeft',5], ['`','IntlBackslash',4,'~'], ...'ZXCVBNM'.split('').map(x=>[x,'Key'+x,4]), [',','Comma',4,'<'],['.','Period',4,'>'],['/','Slash',4,'?'],['shift','ShiftRight',7],['','ArrowUp',4,'',true]],
+      [['ctrl','ControlLeft',4,'⌃'],['fn','FnLeft',4],['alt','AltLeft',4,'⌥'],['⌘','MetaLeft',5,'▦'],['space','Space',25],['alt','AltRight',4,'⌥'],['fn','FnRight',6],['','ArrowLeft',4,'',true],['','ArrowDown',4,'',true]]
+    ];
+    const labels = {Escape:'Escape',Delete:'Delete',Backspace:'Backspace',Space:'Space',Tab:'Tab',Enter:'Enter',CapsLock:'Caps Lock',ShiftLeft:'Left Shift',ShiftRight:'Right Shift',ControlLeft:'Control',AltLeft:'Left Alt',AltRight:'Right Alt',MetaLeft:'Command',FnLeft:'Left Fn',FnRight:'Right Fn',ArrowLeft:'Left arrow',ArrowDown:'Down arrow',ArrowUp:'Up arrow',ArrowRight:'Right arrow'};
+    function makeKey([label,code,width=4,secondary='',accent=false], row, col) {
+      const button=document.createElement('button'); button.type='button'; button.className='mk-key'; button.dataset.code=code; button.dataset.down='false';
+      button.setAttribute('aria-label',labels[code]||label+' key');
+      if(width>4)button.dataset.wide=''; if(accent)button.dataset.accent='';
+      if(/^(Shift|Fn)|CapsLock/.test(code))button.setAttribute('aria-pressed','false');
+      if(row){button.style.gridColumn=col+' / span '+width;button.style.gridRow=row;button.dataset.row=row;}
+      if(code==='Enter'){button.classList.add('mk-enter');button.style.gridRow='3 / span 2';}
+      if(arrows[code]){button.classList.add('mk-arrow');label=icon(arrows[code]);}
+      button.innerHTML='<span class="mk-primary'+(code==='MetaLeft'?' mk-meta':'')+'">'+label+'</span>'+(secondary?'<span class="mk-secondary">'+secondary+'</span>':'');
+      keys.set(code,{button,label,secondary});
+      on(button,'pointerdown',e=>{if(e.button!==0)return;button.focus({preventScroll:true});button.setPointerCapture(e.pointerId);press(code,'pointer:'+e.pointerId,true);});
+      for(const name of ['pointerup','pointercancel','lostpointercapture'])on(button,name,e=>press(code,'pointer:'+e.pointerId,false));
+      on(button,'keydown',e=>{if(e.key===' '||e.key==='Enter')press(code,'activation:'+e.code,true);});
+      on(button,'keyup',e=>{if(e.key===' '||e.key==='Enter')press(code,'activation:'+e.code,false);});
+      on(button,'click',()=>activate(code));
+      return button;
+    }
+    rows.forEach((row,index)=>{let col=1;row.forEach(spec=>{ $('[data-keyboard-keys]').append(makeKey(spec,index+1,col));col+=spec[2]||4; });});
+    $('.mk-rail').append(makeKey(['','ArrowRight',4,'',true]));
+    function press(code, source, down) {
+      if(!keys.has(code))return;
+      const owners=held.get(code)||new Set(); down?owners.add(source):owners.delete(source); held.set(code,owners);
+      keys.get(code).button.dataset.down=String(owners.size>0);
+    }
+    function modifiers() {
+      for(const code of ['ShiftLeft','ShiftRight'])keys.get(code).button.setAttribute('aria-pressed',String(shift||physical.has('ShiftLeft')||physical.has('ShiftRight')));
+      for(const code of ['FnLeft','FnRight'])keys.get(code).button.setAttribute('aria-pressed',String(fn));
+      keys.get('CapsLock').button.setAttribute('aria-pressed',String(caps));
+    }
+    function edit(code, text) {
+      if(!output)return;
+      const value=output.value, start=output.selectionStart, end=output.selectionEnd;
+      const segments=typeof Intl.Segmenter==='function'?[...new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(value)].map(s=>s.segment):Array.from(value);
+      const boundaries=[0];for(const part of segments)boundaries.push(boundaries.at(-1)+part.length);
+      const previous=boundaries.filter(i=>i<start).at(-1)??0, next=boundaries.find(i=>i>end)??value.length;
+      if(code.startsWith('Arrow')) {
+        let caret=code==='ArrowLeft'?(start===end?previous:start):code==='ArrowRight'?(start===end?next:end):null;
+        if(code==='ArrowUp'||code==='ArrowDown') {
+          const lineStart=value.lastIndexOf('\n',start-1)+1, column=start-lineStart;
+          if(code==='ArrowUp'){const previousEnd=Math.max(0,lineStart-1),previousStart=value.lastIndexOf('\n',previousEnd-1)+1;caret=Math.min(previousStart+column,previousEnd);}
+          else{const next=value.indexOf('\n',start);caret=next<0?value.length:Math.min(next+1+column,value.indexOf('\n',next+1)<0?value.length:value.indexOf('\n',next+1));}
+        }
+        output.setSelectionRange(caret,caret); return;
+      }
+      if(output.readOnly||output.disabled)return;
+      let from=start,to=end;
+      if(code==='Backspace') {if(from===to)from=previous;text='';}
+      if(code==='Delete') {if(from===to)to=next;text='';}
+      if(text===null)return;
+      output.setRangeText(text,from,to,'end');
+      output.dispatchEvent(new Event('input',{bubbles:true}));
+    }
+    function thock() {
+      if(!sound||!parameters.volume)return;
+      const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
+      try{
+        audio ||= new Audio(); if(audio.state==='suspended')audio.resume().catch(()=>{});
+        const osc=audio.createOscillator(), gain=audio.createGain(), now=audio.currentTime;
+        osc.type='triangle';osc.frequency.setValueAtTime(175,now);osc.frequency.exponentialRampToValueAtTime(48,now+.07);
+        gain.gain.setValueAtTime(.11*parameters.volume/100,now);gain.gain.exponentialRampToValueAtTime(.0001,now+.08);
+        osc.connect(gain);gain.connect(audio.destination);osc.start();osc.stop(now+.09);osc.onended=()=>{osc.disconnect();gain.disconnect();};
+      }catch(_){status('AUDIO UNAVAILABLE');}
+    }
+    function setSound(value) {sound=value;const b=$('[data-keyboard-sound]');b.setAttribute('aria-pressed',String(sound));b.setAttribute('aria-label','Sound '+(sound?'on':'off'));b.textContent='SOUND '+(sound?'ON':'OFF');status('SOUND '+(sound?'ON':'OFF'));if(!sound&&audio){audio.close().catch(()=>{});audio=null;}}
+    function activate(code, physicalText=null) {
+      const key=keys.get(code);if(!key)return;
+      const shifted=shift||physical.has('ShiftLeft')||physical.has('ShiftRight');
+      let text=null;
+      if(physicalText!==null&&physicalText.length===1)text=physicalText;
+      else if(code.startsWith('Key'))text=caps!==shifted?key.label.toUpperCase():key.label.toLowerCase();
+      else if(/^(Digit|Minus|Equal|Bracket|Semicolon|Quote|Backslash|IntlBackslash)/.test(code))text=shifted?key.secondary:key.label;
+      else if(code==='Backquote')text=shifted?'±':'§';
+      else if(code==='Space')text=' ';else if(code==='Enter')text='\n';else if(code==='Tab')text='\t';
+      const logicalKey=physicalText??(text!==null&&code!=='Enter'&&code!=='Tab'?text:/^(Shift|Control|Alt|Meta|Fn)(Left|Right)$/.test(code)?code.replace(/(Left|Right)$/,''):code);
+      emit('key',{code,key:logicalKey,shift:shifted,capsLock:caps,fn});status((labels[code]||code.replace('Key',''))+' · PRESSED');
+      if(code==='CapsLock'){caps=!caps;modifiers();return;}
+      if(code.startsWith('Shift')){shift=!shift;modifiers();return;}
+      if(code.startsWith('Fn')){fn=!fn;modifiers();return;}
+      if(fn&&/^F\d+$/.test(code)){
+        if(code==='F1'||code==='F2')setParameter('backlight',parameters.backlight+(code==='F1'?-10:10));
+        if(code==='F10')setSound(!sound);
+        if(code==='F11'||code==='F12')setParameter('volume',parameters.volume+(code==='F11'?-5:5));
+        return;
+      }
+      edit(code,text);if(text!==null||code==='Backspace'||code==='Delete'){shift=false;modifiers();thock();}
+    }
+    if(output)on(output,'input',()=>emit('input',{value:output.value,selectionStart:output.selectionStart,selectionEnd:output.selectionEnd}));
+    on(root,'keydown',e=>{
+      if(e.target.matches('.mk-scroll')||e.target.closest('[role=slider]')||e.target.closest('.mk-toolbar'))return;
+      if(e.target.closest('.mk-key')&&(e.key===' '||e.key==='Enter'))return;
+      if(!keys.has(e.code))return;
+      physical.set(e.code,e.key);press(e.code,'physical',true);
+      if(e.code.startsWith('Shift')){modifiers();return;}
+      if(e.target===output&&e.code==='CapsLock'){if(!e.repeat)caps=!caps;modifiers();return;}
+      if(e.target===output||e.ctrlKey||e.metaKey||e.altKey)return;
+      e.preventDefault();activate(e.code,e.key);
+    });
+    on(root,'keyup',e=>{physical.delete(e.code);press(e.code,'physical',false);modifiers();});
+    function releaseAll(){held.clear();physical.clear();drags.clear();for(const {button}of keys.values())button.dataset.down='false';modifiers();}
+    on(root,'focusout',e=>{if(!root.contains(e.relatedTarget))releaseAll();});
+    on(window,'blur',()=>{releaseAll();setSound(false);});
+    on(window,'pagehide',()=>{releaseAll();setSound(false);stopClock();});
+    function setParameter(name,value,notify=true){
+      parameters[name]=Math.max(0,Math.min(100,Math.round(value)));
+      const el=$('[data-parameter="'+name+'"]');el.setAttribute('aria-valuenow',parameters[name]);el.setAttribute('aria-valuetext',parameters[name]+' percent');el.style.setProperty('--mk-angle',(-135+parameters[name]*2.7)+'deg');
+      $('[data-'+(name==='volume'?'volume':'light')+'-value]').textContent=parameters[name];
+      if(name==='backlight')root.style.setProperty('--mk-light',.08+parameters[name]/100*.92);
+      if(notify){status(name.toUpperCase()+' · '+parameters[name]+'%');emit('parameter',{parameter:name,value:parameters[name]});}
+    }
+    for(const el of root.querySelectorAll('[data-parameter]')){
+      const name=el.dataset.parameter,defaults=parameters[name];
+      el.querySelector('svg').innerHTML=Array.from({length:15},(_,i)=>{const a=(-135+i*270/14-90)*Math.PI/180;return '<circle cx="'+(50+46*Math.cos(a))+'" cy="'+(50+46*Math.sin(a))+'" r="1.25" fill="currentColor"/>';}).join('');
+      on(el,'pointerdown',e=>{if(e.button!==0)return;e.preventDefault();el.focus({preventScroll:true});el.setPointerCapture(e.pointerId);drags.set(name,{id:e.pointerId,y:e.clientY,value:parameters[name]});});
+      on(el,'pointermove',e=>{const drag=drags.get(name);if(drag?.id===e.pointerId)setParameter(name,drag.value+(drag.y-e.clientY)/1.5);});
+      for(const type of ['pointerup','pointercancel','lostpointercapture'])on(el,type,()=>drags.delete(name));
+      on(el,'dblclick',()=>setParameter(name,defaults));
+      on(el,'keydown',e=>{const delta={ArrowUp:1,ArrowRight:1,ArrowDown:-1,ArrowLeft:-1,PageUp:10,PageDown:-10}[e.key];if(delta!==undefined||e.key==='Home'||e.key==='End'){e.preventDefault();setParameter(name,e.key==='Home'?0:e.key==='End'?100:parameters[name]+delta);}});
+      setParameter(name,defaults,false);
+    }
+    for(const button of root.querySelectorAll('[data-finish-choice]'))on(button,'click',()=>{root.dataset.finish=button.dataset.finishChoice;root.querySelectorAll('[data-finish-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));});
+    on($('[data-keyboard-sound]'),'click',()=>setSound(!sound));
+    on($('[data-keyboard-clear]'),'click',()=>{if(output){output.value='';output.dispatchEvent(new Event('input',{bubbles:true}));}shift=false;caps=false;fn=false;releaseAll();status('CLEARED');});
+    function updateClock(){const now=new Date();$('[data-clock]').textContent=now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});$('[data-clock]').dateTime=now.toISOString();$('[data-clock-date]').textContent=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+    function stopClock(){clearInterval(clockTimer);clockTimer=null;}
+    function startClock(){if(destroyed||document.hidden)return;updateClock();stopClock();clockTimer=setInterval(updateClock,1000);}
+    on(document,'visibilitychange',()=>{if(document.hidden){stopClock();releaseAll();setSound(false);}else startClock();});
+    on(window,'pageshow',startClock);startClock();
+    root.enochianKeyboard={destroy(){destroyed=true;stopClock();releaseAll();setSound(false);listenController.abort();$('[data-keyboard-keys]').replaceChildren();$('.mk-rail>.mk-key').remove();delete root.enochianKeyboard;}};
+    return root.enochianKeyboard;
+  }
+  window.EnochianKeyboard={mount};
+  /* Demo mounting — replace this line with mount(root, yourTextarea) in a host project. */
+  document.querySelectorAll('[data-enochian-keyboard]').forEach(root=>mount(root));
+})();
+</script>
+</body>
+</html>
