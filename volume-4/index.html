@@ -1,0 +1,2022 @@
+<!doctype html>
+<html lang="en" data-finish="ivory">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interface components — Enochian Elements</title>
+<style>
+  :root {
+    color-scheme: light;
+    --signal: #c00;
+    --background: #fff;
+    --foreground: #171719;
+    --card: #f5f6f7;
+    --popover: #fff;
+    --muted: #5d5e64;
+    --border: #d9dadd;
+    --input: #b2b4b9;
+    --well: #eceef0;
+    --primary: #202024;
+    --primary-ink: #fff;
+    --ring: var(--foreground);
+    --error: var(--signal);
+    --cap: linear-gradient(#fff, #eceef0);
+    --cap-hover: linear-gradient(#fff, #e2e4e7);
+    --lift: 0 2px 0 #cdd0d5;
+    --sunk: inset 0 2px 4px #13131716;
+    --radius: 6px;
+    --sans: "IBM Plex Sans", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  :root[data-finish="obsidian"] {
+    color-scheme: dark;
+    --background: #131315;
+    --foreground: #f7f7f8;
+    --card: #1d1d20;
+    --popover: #242427;
+    --muted: #adaeb5;
+    --border: #38383e;
+    --input: #696970;
+    --well: #151517;
+    --primary: #e6e6e8;
+    --primary-ink: #171719;
+    --error: #ff6565;
+    --cap: linear-gradient(#38383d, #28282c);
+    --cap-hover: linear-gradient(#424248, #303036);
+    --lift: 0 2px 0 #08080a;
+    --sunk: inset 0 2px 5px #0007;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font: 15px/1.5 var(--sans); }
+  h1, h2, h3, p, figure, dl, dd { margin: 0; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button, summary, select { cursor: pointer; }
+  button:is(:disabled, [aria-disabled="true"]) { cursor: default; opacity: .6; }
+  fieldset { border: 0; padding: 0; margin: 0; min-inline-size: 0; }
+  legend { padding: 0; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .shell { width: min(100% - 64px, 1280px); margin-inline: auto; }
+  .mono, kbd { font-family: var(--mono); }
+  .small { color: var(--muted); font-size: 13px; }
+  .stack { display: grid; align-content: start; gap: 14px; min-width: 0; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .split { justify-content: space-between; }
+  .skip-link { position: absolute; inset: 8px auto auto 8px; z-index: 2; padding: 10px; background: var(--popover); transform: translateY(-150%); }
+  .skip-link:focus { transform: none; }
+  .masthead { border-bottom: 1px solid var(--border); }
+  .masthead .shell { min-height: 66px; display: flex; gap: 16px; align-items: center; justify-content: space-between; }
+  .crumbs { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 13px; }
+  .crumbs a { font-weight: 700; text-decoration: none; }
+  .crumbs a:hover { text-decoration: underline; }
+  .crumbs [aria-current], .crumb-divider { color: var(--muted); }
+  .finish, .tabs { display: flex; align-items: center; gap: 3px; width: fit-content; padding: 3px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--well); }
+  .finish label, .tabs button { padding: 5px 9px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--muted); font: 600 12px/1.35 var(--mono); cursor: pointer; }
+  .finish input:checked + label, .tabs [aria-selected="true"] { color: var(--foreground); background: var(--cap); border-color: var(--input); box-shadow: var(--lift); }
+  .finish input:focus-visible + label { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-block: 51px 38px; border-bottom: 1px solid var(--border); }
+  .edition { color: var(--muted); font: 600 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+  h1 { margin: 12px 0 8px; font-size: clamp(37px, 5.2vw, 67px); line-height: 1; letter-spacing: -.06em; }
+  .intro p:last-child { max-width: 49ch; color: var(--muted); font-size: clamp(15px, 2vw, 17px); }
+  .deck { display: grid; grid-template-columns: 188px minmax(0, 1fr); gap: 36px; align-items: start; }
+  .rail { position: sticky; top: 24px; padding: 33px 18px 12px 0; }
+  .rail p { padding-inline: 11px; margin-bottom: 10px; color: var(--muted); font: 600 11px var(--mono); text-transform: uppercase; letter-spacing: .12em; }
+  .rail nav { display: grid; gap: 3px; }
+  .rail a { padding: 9px 12px; border-radius: var(--radius); color: var(--muted); font-weight: 600; text-decoration: none; }
+  .rail a:hover { color: var(--foreground); background: var(--card); }
+  .rail a[aria-current] { color: var(--foreground); background: var(--well); font-weight: 700; }
+  main > section { padding-block: 28px 34px; border-bottom: 1px solid var(--border); scroll-margin-top: 14px; }
+  .section-head { margin-bottom: 15px; }
+  h2 { font-size: clamp(24px, 3vw, 31px); line-height: 1.15; letter-spacing: -.035em; }
+  h3 { font-size: 17px; line-height: 1.25; letter-spacing: -.018em; }
+  .section-head p, .card-head p { margin-top: 4px; }
+  .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .panel { min-width: 0; padding: 19px; border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px); background: var(--card); }
+  #pattern-index { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 18px; }
+  #pattern-index > .section-head { margin: 0; }
+  .catalog-tools { display: flex; align-items: center; gap: 8px; }
+  .catalog-tools .key { min-height: 39px; white-space: nowrap; }
+  #catalog-copy-toggle[aria-pressed="true"] { background: var(--well); box-shadow: var(--sunk); }
+  .catalog-filter { width: clamp(166px, 20vw, 286px); }
+  #pattern-count { margin-block-start: 5px; }
+  .pattern-groups { grid-column: 1 / -1; }
+  .pattern-group { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; padding-block: 12px; border-block-start: 1px solid var(--border); }
+  .pattern-group:last-child { padding-block-end: 0; }
+  .pattern-group h3 { padding-block-start: 9px; color: var(--muted); font: 600 11px/1.4 var(--mono); letter-spacing: .09em; text-transform: uppercase; }
+  .pattern-group ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 156px), 1fr)); gap: 2px 8px; margin: 0; padding: 0; list-style: none; }
+  .pattern-group li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; min-width: 0; border-radius: 4px; }
+  .pattern-group li:is(:hover, :focus-within) { background: var(--card); }
+  .pattern-group a { display: flex; align-items: center; min-height: 33px; padding: 4px 6px; color: var(--foreground); font-size: 14px; line-height: 1.25; text-decoration: none; overflow-wrap: anywhere; }
+  .pattern-group a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .catalog-copy { visibility: hidden; min-width: 37px; min-height: 30px; padding: 3px 5px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font: 600 11px var(--mono); }
+  .pattern-groups[data-copy-controls] .catalog-copy, .catalog-copy:focus { visibility: visible; }
+  .catalog-copy:hover { color: var(--foreground); text-decoration: underline; text-underline-offset: 2px; }
+  @media (hover: hover) {
+    .pattern-group li:hover .catalog-copy { visibility: visible; }
+  }
+  .source-copy-dialog { width: min(720px, calc(100% - 32px)); }
+  .source-copy-dialog textarea { font: 12px/1.5 var(--mono); }
+  .original-preview { padding: 12px; }
+  .original-preview summary { font-weight: 700; }
+  .original-preview summary .small { margin-inline-start: 6px; font-weight: 400; }
+  .original-preview iframe { display: block; width: 100%; height: 390px; margin-block: 8px; border: 1px solid var(--border); border-radius: var(--radius); }
+  .layout-separator { width: 100%; margin: 0; border: 0; border-top: 1px solid var(--border); }
+  :target { scroll-margin-top: 14px; }
+  .footplate { padding-top: 14px; border-top: 1px solid var(--border); }
+  .key { display: inline-flex; gap: 8px; align-items: center; justify-content: center; min-height: 38px; padding: 6px 12px; border: 1px solid var(--input); border-radius: var(--radius); background: var(--cap); box-shadow: var(--lift); color: var(--foreground); font-weight: 600; text-decoration: none; }
+  .key:hover:not(:disabled, [aria-disabled="true"]) { background: var(--cap-hover); }
+  .key:active:not(:disabled, [aria-disabled="true"]) { transform: translateY(1px); box-shadow: var(--sunk); }
+  .key.signal { background: linear-gradient(#d50000, #b70000); color: #fff; border-color: #970000; box-shadow: 0 2px 0 #780000; }
+  .key.signal:hover { background: linear-gradient(#c00, #a90000); }
+  .key.signal:active { box-shadow: inset 0 2px 4px #670000; }
+  .key kbd { background: var(--well); color: var(--muted); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; font-size: 11px; white-space: nowrap; }
+  .field { display: grid; gap: 5px; align-content: start; }
+  .field label, legend { font-size: 13px; font-weight: 700; }
+  .control { width: 100%; min-width: 0; min-height: 39px; padding: 7px 10px; border: 1px solid var(--input); border-radius: var(--radius); background: var(--background); box-shadow: var(--sunk); }
+  .control::placeholder { color: var(--muted); }
+  .control[aria-invalid="true"] { border-color: var(--error); }
+  .error { color: var(--error); font-size: 13px; }
+  textarea.control { resize: vertical; min-height: 67px; }
+  .choice { display: flex; align-items: center; gap: 8px; min-height: 36px; cursor: pointer; }
+  .choice input { accent-color: var(--signal); flex: none; margin: 0; width: 17px; height: 17px; }
+  .options { display: flex; flex-wrap: wrap; gap: 0 15px; margin-top: 3px; }
+  .tooltip-wrap { display: inline-flex; position: relative; align-items: center; }
+  .help { display: inline-grid; place-items: center; width: 23px; height: 23px; padding: 0; border: 1px solid var(--input); border-radius: 50%; background: var(--cap); font: 600 12px var(--mono); }
+  .tooltip { position: absolute; inset: auto auto calc(100% + 5px) 50%; transform: translateX(-50%); width: max-content; max-width: 170px; padding: 6px 9px; background: var(--primary); color: var(--primary-ink); border-radius: 4px; font-size: 12px; visibility: hidden; z-index: 1; }
+  .tooltip-wrap:not([data-dismissed]):is(:hover, :focus-within) .tooltip { visibility: visible; }
+  .display { min-height: 92px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--well); overflow-wrap: anywhere; }
+  .display strong { display: block; margin-bottom: 3px; }
+  .alert { display: flex; gap: 10px; align-items: center; padding: 11px 13px; border-radius: var(--radius); background: var(--background); }
+  .badge { width: fit-content; padding: 3px 7px; border-radius: 4px; background: var(--well); color: var(--foreground); font: 600 11px/1.4 var(--mono); }
+  progress { width: 100%; height: 11px; appearance: none; border: 1px solid var(--border); border-radius: 3px; background: var(--well); overflow: hidden; }
+  #progress { flex: 1; min-width: 0; }
+  #diagnostic-value { min-inline-size: calc(4ch + 14px); text-align: end; }
+  progress::-webkit-progress-bar { background: transparent; }
+  progress::-webkit-progress-value { background: var(--signal); }
+  progress::-moz-progress-bar { background: var(--signal); }
+  .spinner { width: 14px; height: 14px; border: 2px solid var(--input); border-top-color: var(--signal); border-radius: 50%; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(1turn); } }
+  .skeleton { display: block; height: 11px; width: 68%; border-radius: 3px; background: var(--border); }
+  .skeleton + .skeleton { width: 43%; margin-top: 8px; }
+  #diagnostic-preview[aria-pressed="true"] { background: var(--well); box-shadow: var(--sunk); }
+  .toast { position: fixed; inset: auto 18px 18px auto; z-index: 2; width: max-content; max-width: min(400px, calc(100% - 36px)); overflow-wrap: anywhere; }
+  .toast:not(:empty) { padding: 12px 16px; background: var(--primary); color: var(--primary-ink); border-radius: var(--radius); }
+  .disclosure, .menu-wrap { position: relative; }
+  .disclosure summary { list-style: none; }
+  .disclosure summary::-webkit-details-marker { display: none; }
+  .popover { display: grid; gap: 6px; position: absolute; inset: calc(100% + 8px) auto auto 0; z-index: 1; width: min(230px, 70vw); padding: 9px; border: 1px solid var(--input); border-radius: var(--radius); background: var(--popover); box-shadow: 0 3px 8px #0003; }
+  .menu-wrap .popover { inset-inline: auto 0; }
+  .popup-action { text-align: start; width: 100%; min-height: 36px; padding: 6px 8px; border: 0; border-radius: 4px; background: transparent; overflow-wrap: anywhere; }
+  .popup-action:hover, .popup-action:focus-visible { background: var(--card); }
+  dialog { width: min(460px, calc(100% - 32px)); max-height: calc(100% - 32px); padding: 24px; border: 1px solid var(--input); border-radius: 10px; background: var(--popover); color: var(--foreground); }
+  dialog::backdrop { background: #11111699; }
+  dialog h2 { margin-bottom: 6px; font-size: 25px; }
+  dialog .row { margin-top: 14px; }
+  .sheet { inset: 0 0 0 auto; margin: 0; width: min(410px, 100%); height: 100%; max-height: 100%; border-radius: 0; }
+  .sheet dt { color: var(--muted); font: 12px var(--mono); }
+  .sheet dd { margin-bottom: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .command-results { display: grid; gap: 3px; max-height: min(45vh, 320px); overflow: auto; }
+  .command-results button { display: flex; justify-content: space-between; }
+  .input-group { display: flex; width: min(100%, 270px); }
+  .input-group .control { border-radius: var(--radius) 0 0 var(--radius); }
+  .input-group .control:focus-visible { position: relative; }
+  .input-group .control::-webkit-search-cancel-button { appearance: none; }
+  .input-group .key { min-width: 37px; border-left: 0; border-radius: 0 var(--radius) var(--radius) 0; box-shadow: none; }
+  .scroll { overflow: auto; max-width: 100%; }
+  table { width: 100%; border-collapse: collapse; text-align: start; font-size: 13px; }
+  caption { text-align: start; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: start; }
+  th { color: var(--muted); font: 600 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+  .text-button { padding: 5px 0; border: 0; background: none; color: inherit; font-weight: 700; text-align: start; overflow-wrap: anywhere; }
+  .text-button:hover { text-decoration: underline; }
+  .sort-button { text-transform: inherit; }
+  .sort-button::after { content: " ↓"; }
+  [aria-sort="ascending"] .sort-button::after { content: " ↑"; }
+  .empty { padding: 23px 10px; text-align: center; }
+  .empty p { margin: 5px 0 10px; }
+  .data-grid { grid-template-columns: minmax(0, 2fr) minmax(200px, 1fr); }
+  .chart { display: grid; gap: 12px; }
+  .bar { height: 9px; border-radius: 3px; background: var(--well); overflow: hidden; }
+  .bar span { display: block; height: 100%; background: var(--muted); }
+  .accordion details { padding: 0 0 8px; }
+  .accordion details + details { border-top: 1px solid var(--border); }
+  .accordion summary { padding: 8px 0 4px; font-weight: 700; }
+  .accordion p { padding: 4px 0 0 15px; }
+  .item-list { max-height: 166px; padding-right: 6px; }
+  .item { display: flex; align-items: center; gap: 9px; padding: 8px 4px; text-decoration: none; }
+  .item + .item { border-top: 1px solid var(--border); }
+  .item:hover { text-decoration: underline; }
+  .avatar { width: 33px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: var(--border); font: 600 11px var(--mono); }
+  .specimen { overflow-wrap: anywhere; }
+  .examples { margin-top: 14px; }
+  .calendar { table-layout: fixed; }
+  .calendar th, .calendar td { padding: 2px; border: 0; text-align: center; }
+  .calendar .key { min-width: 0; width: 100%; padding: 0; font: 600 13px var(--mono); }
+  .calendar [aria-selected="true"] .key { color: #fff; background: var(--signal); border-color: #970000; box-shadow: none; }
+  .calendar [aria-current="date"] { text-decoration: underline; text-underline-offset: 3px; }
+  .picker { position: relative; }
+  .picker-trigger { width: 100%; justify-content: space-between; }
+  .choices { inset-inline: 0; width: auto; }
+  .choices [role="listbox"] { max-height: 180px; overflow: auto; }
+  .choices [data-active] { outline: 2px solid var(--ring); outline-offset: -2px; }
+  .choices [aria-selected="true"] { font-weight: 700; box-shadow: inset 2px 0 var(--muted); }
+  .otp { position: relative; max-width: 312px; }
+  .otp input { position: absolute; inset: 0; padding: 0; width: 100%; height: 100%; opacity: 0; cursor: text; }
+  .otp-digits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) 6px repeat(3, minmax(0, 1fr)); gap: 4px; }
+  .otp-digits span { min-height: 43px; display: grid; place-items: center; border: 1px solid var(--input); border-radius: var(--radius); background: var(--well); box-shadow: var(--sunk); font: 600 18px var(--mono); }
+  .otp-digits i { align-self: center; height: 1px; background: var(--input); }
+  .otp:focus-within [data-active] { outline: 2px solid var(--ring); outline-offset: 1px; }
+  .questionnaire fieldset .field { margin-top: 8px; }
+  #inspection-summary p { white-space: pre-wrap; }
+  .menubar { width: fit-content; padding: 3px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--well); }
+  .menubar .popover { inset-inline: 0 auto; width: min(185px, 57vw); }
+  .context-trigger { width: 100%; justify-content: space-between; text-align: start; overflow-wrap: anywhere; }
+  .context-popup { position: fixed; inset: auto; }
+  .drawer { inset: auto 0 0; width: min(640px, 100%); max-height: calc(100% - 20px); margin: 0 auto; padding-bottom: max(24px, env(safe-area-inset-bottom)); border-radius: 12px 12px 0 0; }
+  .drawer-grip { width: 100%; height: 27px; padding: 0; border: 0; cursor: grab; background: transparent; touch-action: none; }
+  .drawer-grip::before, .resize-grip::before { content: ""; display: block; margin: auto; border-radius: 999px; background: var(--input); }
+  .drawer-grip::before { width: 46px; height: 5px; }
+  .hover-preview { position: relative; justify-self: start; }
+  .hover-preview .popover { inset-block-start: 100%; visibility: hidden; }
+  .hover-preview:not([data-dismissed]):is(:hover, :focus-within) .popover { visibility: visible; }
+  .transcript { height: 320px; padding: 14px; overflow-anchor: none; overscroll-behavior-y: contain; }
+  .transcript-log { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+  .message { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 9px; align-items: start; max-width: 85%; }
+  .message[data-author="you"] { margin-inline-start: auto; }
+  .message header { margin-bottom: 4px; }
+  .message-bubble { padding: 9px 11px; border: 1px solid var(--border); border-radius: 0 var(--radius) var(--radius); background: var(--background); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .message[data-author="you"] .message-bubble { border-radius: var(--radius) 0 var(--radius) var(--radius); }
+  .marker { display: flex; gap: 8px; align-items: center; color: var(--muted); font: 12px var(--mono); }
+  .marker::before, .marker::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .attachment { display: flex; align-items: center; gap: 8px; padding: 6px 9px; margin-top: 6px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); overflow-wrap: anywhere; }
+  .attachment .small { white-space: nowrap; }
+  .trace { padding-inline-start: 16px; margin: 7px 0 0; color: var(--muted); font-size: 13px; }
+  .trace details { padding-block: 3px; }
+  .trace strong { color: var(--foreground); }
+  .transcript-form .control[type="file"] { width: min(100%, 300px); }
+  .carousel-display { touch-action: pan-y; }
+  .carousel-display .display { min-height: 105px; }
+  .carousel-display h4, #inspection-complete { margin: 0 0 5px; font-size: 15px; }
+  .carousel-display .bar { margin-top: 9px; }
+  .patch-panes { --split: .5; display: grid; grid-template-columns: minmax(0, calc((100% - 22px) * var(--split))) 22px minmax(0, 1fr); }
+  .patch-panes .display { min-height: 110px; padding: 8px; }
+  .resize-grip { display: grid; align-items: center; cursor: col-resize; touch-action: none; }
+  .resize-grip::before { width: 4px; height: 25px; }
+  .resize-grip:hover::before, .resize-grip:focus-visible::before { background: var(--ring); }
+  footer { padding-block: 20px 40px; }
+  @media (max-width: 960px) {
+    .deck { grid-template-columns: 140px minmax(0, 1fr); gap: 19px; }
+    .data-grid { grid-template-columns: 1fr; }
+    #pattern-index { grid-template-columns: minmax(0, 1fr); }
+    .catalog-filter { flex: 1; max-width: 310px; min-width: 0; }
+  }
+  @media (max-width: 720px) {
+    html { scroll-padding-top: 52px; }
+    .shell { width: calc(100% - 32px); }
+    .deck { display: block; }
+    .rail { position: sticky; top: 0; z-index: 2; padding: 5px 0; background: var(--background); border-block-end: 1px solid var(--border); }
+    .rail p { display: none; }
+    .rail nav { display: flex; overflow-x: auto; padding: 3px; scrollbar-width: thin; }
+    .rail a { flex: none; padding: 6px 8px; font-size: 13px; }
+    .intro { align-items: start; flex-direction: column; padding-block: 32px 23px; gap: 15px; }
+    .pattern-group { grid-template-columns: minmax(0, 1fr); gap: 5px; }
+    .pattern-group h3 { padding-block-start: 0; }
+    .pattern-group ul { grid-template-columns: repeat(auto-fill, minmax(min(100%, 127px), 1fr)); }
+    .pattern-group a, .catalog-copy { min-height: 40px; }
+  }
+  @media (max-width: 520px) {
+    .masthead .shell { flex-wrap: wrap; padding-block: 12px; gap: 9px; }
+    .pair { grid-template-columns: minmax(0, 1fr); }
+    .panel { padding: 15px; }
+    th, td { padding-inline: 6px; }
+    .overlay-actions { position: relative; }
+    .overlay-actions :is(.disclosure, .menu-wrap) { position: static; }
+    .message { max-width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation: none; }
+    .key:active:not(:disabled, [aria-disabled="true"]) { transform: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#components">Skip to components</a>
+<header class="masthead">
+  <div class="shell">
+    <nav id="breadcrumb-trail" aria-label="Breadcrumb">
+      <ol class="crumbs">
+        <li><a href="../index.html">Enochian Elements</a></li>
+        <li aria-hidden="true" class="crumb-divider">/</li>
+        <li aria-current="page">Components</li>
+      </ol>
+    </nav>
+    <fieldset class="finish">
+      <legend class="sr-only">Surface finish</legend>
+      <input class="sr-only" id="ivory" type="radio" name="finish" value="ivory" checked>
+      <label for="ivory">Ivory</label>
+      <input class="sr-only" id="obsidian" type="radio" name="finish" value="obsidian">
+      <label for="obsidian">Obsidian</label>
+    </fieldset>
+  </div>
+</header>
+
+<div class="shell">
+  <div class="intro">
+    <div>
+      <p class="edition">Volume IV</p>
+      <h1 id="interface-title">Interface components</h1>
+      <p>Browse and try all 66 interface patterns, including the original Enochian controls.</p>
+    </div>
+    <button type="button" class="key" id="command-trigger" aria-haspopup="dialog" aria-keyshortcuts="Control+k Meta+k" data-open="command">
+      <span aria-hidden="true">⌕</span> Find a component <kbd aria-hidden="true">Ctrl K</kbd>
+    </button>
+  </div>
+
+  <div class="deck">
+    <aside class="rail" id="catalog-sidebar">
+      <p>In this volume</p>
+      <nav id="family-navigation" aria-label="Component families">
+        <a href="#pattern-index">Browse all</a>
+        <a href="#forms">Forms</a>
+        <a href="#navigation">Navigation</a>
+        <a href="#overlays">Overlays</a>
+        <a href="#feedback">Feedback</a>
+        <a href="#data-display">Data display</a>
+        <a href="#layout">Layout</a>
+      </nav>
+    </aside>
+
+    <main id="components" tabindex="-1">
+      <section id="pattern-index" aria-labelledby="pattern-index-title">
+        <header class="section-head">
+          <h2 id="pattern-index-title" tabindex="-1">Browse all 66 patterns</h2>
+          <p class="small mono" id="pattern-count" role="status" hidden></p>
+        </header>
+        <div class="catalog-tools">
+          <div class="catalog-filter">
+            <label class="sr-only" for="pattern-query">Search patterns</label>
+            <input class="control" id="pattern-query" type="search" placeholder="Search patterns">
+          </div>
+          <button class="key" id="catalog-copy-toggle" type="button" aria-pressed="false" aria-controls="pattern-groups">Copy controls</button>
+        </div>
+        <div class="pattern-groups" id="pattern-groups"></div>
+      </section>
+      <section id="forms" aria-labelledby="forms-title">
+        <header class="section-head">
+          <h2 id="forms-title" tabindex="-1">Forms</h2>
+          <p class="small">Create a patch and see it appear in the library below.</p>
+        </header>
+        <form class="pair" id="patch-form">
+          <div class="panel stack">
+            <header class="card-head">
+              <h3>Patch settings</h3>
+              <p class="small">Text input · native select · textarea</p>
+            </header>
+            <div class="field">
+              <label for="patch-name">Patch name</label>
+              <input id="patch-name" class="control" name="name" placeholder="e.g. Meridian Bass" required maxlength="44" aria-describedby="patch-error">
+              <span class="error" id="patch-error" hidden>Enter a patch name.</span>
+            </div>
+            <div class="field">
+              <label for="bank">Bank</label>
+              <select id="bank" class="control" name="bank">
+                <option>Signal</option><option>Rhythm</option><option>Utility</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="notes">Notes</label>
+              <textarea id="notes" class="control" name="notes" rows="2" maxlength="240" placeholder="Add a note…"></textarea>
+            </div>
+          </div>
+          <div class="panel stack">
+            <header class="card-head">
+              <h3>Routing</h3>
+              <p class="small">Radio group · checkbox · date field</p>
+            </header>
+            <fieldset id="patch-source">
+              <legend>Source</legend>
+              <div class="options">
+                <label class="choice"><input type="radio" name="source" value="Internal" checked> Internal</label>
+                <label class="choice"><input type="radio" name="source" value="External"> External</label>
+                <label class="choice"><input type="radio" name="source" value="Both"> Both</label>
+              </div>
+            </fieldset>
+            <div class="field">
+              <div class="row">
+                <label for="review-date">Review date</label>
+                <span class="tooltip-wrap">
+                  <button type="button" class="help" id="review-date-help" aria-label="Review date help" aria-describedby="date-help">?</button>
+                  <span class="tooltip" id="date-help" role="tooltip">Optional date for reviewing the patch.</span>
+                </span>
+              </div>
+              <input id="review-date" class="control" name="date" type="date" aria-describedby="date-help">
+            </div>
+            <label class="choice"><input type="checkbox" name="pinned" id="patch-pin"> Pin to front panel</label>
+            <div class="row footplate">
+              <button class="key signal" type="submit" id="save-patch">Save patch</button>
+              <span class="small">Saved for this session.</span>
+            </div>
+          </div>
+        </form>
+        <div class="pair examples">
+          <article class="panel stack" id="review-calendar">
+            <header class="card-head"><h3>Review calendar</h3><p class="small">Pick a day to set the review date on the patch form.</p></header>
+            <div class="row split">
+              <button class="key" type="button" id="month-before" aria-label="Previous month">←</button>
+              <p class="mono" id="calendar-month" role="status"></p>
+              <button class="key" type="button" id="month-after" aria-label="Next month">→</button>
+            </div>
+            <table class="calendar" role="grid" aria-label="Review calendar">
+              <thead><tr><th scope="col" abbr="Sunday">Su</th><th scope="col" abbr="Monday">Mo</th><th scope="col" abbr="Tuesday">Tu</th><th scope="col" abbr="Wednesday">We</th><th scope="col" abbr="Thursday">Th</th><th scope="col" abbr="Friday">Fr</th><th scope="col" abbr="Saturday">Sa</th></tr></thead>
+              <tbody id="calendar-days"></tbody>
+            </table>
+            <p class="small" id="calendar-selected" role="status"></p>
+          </article>
+          <article class="panel stack">
+            <header class="card-head"><h3>Patch selectors</h3><p class="small">Choose a bank from a fixed list or type to find a patch by name.</p></header>
+            <div class="field picker">
+              <label id="bank-picker-label" for="bank-picker">Select patch bank</label>
+              <button class="key picker-trigger" type="button" id="bank-picker" role="combobox" aria-labelledby="bank-picker-label" aria-haspopup="listbox" aria-controls="bank-options" aria-expanded="false"><span id="bank-choice">Signal</span><span aria-hidden="true">⌄</span></button>
+              <div class="popover choices" hidden>
+                <div id="bank-options" role="listbox" aria-labelledby="bank-picker-label"></div>
+              </div>
+            </div>
+            <div class="field picker">
+              <label for="patch-picker">Find a patch</label>
+              <input class="control" id="patch-picker" type="text" role="combobox" aria-autocomplete="list" aria-controls="patch-options" aria-expanded="false" autocomplete="off" placeholder="Type a patch name">
+              <div class="popover choices" hidden>
+                <div id="patch-options" role="listbox" aria-label="Matching patches"></div>
+                <p class="small" id="patch-picker-empty">No matching patches.</p>
+              </div>
+            </div>
+          </article>
+          <article class="panel stack">
+            <header class="card-head"><h3>Bench code</h3><p class="small" id="otp-hint">Enter or paste the demo code <kbd>314159</kbd>.</p></header>
+            <form class="stack" id="bench-access">
+              <div class="otp">
+                <div class="otp-digits" aria-hidden="true"><span></span><span></span><span></span><i></i><span></span><span></span><span></span></div>
+                <label class="sr-only" for="bench-code">Bench code</label>
+                <input id="bench-code" name="code" inputmode="numeric" autocomplete="off" aria-describedby="otp-hint code-status">
+              </div>
+              <div class="row"><button class="key" type="submit">Verify code</button><p class="small" role="status" id="code-status"></p></div>
+            </form>
+          </article>
+          <article class="panel stack">
+            <header class="card-head"><h3 id="questionnaire-title">Inspection setup</h3><p class="small">Choose a bank, select optional checks, and leave a note.</p></header>
+            <form class="stack questionnaire" aria-labelledby="questionnaire-title" id="questionnaire">
+              <div class="stack" id="questionnaire-steps">
+                <div class="row split small"><label for="question-progress">Questionnaire progress</label><span class="mono" id="question-count">1 of 3</span></div>
+                <progress id="question-progress" value="1" max="3"></progress>
+                <fieldset data-step>
+                  <legend tabindex="-1">Which bank are you inspecting?</legend>
+                  <div class="options">
+                    <label class="choice"><input type="radio" name="inspection-bank" value="Signal" aria-describedby="question-error"> Signal</label>
+                    <label class="choice"><input type="radio" name="inspection-bank" value="Rhythm" aria-describedby="question-error"> Rhythm</label>
+                    <label class="choice"><input type="radio" name="inspection-bank" value="Utility" aria-describedby="question-error"> Utility</label>
+                  </div>
+                  <p class="error" id="question-error" role="status" hidden>Choose a bank to continue.</p>
+                </fieldset>
+                <fieldset data-step hidden>
+                  <legend tabindex="-1">Which checks should run?</legend>
+                  <label class="choice"><input type="checkbox" name="inspection-check" value="Routing"> Check routing</label>
+                  <label class="choice"><input type="checkbox" name="inspection-check" value="Front panel"> Check the front panel</label>
+                </fieldset>
+                <fieldset data-step hidden>
+                  <legend tabindex="-1">Anything to note?</legend>
+                  <div class="field"><label for="inspection-notes">Inspection notes</label><textarea class="control" id="inspection-notes" name="inspection-notes" maxlength="240" rows="2"></textarea></div>
+                </fieldset>
+                <div class="row">
+                  <button class="key" type="button" id="question-back" hidden>Back</button>
+                  <button class="key" type="button" id="question-skip" hidden>Skip checks</button>
+                  <button class="key signal" type="submit" id="question-next">Next step</button>
+                </div>
+              </div>
+              <div id="questionnaire-result" class="stack" hidden>
+                <h4 id="inspection-complete" tabindex="-1">Inspection saved</h4>
+                <div id="inspection-summary" class="display stack"></div>
+                <button class="key" type="button" id="question-restart">Start another inspection</button>
+              </div>
+            </form>
+          </article>
+        </div>
+        <div class="pair examples" id="forms-originals"></div>
+      </section>
+
+      <section id="navigation" aria-labelledby="navigation-title">
+        <header class="section-head">
+          <h2 id="navigation-title" tabindex="-1">Navigation</h2>
+          <p class="small">Use tabs for peer views and the sidebar to jump between families.</p>
+        </header>
+        <article class="panel stack">
+          <header class="card-head"><h3>Front panel</h3></header>
+          <div class="tabs" id="front-panel-tabs" role="tablist" aria-label="Front panel">
+            <button type="button" role="tab" id="signal-tab" aria-controls="signal-panel" aria-selected="true">Signal</button>
+            <button type="button" role="tab" id="routing-tab" aria-controls="routing-panel" aria-selected="false" tabindex="-1">Routing</button>
+            <button type="button" role="tab" id="notes-tab" aria-controls="notes-panel" aria-selected="false" tabindex="-1">Notes</button>
+          </div>
+          <div class="display" role="tabpanel" id="signal-panel" aria-labelledby="signal-tab" tabindex="0"></div>
+          <div class="display" role="tabpanel" id="routing-panel" aria-labelledby="routing-tab" tabindex="0" hidden></div>
+          <div class="display" role="tabpanel" id="notes-panel" aria-labelledby="notes-tab" tabindex="0" hidden></div>
+        </article>
+        <article class="panel stack examples">
+          <header class="card-head"><h3>Menubar</h3><p class="small">Patch and view commands. Use the arrow keys to move between menus.</p></header>
+          <div class="menubar row" id="patch-menubar" role="menubar" aria-label="Patch workbench">
+            <div class="menu-wrap" role="none">
+              <button class="key" type="button" id="bar-patch" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="bar-patch-items">Patch</button>
+              <div class="popover" id="bar-patch-items" role="menu" aria-labelledby="bar-patch" hidden>
+                <button class="popup-action" type="button" role="menuitem" tabindex="-1" data-jump="forms">Create new patch</button>
+                <button class="popup-action" type="button" role="menuitem" tabindex="-1" data-inspect>Open patch inspector</button>
+              </div>
+            </div>
+            <div class="menu-wrap" role="none">
+              <button class="key" type="button" id="bar-view" role="menuitem" tabindex="-1" aria-haspopup="menu" aria-expanded="false" aria-controls="bar-view-items">View</button>
+              <div class="popover" id="bar-view-items" role="menu" aria-labelledby="bar-view" hidden>
+                <button class="popup-action" type="button" role="menuitem" tabindex="-1" data-jump="data-display">Browse library</button>
+                <button class="popup-action" type="button" role="menuitem" tabindex="-1" data-open="drawer">Open drawer</button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="overlays" aria-labelledby="overlays-title">
+        <header class="section-head">
+          <h2 id="overlays-title" tabindex="-1">Overlays</h2>
+          <p class="small">Show details in place, inspect a patch, or confirm a reset.</p>
+        </header>
+        <div class="pair">
+          <article class="panel stack">
+            <header class="card-head"><h3>Dialog &amp; sheet</h3></header>
+            <div class="row">
+              <button type="button" class="key" id="about-trigger" data-open="about" aria-haspopup="dialog">About this demo</button>
+              <button type="button" class="key" id="sheet-trigger" data-inspect aria-haspopup="dialog">Inspect current patch</button>
+            </div>
+          </article>
+          <article class="panel stack">
+            <header class="card-head"><h3>Popover, menu &amp; confirmation</h3></header>
+            <div class="row overlay-actions">
+              <details class="disclosure">
+                <summary class="key" id="session-popover-trigger">Session info <span aria-hidden="true">⌄</span></summary>
+                <div class="popover small">The library runs locally. Reloading the page restores the starter patches.</div>
+              </details>
+              <div class="menu-wrap">
+                <button type="button" class="key" id="menu-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="actions-menu">Patch actions <span aria-hidden="true">⌄</span></button>
+                <div class="popover" id="actions-menu" role="menu" aria-labelledby="menu-trigger" hidden>
+                  <button type="button" class="popup-action" role="menuitem" tabindex="-1" data-jump="forms">Create a patch</button>
+                  <button type="button" class="popup-action" role="menuitem" tabindex="-1" data-jump="data-display">Browse library</button>
+                </div>
+              </div>
+              <button type="button" class="key" id="reset-trigger" data-open="reset" aria-haspopup="dialog">Reset library</button>
+            </div>
+          </article>
+        </div>
+        <div class="pair examples">
+          <article class="panel stack">
+            <header class="card-head"><h3>Context menu</h3><p class="small">Right-click the patch card, tap its button, or press <kbd>Shift F10</kbd>.</p></header>
+            <button type="button" class="key context-trigger" id="context-trigger" aria-label="Patch card context menu" aria-haspopup="menu" aria-controls="context-items" aria-expanded="false"><span id="context-patch"></span><span aria-hidden="true">···</span></button>
+            <div class="popover context-popup" id="context-items" role="menu" aria-labelledby="context-trigger" hidden>
+              <button class="popup-action" type="button" role="menuitem" tabindex="-1" data-inspect>Inspect selected patch</button>
+              <button class="popup-action" type="button" role="menuitem" tabindex="-1" id="context-pin">Toggle front-panel pin</button>
+            </div>
+          </article>
+          <article class="panel stack">
+            <header class="card-head"><h3>Drawer &amp; hover card</h3><p class="small">Open the bottom drawer or preview a related study.</p></header>
+            <div class="row">
+              <button type="button" class="key" id="drawer-trigger" data-open="drawer" aria-haspopup="dialog">Open patch drawer</button>
+              <div class="hover-preview">
+                <a class="key" id="hover-card-trigger" href="../typing-keyboard/index.html" aria-describedby="keyboard-preview">Preview the typing keyboard</a>
+                <div class="popover" id="keyboard-preview">
+                  <strong>Typing Keyboard</strong><p class="small">79 keys, two rotary controls, and a live clock.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="feedback" aria-labelledby="feedback-title">
+        <header class="section-head">
+          <h2 id="feedback-title" tabindex="-1">Feedback</h2>
+          <p class="small">Keep status visible while work runs and report the result when it finishes.</p>
+        </header>
+        <div class="pair">
+          <article class="panel stack">
+            <header class="card-head"><h3>System status</h3></header>
+            <div class="alert" id="system-alert">
+              <strong>Local session</strong>
+              <span class="badge">Offline ready</span>
+            </div>
+            <p class="small">Save a patch to see a toast. Clear the library filter to recover from the empty state.</p>
+          </article>
+          <article class="panel stack">
+            <header class="card-head"><h3>Diagnostics</h3></header>
+            <div class="row">
+              <button type="button" class="key" id="diagnose">Run diagnostics</button>
+              <button type="button" class="key" id="diagnostic-preview" aria-pressed="false" aria-controls="diagnostic-placeholder">Preview loading</button>
+            </div>
+            <div class="row">
+              <progress id="progress" aria-label="Diagnostics progress" value="0" max="100"></progress>
+              <span class="badge" id="diagnostic-value" aria-hidden="true">0%</span>
+            </div>
+            <p class="small" id="diagnostic-status" role="status">Ready to check the library.</p>
+            <div class="stack" id="diagnostic-placeholder" hidden>
+              <p class="row small"><span class="spinner" aria-hidden="true"></span>Loading preview</p>
+              <div aria-hidden="true"><span class="skeleton"></span><span class="skeleton"></span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="data-display" aria-labelledby="data-display-title">
+        <header class="section-head">
+          <h2 id="data-display-title" tabindex="-1">Data display</h2>
+          <p class="small">Filter, sort, or open a patch. The chart shows the full library by bank.</p>
+        </header>
+        <div class="pair data-grid">
+          <article class="panel stack">
+            <header class="card-head row split">
+              <h3>Patch library</h3>
+            <div class="input-group" role="search" aria-label="Patch library">
+                <label class="sr-only" for="library-filter">Filter patches</label>
+                <input class="control" type="search" id="library-filter" placeholder="Filter patches…">
+                <button class="key" type="button" id="clear-search" aria-label="Clear search">×</button>
+              </div>
+            </header>
+            <div id="table-window" class="scroll" role="region" aria-label="Patch table" tabindex="0">
+              <table>
+                <caption class="sr-only">Patches by bank and source</caption>
+                <thead><tr><th scope="col" aria-sort="ascending"><button type="button" class="text-button sort-button" aria-label="Sort by patch name">Patch</button></th><th scope="col">Bank</th><th scope="col">Source</th></tr></thead>
+                <tbody id="patch-rows"></tbody>
+              </table>
+            </div>
+            <div id="library-empty" class="empty" hidden>
+              <h3>No matching patches</h3>
+              <p class="small">Try another patch name, bank, or source.</p>
+              <button class="key" type="button" id="clear-filter">Clear filter</button>
+            </div>
+            <nav class="row split" id="pagination" aria-label="Patch pages">
+              <span class="small mono" id="page-label"></span>
+              <div class="row">
+                <button type="button" class="key" id="previous" aria-label="Previous page">←</button>
+                <button type="button" class="key" id="next" aria-label="Next page">→</button>
+              </div>
+            </nav>
+            <span id="result-count" class="sr-only" role="status"></span>
+          </article>
+          <figure class="panel stack">
+            <figcaption class="card-head"><h3>Bank distribution</h3><p class="small">Patches per bank</p></figcaption>
+            <div class="chart" id="chart"></div>
+          </figure>
+        </div>
+        <article class="panel stack examples" id="bench-transcript">
+          <header class="card-head">
+            <h3>Bench transcript</h3>
+            <p class="small">A message scroller with message bubbles, attachments, markers, and an expandable trace of the local patch report.</p>
+          </header>
+          <div class="row">
+            <button type="button" class="key" id="load-history">Load earlier notes</button>
+            <button type="button" class="key" id="latest-note">Jump to latest note</button>
+            <button type="button" class="key" id="add-marker">Add session marker</button>
+          </div>
+          <div class="display scroll transcript" id="transcript" role="region" aria-label="Session transcript" tabindex="0">
+            <ol class="transcript-log" id="transcript-log" role="log" aria-label="Bench notes" aria-relevant="additions"></ol>
+          </div>
+          <form class="stack transcript-form" id="bench-note">
+            <div class="field"><label for="bench-message">Bench note</label><textarea class="control" id="bench-message" rows="2" maxlength="500"></textarea></div>
+            <div class="row">
+              <div class="field"><label for="bench-file">Attach a local file</label><input class="control" id="bench-file" type="file"></div>
+              <div id="draft-file" hidden></div>
+            </div>
+            <div class="row"><button class="key signal" type="submit">Send bench note</button><p class="small" id="bench-status" role="status"></p></div>
+          </form>
+        </article>
+        <div class="examples" id="data-display-originals"></div>
+      </section>
+
+      <section id="layout" aria-labelledby="layout-title">
+        <header class="section-head">
+          <h2 id="layout-title" tabindex="-1">Layout</h2>
+          <p class="small">Reveal details on demand and keep linked references in a compact list.</p>
+        </header>
+        <div class="pair">
+          <article class="panel stack" id="build-notes">
+            <header class="card-head"><h3>Build notes</h3></header>
+            <hr class="layout-separator" id="layout-separator">
+            <div class="accordion">
+              <details name="build-notes" open><summary>Material and signal</summary><p class="small">Raised keys invite a press, recessed fields invite entry, and neutral ink marks focus. Cinnabar signals actions and state changes.</p></details>
+              <details name="build-notes"><summary>Keyboard operation</summary><p class="small">Use <kbd>Tab</kbd> to move between controls, arrow keys in tabs, and <kbd>Esc</kbd> to close overlays.</p></details>
+              <details id="reuse-note"><summary>Reuse the components</summary><p class="small">Copy the component markup and its styles from this file. The <a href="../HOW_TO_USE_AND_REMIX.md">remix guide</a> lists the shared patterns.</p></details>
+            </div>
+          </article>
+          <article class="panel stack" id="related-study-card">
+            <header class="card-head"><h3>Related studies</h3></header>
+            <div class="item-list scroll" id="related-study-list" role="region" aria-label="Related studies" tabindex="0">
+              <a class="item" href="../index.html"><span class="avatar" aria-hidden="true">I</span>Control Atlas</a>
+              <a class="item" href="../volume-2/index.html"><span class="avatar" aria-hidden="true">II</span>Instruments</a>
+              <a class="item" href="../volume-3/index.html"><span class="avatar" aria-hidden="true">III</span>Compact Controls</a>
+              <a class="item" href="../typing-keyboard/index.html"><span class="avatar" aria-hidden="true">KB</span>Typing Keyboard</a>
+            </div>
+          </article>
+        </div>
+        <div class="pair examples">
+          <article class="panel stack" role="region" aria-roledescription="carousel" aria-label="Bank carousel" id="bank-carousel">
+            <header class="card-head"><h3>Bank carousel</h3><p class="small">Page through the three patch banks.</p></header>
+            <div class="carousel-display" id="bank-slides" aria-live="polite">
+              <div class="display" role="group" aria-roledescription="slide" aria-label="1 of 3" data-bank-slide="Signal"><h4>Signal bank</h4><span class="small" data-bank-count></span><div class="bar" aria-hidden="true"><span></span></div></div>
+              <div class="display" role="group" aria-roledescription="slide" aria-label="2 of 3" data-bank-slide="Rhythm" hidden><h4>Rhythm bank</h4><span class="small" data-bank-count></span><div class="bar" aria-hidden="true"><span></span></div></div>
+              <div class="display" role="group" aria-roledescription="slide" aria-label="3 of 3" data-bank-slide="Utility" hidden><h4>Utility bank</h4><span class="small" data-bank-count></span><div class="bar" aria-hidden="true"><span></span></div></div>
+            </div>
+            <div class="row split">
+              <button class="key" type="button" id="bank-before" aria-label="Previous bank">←</button>
+              <span class="small mono" id="bank-position">1 of 3</span>
+              <button class="key" type="button" id="bank-after" aria-label="Next bank">→</button>
+            </div>
+          </article>
+          <article class="panel stack">
+            <header class="card-head"><h3>Direction &amp; resizable panes</h3><p class="small">Mirror the pane order, then drag the divider or use its arrow keys.</p></header>
+            <fieldset id="reading-direction">
+              <legend>Reading direction</legend>
+              <div class="options">
+                <label class="choice"><input type="radio" name="pane-direction" value="ltr" checked> Left to right</label>
+                <label class="choice"><input type="radio" name="pane-direction" value="rtl"> Right to left</label>
+              </div>
+            </fieldset>
+            <div class="patch-panes" id="patch-panes" dir="ltr">
+              <div class="display" id="source-pane"><strong>Source</strong><span class="small" id="pane-source"></span></div>
+              <div class="resize-grip" role="separator" tabindex="0" aria-label="Resize patch panes" aria-controls="source-pane" aria-orientation="vertical" aria-valuemin="25" aria-valuemax="75" aria-valuenow="50"></div>
+              <div class="display"><strong>Bank</strong><span class="small" id="pane-bank"></span></div>
+            </div>
+          </article>
+        </div>
+        <div class="pair examples" id="layout-originals"></div>
+      </section>
+      <footer class="small">
+        Pattern reference from <a href="https://ui.shadcn.com/docs/components">shadcn/ui</a>. <a href="../HOW_TO_USE_AND_REMIX.md#7-interface-components">See the coverage map and reuse guide.</a>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<dialog id="about" aria-labelledby="about-title" aria-describedby="about-description">
+  <h2 id="about-title">About this demo</h2>
+  <p id="about-description" class="small">The patch library shows how fields, navigation, overlays, and feedback work together. Changes to patches live in this page session.</p>
+  <form method="dialog" class="row"><button class="key" autofocus>Done</button></form>
+</dialog>
+
+<dialog id="inspector" class="sheet" aria-labelledby="inspector-title">
+  <div class="stack">
+    <div><h2 id="inspector-title">Patch inspector</h2><p class="specimen" id="inspector-name"></p></div>
+    <dl id="inspector-properties"></dl>
+    <form method="dialog"><button class="key" autofocus>Close inspector</button></form>
+  </div>
+</dialog>
+
+<dialog id="reset" role="alertdialog" aria-labelledby="reset-title" aria-describedby="reset-description">
+  <h2 id="reset-title">Reset the patch library?</h2>
+  <p id="reset-description" class="small">This discards patches you created in this session and restores the starter library.</p>
+  <form method="dialog" class="row">
+    <button class="key" value="cancel" autofocus>Keep patches</button>
+    <button class="key signal" value="reset">Reset demo</button>
+  </form>
+</dialog>
+
+<dialog id="command" aria-labelledby="command-title">
+  <div class="stack">
+    <h2 id="command-title">Find a component</h2>
+    <label class="sr-only" for="command-query">Search component families</label>
+    <input class="control" id="command-query" type="search" placeholder="Search by family or component…" autofocus>
+    <div class="command-results" id="command-results"></div>
+    <p id="command-empty" class="small" role="status" hidden>No matching patterns.</p>
+    <form method="dialog"><button class="key">Close search</button></form>
+  </div>
+</dialog>
+
+<dialog id="drawer" class="drawer" aria-labelledby="drawer-title">
+  <button class="drawer-grip" type="button" aria-label="Dismiss drawer by pressing or dragging down"></button>
+  <h2 id="drawer-title">Patch drawer</h2>
+  <p class="small specimen" id="drawer-patch"></p>
+  <div class="row">
+    <form method="dialog"><button class="key" autofocus>Close drawer</button></form>
+    <button class="key" type="button" data-jump="data-display">Go to patch library</button>
+  </div>
+</dialog>
+
+<template id="patch-row"><tr><td><button type="button" class="text-button" data-inspect aria-haspopup="dialog"></button></td><td><span class="badge"></span></td><td></td></tr></template>
+<template id="chart-bar"><div class="stack"><div class="row split small"><span></span><span class="mono"></span></div><div class="bar" aria-hidden="true"><span></span></div></div></template>
+<template id="message-template">
+  <li><article class="message"><span class="avatar" aria-hidden="true"></span><div><header class="small"><strong></strong></header><p class="message-bubble"></p></div></article></li>
+</template>
+<template id="attachment-template">
+  <div class="attachment"><span aria-hidden="true">▤</span><a></a><span class="small"></span></div>
+</template>
+<template id="original-preview-template">
+  <details class="panel original-preview">
+    <summary><span></span><span class="small"></span></summary>
+    <iframe></iframe>
+    <a class="small">Open original volume</a>
+  </details>
+</template>
+<dialog class="source-copy-dialog" id="source-copy-dialog" aria-labelledby="source-copy-title">
+  <div class="stack">
+    <h2 id="source-copy-title">Copy Code</h2>
+    <p class="small">Select the code and copy it to a new HTML file.</p>
+    <textarea class="control" id="source-copy-text" aria-label="Pattern source code" rows="14" readonly autofocus></textarea>
+    <form method="dialog"><button class="key">Close</button></form>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-atomic="true"></div>
+
+<script src="../assets/pattern-source.js"></script>
+<script>
+  "use strict";
+  const $ = (selector, context = document) => context.querySelector(selector);
+  const $$ = (selector, context = document) => [...context.querySelectorAll(selector)];
+  const copySource = { body: document.body.cloneNode(true), styles: $("style").textContent, script: document.currentScript.textContent };
+  const finishKey = "enochian-interface-finish";
+  const finish = $(".finish");
+  function applyFinish(value) {
+    const mode = value === "obsidian" ? "obsidian" : "ivory";
+    document.documentElement.dataset.finish = mode;
+    document.getElementById(mode).checked = true;
+  }
+  try { applyFinish(localStorage.getItem(finishKey)); } catch {}
+  finish.addEventListener("change", event => {
+    applyFinish(event.target.value);
+    try { localStorage.setItem(finishKey, event.target.value); } catch {}
+  });
+
+  const links = $$(".rail a");
+  const sections = links.map(link => document.getElementById(link.hash.slice(1)));
+  function markSection() {
+    const atEnd = scrollY > 0 && scrollY + innerHeight >= document.documentElement.scrollHeight - 2;
+    const index = atEnd ? sections.length - 1 : sections.findLastIndex(section => section.getBoundingClientRect().top <= 96);
+    const current = links[Math.max(0, index)];
+    if (current.hasAttribute("aria-current")) return;
+    $(".rail a[aria-current]")?.removeAttribute("aria-current");
+    current.setAttribute("aria-current", "location");
+  }
+  function markHash() {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target?.classList.contains("original-preview")) target.open = true;
+    markSection();
+  }
+  function jump(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    if (target instanceof HTMLDetailsElement) target.open = true;
+    location.hash = id;
+    const destination = target instanceof HTMLDetailsElement ? $("summary", target)
+      : target.matches("main > section") ? $("h2", target) : target;
+    if (destination.tabIndex < 0) destination.tabIndex = -1;
+    destination.focus({ preventScroll: true });
+    target.scrollIntoView({ block: "start" });
+  }
+  window.addEventListener("hashchange", markHash);
+  window.addEventListener("scroll", markSection, { passive: true });
+  window.addEventListener("resize", markSection);
+
+  const tabs = $$('[role="tab"]');
+  function activateTab(tab) {
+    for (const item of tabs) {
+      const active = item === tab;
+      item.setAttribute("aria-selected", active);
+      item.tabIndex = active ? 0 : -1;
+      document.getElementById(item.getAttribute("aria-controls")).hidden = !active;
+    }
+  }
+  $(".tabs").addEventListener("click", event => {
+    const tab = event.target.closest('[role="tab"]');
+    if (tab) activateTab(tab);
+  });
+  $(".tabs").addEventListener("keydown", event => {
+    const index = tabs.indexOf(event.target);
+    const next = {
+      ArrowLeft: (index + tabs.length - 1) % tabs.length,
+      ArrowRight: (index + 1) % tabs.length,
+      Home: 0,
+      End: tabs.length - 1
+    }[event.key];
+    if (index < 0 || next === undefined) return;
+    event.preventDefault();
+    activateTab(tabs[next]);
+    tabs[next].focus();
+  });
+
+  const starter = [
+    { id: 1, name: "Aether Receiver", bank: "Signal", source: "Internal", pinned: true, notes: "Reference tuning patch.", date: "" },
+    { id: 2, name: "Cadence Kit", bank: "Rhythm", source: "Both", notes: "Performance pad routing.", date: "" },
+    { id: 3, name: "Cinnabar Pulse", bank: "Rhythm", source: "Internal", notes: "Short accent envelope.", date: "" },
+    { id: 4, name: "Lumen Meter", bank: "Signal", source: "External", notes: "Monitor the input signal.", date: "" },
+    { id: 5, name: "Meridian Bass", bank: "Signal", source: "Both", notes: "Center-detent pitch control.", date: "" },
+    { id: 6, name: "Vigil Return", bank: "Utility", source: "Internal", notes: "Return to the home setting.", date: "" }
+  ];
+  let library = [...starter];
+  let currentPatch = starter[0];
+  let nextId = starter.length + 1;
+  let pageIndex = 0;
+  let sortDirection = 1;
+  const pageSize = 4;
+  const form = $("#patch-form");
+  const nameField = $("#patch-name");
+  const filter = $("#library-filter");
+  const rows = $("#patch-rows");
+  const sorter = $(".sort-button");
+  const previousPage = $("#previous");
+  const nextPage = $("#next");
+  const inspector = $("#inspector");
+  let toastTimer;
+  function toast(message) {
+    window.clearTimeout(toastTimer);
+    $("#toast").textContent = message;
+    toastTimer = window.setTimeout(() => { $("#toast").textContent = ""; }, 4200);
+  }
+  function renderFrontPanel() {
+    const title = document.createElement("strong");
+    title.textContent = currentPatch.name;
+    $("#signal-panel")?.replaceChildren(title, currentPatch.bank + " bank");
+    const picker = $("#patch-picker");
+    if (picker) picker.value = currentPatch.name;
+    for (const [id, text] of [
+      ["routing-panel", currentPatch.source + " source · " + (currentPatch.pinned ? "Pinned to front panel" : "Unpinned")],
+      ["notes-panel", currentPatch.notes || "No notes for this patch."],
+      ["context-patch", currentPatch.name],
+      ["drawer-patch", `${currentPatch.name} · ${currentPatch.bank} bank · ${currentPatch.source} source`],
+      ["pane-source", currentPatch.source],
+      ["pane-bank", currentPatch.bank]
+    ]) {
+      const output = document.getElementById(id);
+      if (output) output.textContent = text;
+    }
+  }
+  function renderTable() {
+    const query = filter.value.trim().toLowerCase();
+    const matches = library.filter(patch => [patch.name, patch.bank, patch.source].some(value => value.toLowerCase().includes(query)));
+    matches.sort((a, b) => sortDirection * a.name.localeCompare(b.name));
+    const pages = Math.max(1, Math.ceil(matches.length / pageSize));
+    pageIndex = Math.min(pageIndex, pages - 1);
+    rows.replaceChildren();
+    for (const patch of matches.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)) {
+      const row = $("#patch-row").content.cloneNode(true);
+      const trigger = $("button", row);
+      trigger.textContent = patch.name;
+      trigger.dataset.inspect = patch.id;
+      $(".badge", row).textContent = patch.bank;
+      $("td:last-child", row).textContent = patch.source;
+      rows.append(row);
+    }
+    $("#table-window").hidden = $("#pagination").hidden = !matches.length;
+    $("#library-empty").hidden = Boolean(matches.length);
+    sorter.parentElement.setAttribute("aria-sort", sortDirection === 1 ? "ascending" : "descending");
+    previousPage.disabled = pageIndex === 0;
+    nextPage.disabled = pageIndex + 1 >= pages;
+    $("#page-label").textContent = `Page ${pageIndex + 1} of ${pages}`;
+    const status = matches.length ? `${matches.length} patches. ${$("#page-label").textContent}.` : "No matching patches.";
+    if ($("#result-count").textContent !== status) $("#result-count").textContent = status;
+  }
+  function renderChart() {
+    const chart = $("#chart");
+    const banks = [...new Set(starter.map(patch => patch.bank))];
+    const counts = banks.map(bank => [bank, library.filter(patch => patch.bank === bank).length]);
+    const max = Math.max(...counts.map(([, count]) => count), 1);
+    chart?.replaceChildren();
+    for (const [bank, count] of counts) {
+      const width = `${100 * count / max}%`;
+      if (chart) {
+        const bar = $("#chart-bar").content.cloneNode(true);
+        $(".row span", bar).textContent = bank;
+        $(".mono", bar).textContent = count;
+        $(".bar span", bar).style.width = width;
+        chart.append(bar);
+      }
+      const slide = $("[data-bank-slide='" + bank + "']");
+      if (slide) {
+        $("[data-bank-count]", slide).textContent = `${count} ${count === 1 ? "patch" : "patches"}`;
+        $(".bar span", slide).style.width = width;
+      }
+    }
+  }
+  function showNameError(invalid) {
+    if (invalid) nameField.setAttribute("aria-invalid", "true");
+    else nameField.removeAttribute("aria-invalid");
+    $("#patch-error").hidden = !invalid;
+  }
+  nameField.addEventListener("invalid", event => {
+    event.preventDefault();
+    showNameError(true);
+    nameField.focus();
+  });
+  nameField.addEventListener("input", () => {
+    nameField.setCustomValidity("");
+    if (nameField.value.trim()) showNameError(false);
+  });
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    const fields = new FormData(form);
+    const name = fields.get("name").trim();
+    if (!name) {
+      nameField.setCustomValidity("Enter a patch name.");
+      nameField.reportValidity();
+      return;
+    }
+    const patch = { ...Object.fromEntries(fields), id: nextId++, name, pinned: fields.has("pinned") };
+    library.push(patch);
+    currentPatch = patch;
+    form.reset();
+    renderTable();
+    renderChart();
+    renderFrontPanel();
+    toast(`${name} saved.`);
+  });
+  filter.addEventListener("input", () => {
+    pageIndex = 0;
+    renderTable();
+  });
+  function clearFilter() {
+    filter.value = "";
+    pageIndex = 0;
+    renderTable();
+    filter.focus();
+  }
+  $("#clear-filter").addEventListener("click", clearFilter);
+  $("#clear-search").addEventListener("click", clearFilter);
+  sorter.addEventListener("click", () => {
+    sortDirection *= -1;
+    pageIndex = 0;
+    renderTable();
+  });
+  previousPage.addEventListener("click", () => {
+    pageIndex--;
+    renderTable();
+    if (previousPage.disabled) nextPage.focus();
+  });
+  nextPage.addEventListener("click", () => {
+    pageIndex++;
+    renderTable();
+    if (nextPage.disabled) previousPage.focus();
+  });
+
+  function openInspector(patch) {
+    currentPatch = patch;
+    renderFrontPanel();
+    $("#inspector-name").textContent = patch.name;
+    const details = $("#inspector-properties");
+    details.replaceChildren();
+    for (const [label, value] of [
+      ["Bank", patch.bank], ["Source", patch.source], ["Front panel", patch.pinned ? "Pinned" : "Unpinned"],
+      ["Review date", patch.date || "Unscheduled"], ["Notes", patch.notes || "No notes"]
+    ]) {
+      const term = document.createElement("dt");
+      const description = document.createElement("dd");
+      term.textContent = label;
+      description.textContent = value;
+      details.append(term, description);
+    }
+    inspector.showModal();
+  }
+  const reset = $("#reset");
+  reset?.addEventListener("close", () => {
+    if (reset.returnValue !== "reset") return;
+    library = [...starter];
+    currentPatch = starter[0];
+    nextId = starter.length + 1;
+    pageIndex = 0;
+    sortDirection = 1;
+    filter.value = "";
+    form.reset();
+    nameField.setCustomValidity("");
+    showNameError(false);
+    renderTable();
+    renderFrontPanel();
+    renderChart();
+    toast("Library reset.");
+  });
+
+  const command = $("#command");
+  const commandQuery = $("#command-query");
+  const commandResults = $("#command-results");
+  const patternFamilies = {
+    forms: [
+      ["Calendar", "review-calendar"], ["Checkbox", "patch-pin"], ["Combobox", "patch-picker"],
+      ["Date Picker", "review-date"], ["Field", "patch-name"], ["Input", "patch-name"],
+      ["Input Group", "library-filter"], ["Input OTP", "bench-code"], ["Label", "patch-name"],
+      ["Native Select", "bank"], ["Questionnaire", "questionnaire"], ["Radio Group", "patch-source"],
+      ["Select", "bank-picker"],
+      ["Slider", "original-slider", ["Signal Slider", "III", "c-trk"]],
+      ["Switch", "original-switch", ["Binary Gate", "III", "c-std"]],
+      ["Textarea", "notes"]
+    ],
+    navigation: [
+      ["Breadcrumb", "breadcrumb-trail"], ["Menubar", "patch-menubar"],
+      ["Navigation Menu", "family-navigation"], ["Pagination", "pagination"],
+      ["Sidebar", "catalog-sidebar"], ["Tabs", "front-panel-tabs"]
+    ],
+    overlays: [
+      ["Alert Dialog", "reset-trigger"], ["Command", "command-trigger"],
+      ["Context Menu", "context-trigger"], ["Dialog", "about-trigger"], ["Drawer", "drawer-trigger"],
+      ["Dropdown Menu", "menu-trigger"], ["Hover Card", "hover-card-trigger"],
+      ["Popover", "session-popover-trigger"], ["Sheet", "sheet-trigger"], ["Tooltip", "review-date-help"]
+    ],
+    feedback: [
+      ["Alert", "system-alert"], ["Empty", "library-filter"], ["Progress", "progress"],
+      ["Skeleton", "diagnostic-preview"], ["Spinner", "diagnostic-preview"], ["Toast", "save-patch"]
+    ],
+    "data-display": [
+      ["Attachment", "bench-file"], ["Badge", "table-window"], ["Bubble", "bench-message"],
+      ["Chart", "chart"], ["Code Block", "original-code-block", ["Code Veil", "I", "codeToggle"]],
+      ["Data Table", "library-filter"], ["Marker", "add-marker"], ["Message", "transcript"],
+      ["Message Scroller", "transcript"], ["Table", "table-window"], ["Trace", "bench-transcript"]
+    ],
+    layout: [
+      ["Accordion", "build-notes"], ["Aspect Ratio", "related-study-list"], ["Avatar", "related-study-list"],
+      ["Button", "original-button", ["Push Button", "I", "concaveButton"]],
+      ["Button Group", "original-button-group", ["The Three Keys", "I", "abtns"]],
+      ["Card", "related-study-card"], ["Carousel", "bank-carousel"], ["Collapsible", "reuse-note"],
+      ["Direction", "reading-direction"], ["Item", "related-study-list"], ["Kbd", "command-trigger"],
+      ["Resizable", "patch-panes"], ["Scroll Area", "related-study-list"], ["Separator", "layout-separator"],
+      ["Toggle", "original-toggle", ["Hollow Gate", "III", "c-ccv"]],
+      ["Toggle Group", "original-toggle-group", ["Triad Action Keys", "III", "c-tpb"]],
+      ["Typography", "interface-title"]
+    ]
+  };
+  const catalogGroups = $("#pattern-groups");
+  const catalogQuery = $("#pattern-query");
+  const copyToggle = $("#catalog-copy-toggle");
+  copyToggle.addEventListener("click", () => {
+    const shown = copyToggle.getAttribute("aria-pressed") !== "true";
+    copyToggle.setAttribute("aria-pressed", String(shown));
+    catalogGroups.toggleAttribute("data-copy-controls", shown);
+  });
+  const originalSources = new Map();
+  const localFile = location.protocol === "file:";
+  const frameOrigin = localFile ? "*" : location.origin;
+  window.addEventListener("message", event => {
+    const sameOrigin = event.origin === location.origin || (localFile && event.origin === "null");
+    if (!sameOrigin) return;
+    const entry = [...originalSources.values()].find(item => item.frame.contentWindow === event.source);
+    if (!entry) return;
+    const { type, height } = event.data ?? {};
+    if (type === "enochian-preview-size" && Number.isInteger(height) && height > 0 && height < 1600) {
+      entry.frame.style.height = (height + 2) + "px";
+    } else if (type === "enochian-preview-ready") {
+      entry.ready = true;
+      if (entry.complete) requestOriginalSource(entry);
+    } else if (type === "enochian-pattern-source") {
+      entry.complete?.(event.data.code);
+    }
+  });
+  function loadOriginal(entry) {
+    if (!entry.frame.hasAttribute("src")) entry.frame.src = entry.url;
+  }
+  function requestOriginalSource(entry) {
+    entry.frame.contentWindow.postMessage({ type: "enochian-copy-source" }, frameOrigin);
+  }
+  function originalCode(id) {
+    const entry = originalSources.get(id);
+    if (entry.code) return entry.code;
+    entry.code = new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => entry.complete(), 5000);
+      entry.complete = value => {
+        clearTimeout(timeout);
+        entry.complete = null;
+        if (typeof value === "string" && value.startsWith("<!doctype html>")) resolve(value);
+        else reject(new Error("The original source could not be read."));
+      };
+      if (entry.ready) requestOriginalSource(entry);
+      else loadOriginal(entry);
+    }).catch(error => {
+      entry.code = null;
+      throw error;
+    });
+    return entry.code;
+  }
+  function showSource(code) {
+    const dialog = $("#source-copy-dialog");
+    const text = $("#source-copy-text");
+    text.value = code;
+    dialog.showModal();
+    text.select();
+  }
+  async function copyPattern(button, name, id, original) {
+    if (button.getAttribute("aria-busy") === "true") return;
+    button.setAttribute("aria-busy", "true");
+    try {
+      const code = original ? await originalCode(id) : EnochianPatternSource.native(name, copySource);
+      try {
+        await navigator.clipboard.writeText(code);
+        button.textContent = "✓";
+        toast(name + " code copied.");
+        setTimeout(() => { button.textContent = "Copy"; }, 1400);
+      } catch {
+        showSource(code);
+      }
+    } catch (error) {
+      console.error(error);
+      toast("Could not load code for " + name + ".");
+    } finally {
+      button.removeAttribute("aria-busy");
+    }
+  }
+  function originalPreview(family, name, id, [title, volume, anchor]) {
+    const preview = $("#original-preview-template").content.firstElementChild.cloneNode(true);
+    preview.id = id;
+    $("summary span", preview).textContent = name;
+    $("summary .small", preview).textContent = `${title} · Volume ${volume}`;
+    const file = volume === "I" ? "../index.html" : "../volume-3/index.html";
+    const source = $("a", preview);
+    source.href = `${file}#${anchor}`;
+    source.textContent = "Open Volume " + volume;
+    const frame = $("iframe", preview);
+    frame.title = title;
+    const entry = { frame, url: `${file}?pattern=${id.slice("original-".length)}` };
+    preview.addEventListener("toggle", () => {
+      if (preview.open) loadOriginal(entry);
+    });
+    originalSources.set(id, entry);
+    document.getElementById(family + "-originals").append(preview);
+  }
+  function addCommand(name, id, keywords, family) {
+    const result = document.createElement("button");
+    result.type = "button";
+    result.className = "popup-action";
+    result.dataset.jump = id;
+    result.dataset.keywords = keywords;
+    result.textContent = name;
+    if (family) {
+      const context = document.createElement("span");
+      context.className = "small";
+      context.setAttribute("aria-hidden", "true");
+      context.textContent = family;
+      result.append(context);
+    }
+    commandResults.append(result);
+  }
+  for (const [family, entries] of Object.entries(patternFamilies)) {
+    const label = links.find(link => link.hash === "#" + family).textContent.trim();
+    addCommand(label, family, label.toLowerCase());
+    const group = document.createElement("div");
+    group.className = "pattern-group";
+    const heading = document.createElement("h3");
+    heading.textContent = label;
+    const list = document.createElement("ul");
+    for (const [name, id, original] of entries) {
+      if (original) originalPreview(family, name, id, original);
+      const keywords = [name, original?.[0], label].filter(Boolean).join(" ").toLowerCase();
+      const item = document.createElement("li");
+      item.dataset.keywords = keywords;
+      const link = document.createElement("a");
+      link.href = "#" + id;
+      link.textContent = name;
+      const copy = document.createElement("button");
+      copy.type = "button";
+      copy.className = "catalog-copy";
+      copy.setAttribute("aria-label", "Copy Code for " + name);
+      copy.title = "Copy Code";
+      copy.textContent = "Copy";
+      copy.addEventListener("click", () => copyPattern(copy, name, id, Boolean(original)));
+      item.append(link, copy);
+      list.append(item);
+      addCommand(name, id, keywords, label);
+    }
+    group.append(heading, list);
+    catalogGroups.append(group);
+  }
+  function filterCatalog() {
+    const query = catalogQuery.value.trim().toLowerCase();
+    let count = 0;
+    for (const group of catalogGroups.children) {
+      const items = $$("li", group);
+      for (const item of items) item.hidden = !item.dataset.keywords.includes(query);
+      const visible = items.filter(item => !item.hidden).length;
+      group.hidden = !visible;
+      count += visible;
+    }
+    const status = $("#pattern-count");
+    status.hidden = !query;
+    status.textContent = count ? `${count} ${count === 1 ? "pattern" : "patterns"}` : "No matching patterns.";
+    markSection();
+  }
+  catalogQuery.addEventListener("input", filterCatalog);
+  catalogGroups.addEventListener("click", event => {
+    const link = event.target.closest("a");
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    jump(link.hash.slice(1));
+  });
+  filterCatalog();
+  markHash();
+
+  const commands = $$("button", commandResults);
+  function filterCommands() {
+    const query = commandQuery.value.trim().toLowerCase();
+    for (const button of commands) {
+      button.hidden = !button.dataset.keywords.includes(query);
+    }
+    $("#command-empty").hidden = commands.some(button => !button.hidden);
+  }
+  function openCommand() {
+    commandQuery.value = "";
+    filterCommands();
+    command.showModal();
+  }
+  commandQuery.addEventListener("input", filterCommands);
+  command.addEventListener("keydown", event => {
+    const results = commands.filter(button => !button.hidden);
+    const index = results.indexOf(event.target);
+    if (!results.length || (index < 0 && event.target !== commandQuery)) return;
+    if (event.key === "Enter" && event.target === commandQuery) {
+      event.preventDefault();
+      results[0].click();
+    }
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const next = event.key === "ArrowDown" ? (index + 1) % results.length : index - 1;
+      (results[next] ?? commandQuery).focus();
+    }
+  });
+
+  function bindMenu(trigger) {
+    const popup = document.getElementById(trigger.getAttribute("aria-controls"));
+    const items = $$('[role="menuitem"]', popup);
+    const isContext = popup.classList.contains("context-popup");
+    const includes = target => trigger.contains(target) || popup.contains(target);
+    function open(index = 0, point) {
+      popup.hidden = false;
+      trigger.setAttribute("aria-expanded", "true");
+      if (isContext) {
+        const anchor = trigger.getBoundingClientRect();
+        const bounds = popup.getBoundingClientRect();
+        const fit = (position, available) => Math.max(8, Math.min(position, available - 8));
+        popup.style.left = fit(point?.x ?? anchor.left, innerWidth - bounds.width) + "px";
+        popup.style.top = fit(point?.y ?? anchor.bottom + 5, innerHeight - bounds.height) + "px";
+      }
+      items[index].focus({ preventScroll: isContext });
+    }
+    function close(restore = false) {
+      if (popup.hidden) return;
+      popup.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+      if (restore) trigger.focus({ preventScroll: true });
+    }
+    trigger.addEventListener("click", () => {
+      if (popup.hidden) open();
+      else close(true);
+    });
+    trigger.addEventListener("keydown", event => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp" || (isContext && event.shiftKey && event.key === "F10")) {
+        event.preventDefault();
+        open(event.key === "ArrowUp" ? items.length - 1 : 0);
+      }
+    });
+    if (isContext) trigger.addEventListener("contextmenu", event => {
+      event.preventDefault();
+      const point = event.button === 2 ? { x: event.clientX, y: event.clientY } : undefined;
+      open(0, point);
+    });
+    popup.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        close(true);
+        return;
+      }
+      const index = items.indexOf(event.target);
+      const next = {
+        ArrowDown: (index + 1) % items.length,
+        ArrowUp: (index + items.length - 1) % items.length,
+        Home: 0,
+        End: items.length - 1
+      }[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      items[next].focus();
+    });
+    popup.addEventListener("focusout", event => {
+      if (!includes(event.relatedTarget)) close();
+    });
+    popup.addEventListener("click", event => {
+      if (event.target.closest('[role="menuitem"]')) close(true);
+    });
+    document.addEventListener("click", event => {
+      if (!includes(event.target)) close();
+    });
+    return { trigger, popup, open, close, includes };
+  }
+  bindMenu($("#menu-trigger"));
+  bindMenu($("#context-trigger"));
+  const menubar = $(".menubar");
+  const barMenus = $$("button[aria-haspopup]", menubar).map(bindMenu);
+  menubar.addEventListener("focusin", event => {
+    const menu = barMenus.find(item => item.includes(event.target));
+    if (menu) barMenus.forEach(item => { item.trigger.tabIndex = item === menu ? 0 : -1; });
+  });
+  menubar.addEventListener("keydown", event => {
+    const index = barMenus.findIndex(item => item.includes(event.target));
+    if (event.defaultPrevented || index < 0) return;
+    const next = {
+      ArrowLeft: (index + barMenus.length - 1) % barMenus.length,
+      ArrowRight: (index + 1) % barMenus.length,
+      Home: 0,
+      End: barMenus.length - 1
+    }[event.key];
+    if (next === undefined) return;
+    event.preventDefault();
+    const wasOpen = !barMenus[index].popup.hidden;
+    barMenus[index].close();
+    barMenus[next].trigger.focus();
+    if (wasOpen) barMenus[next].open();
+  });
+  $("#context-pin").addEventListener("click", () => {
+    currentPatch = { ...currentPatch, pinned: !currentPatch.pinned };
+    library = library.map(patch => patch.id === currentPatch.id ? currentPatch : patch);
+    renderFrontPanel();
+    toast(`${currentPatch.name} ${currentPatch.pinned ? "pinned" : "unpinned"}.`);
+  });
+  const disclosure = $(".disclosure");
+  const previews = $$(".tooltip-wrap, .hover-preview");
+  document.addEventListener("click", event => {
+    const trigger = event.target.closest("[data-open], [data-inspect], [data-jump]");
+    if (disclosure && !disclosure.contains(event.target)) disclosure.open = false;
+    if (!trigger) return;
+    if (trigger.dataset.jump) {
+      trigger.closest("dialog")?.close();
+      jump(trigger.dataset.jump);
+    } else if (trigger.hasAttribute("data-inspect")) {
+      openInspector(library.find(patch => patch.id === Number(trigger.dataset.inspect)) ?? currentPatch);
+    } else if (trigger.dataset.open === "command") {
+      openCommand();
+    } else {
+      const dialog = document.getElementById(trigger.dataset.open);
+      dialog.returnValue = "";
+      dialog.showModal();
+    }
+  });
+  document.addEventListener("keydown", event => {
+    if (command && (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k" && !$("dialog[open]")) {
+      event.preventDefault();
+      openCommand();
+    }
+    if (event.key !== "Escape") return;
+    if (disclosure?.open) {
+      disclosure.open = false;
+      if (disclosure.contains(event.target)) $("summary", disclosure).focus();
+    }
+    for (const preview of previews) {
+      if (preview.matches(":hover, :focus-within")) preview.dataset.dismissed = "";
+    }
+  });
+  for (const preview of previews) {
+    preview.addEventListener("focusout", () => delete preview.dataset.dismissed);
+    preview.addEventListener("pointerleave", () => delete preview.dataset.dismissed);
+  }
+
+  const drawerGrip = $(".drawer-grip");
+  const drawer = $("#drawer");
+  let drawerDrag;
+  drawerGrip.addEventListener("pointerdown", event => {
+    if (event.button !== 0) return;
+    drawerDrag = { pointer: event.pointerId, start: event.clientY };
+    drawerGrip.setPointerCapture(event.pointerId);
+  });
+  drawerGrip.addEventListener("pointermove", event => {
+    if (event.pointerId !== drawerDrag?.pointer) return;
+    const distance = Math.max(0, event.clientY - drawerDrag.start);
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) drawer.style.transform = `translateY(${distance}px)`;
+  });
+  drawerGrip.addEventListener("pointerup", event => {
+    if (event.pointerId !== drawerDrag?.pointer) return;
+    const distance = event.clientY - drawerDrag.start;
+    drawer.style.transform = "";
+    drawerDrag = null;
+    if (distance >= 55 || Math.abs(distance) <= 6) drawer.close();
+  });
+  drawerGrip.addEventListener("lostpointercapture", () => {
+    drawer.style.transform = "";
+    drawerDrag = null;
+  });
+  drawerGrip.addEventListener("click", event => {
+    if (event.detail === 0) drawer.close();
+  });
+
+  // Calendar: one tab stop for the day grid, with a separate selected date.
+  const reviewDate = $("#review-date");
+  const calendar = $(".calendar");
+  const dateLabel = new Intl.DateTimeFormat("en", { dateStyle: "full" });
+  const monthLabel = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" });
+  function dayAt(year, month, day) {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setFullYear(year, month, day);
+    return date;
+  }
+  function dayKey(date) {
+    return [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+      .map((part, index) => String(part).padStart(index ? 2 : 4, "0")).join("-");
+  }
+  const today = dayKey(new Date());
+  let calendarDay = new Date();
+  function renderCalendar(focusDay = false) {
+    const year = calendarDay.getFullYear();
+    const month = calendarDay.getMonth();
+    const start = dayAt(year, month, 1).getDay();
+    const monthLength = dayAt(year, month + 1, 0).getDate();
+    const title = monthLabel.format(calendarDay);
+    if ($("#calendar-month").textContent !== title) $("#calendar-month").textContent = title;
+    const body = $("#calendar-days");
+    body.replaceChildren();
+    for (let slot = 0; slot < Math.ceil((start + monthLength) / 7) * 7; slot++) {
+      if (slot % 7 === 0) body.insertRow();
+      const cell = body.rows[body.rows.length - 1].insertCell();
+      const day = slot - start + 1;
+      if (day < 1 || day > monthLength) continue;
+      const date = dayAt(year, month, day);
+      const key = dayKey(date);
+      const button = document.createElement("button");
+      button.className = "key";
+      button.type = "button";
+      button.textContent = day;
+      button.tabIndex = day === calendarDay.getDate() ? 0 : -1;
+      button.dataset.date = key;
+      button.setAttribute("aria-label", dateLabel.format(date));
+      if (key === today) button.setAttribute("aria-current", "date");
+      cell.setAttribute("aria-selected", key === reviewDate.value);
+      cell.append(button);
+    }
+    if (focusDay) $("button[tabindex='0']", body).focus();
+  }
+  function syncCalendar(focusDay = false) {
+    const value = reviewDate.value;
+    if (value) {
+      const [year, month, day] = value.split("-").map(Number);
+      calendarDay = dayAt(year, month - 1, day);
+    }
+    $("#calendar-selected").textContent = value ? `Selected ${dateLabel.format(calendarDay)}.` : "No review date selected.";
+    renderCalendar(focusDay);
+  }
+  function changeMonth(delta, focusDay = false) {
+    const year = calendarDay.getFullYear();
+    const month = calendarDay.getMonth() + delta;
+    const day = Math.min(calendarDay.getDate(), dayAt(year, month + 1, 0).getDate());
+    calendarDay = dayAt(year, month, day);
+    renderCalendar(focusDay);
+  }
+  $("#month-before").addEventListener("click", () => changeMonth(-1));
+  $("#month-after").addEventListener("click", () => changeMonth(1));
+  calendar.addEventListener("click", event => {
+    const day = event.target.closest("[data-date]");
+    if (!day) return;
+    reviewDate.value = day.dataset.date;
+    syncCalendar(true);
+  });
+  calendar.addEventListener("keydown", event => {
+    if (!event.target.matches("[data-date]")) return;
+    if (event.key === "PageUp" || event.key === "PageDown") {
+      event.preventDefault();
+      changeMonth((event.key === "PageUp" ? -1 : 1) * (event.shiftKey ? 12 : 1), true);
+      return;
+    }
+    const offset = {
+      ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7,
+      Home: -calendarDay.getDay(), End: 6 - calendarDay.getDay()
+    }[event.key];
+    if (offset === undefined) return;
+    event.preventDefault();
+    calendarDay.setDate(calendarDay.getDate() + offset);
+    renderCalendar(true);
+  });
+  reviewDate.addEventListener("change", () => syncCalendar());
+  form.addEventListener("reset", () => queueMicrotask(() => syncCalendar()));
+  syncCalendar();
+
+  // Select and editable combobox share the same listbox and virtual focus.
+  function bindPicker(control, allOptions, selected, commit) {
+    const editable = control instanceof HTMLInputElement;
+    const list = document.getElementById(control.getAttribute("aria-controls"));
+    const popup = list.parentElement;
+    const empty = $("p", popup);
+    const field = popup.parentElement;
+    let options = [];
+    let active = -1;
+    function highlight(index) {
+      active = index;
+      const option = list.children[index];
+      for (const item of list.children) item.toggleAttribute("data-active", item === option);
+      if (!option) control.removeAttribute("aria-activedescendant");
+      else {
+        control.setAttribute("aria-activedescendant", option.id);
+        if (list.scrollHeight > list.clientHeight) list.scrollTop = option.offsetTop - list.firstElementChild.offsetTop;
+      }
+    }
+    function open(query = "") {
+      const term = query.trim().toLowerCase();
+      options = allOptions().filter(option => option.label.toLowerCase().includes(term));
+      const value = selected();
+      list.replaceChildren(...options.map((option, index) => {
+        const item = document.createElement("div");
+        item.className = "popup-action";
+        item.id = `${list.id}-${index}`;
+        item.setAttribute("role", "option");
+        item.setAttribute("aria-selected", option.value === value);
+        item.dataset.choice = index;
+        item.textContent = option.label;
+        return item;
+      }));
+      if (empty) empty.hidden = Boolean(options.length);
+      popup.hidden = false;
+      control.setAttribute("aria-expanded", "true");
+      highlight(options.findIndex(option => option.value === value));
+    }
+    function close() {
+      if (popup.hidden) return;
+      popup.hidden = true;
+      control.setAttribute("aria-expanded", "false");
+      control.removeAttribute("aria-activedescendant");
+      if (editable) control.value = allOptions().find(option => option.value === selected())?.label ?? "";
+    }
+    function choose(index) {
+      if (!options[index]) return;
+      commit(options[index].value);
+      close();
+      control.focus({ preventScroll: true });
+    }
+    control.addEventListener("click", () => {
+      if (popup.hidden) open();
+      else if (!editable) close();
+    });
+    if (editable) control.addEventListener("input", () => open(control.value));
+    control.addEventListener("keydown", event => {
+      const key = event.key;
+      if (key === "Escape" && !popup.hidden) {
+        event.preventDefault();
+        close();
+      } else if (key === "ArrowDown" || key === "ArrowUp") {
+        event.preventDefault();
+        if (popup.hidden) {
+          open();
+          if (active === -1) highlight(key === "ArrowDown" ? 0 : options.length - 1);
+        } else if (options.length) {
+          const next = key === "ArrowDown" ? active + 1 : (active < 0 ? options.length - 1 : active - 1);
+          highlight((next + options.length) % options.length);
+        }
+      } else if (!popup.hidden && !editable && (key === "Home" || key === "End")) {
+        event.preventDefault();
+        highlight(key === "Home" ? 0 : options.length - 1);
+      } else if (!popup.hidden && (key === "Enter" || (!editable && key === " "))) {
+        event.preventDefault();
+        choose(active);
+      } else if (!editable && key.length === 1 && key.trim() && !event.ctrlKey && !event.metaKey) {
+        if (popup.hidden) open();
+        const next = options.findIndex(option => option.label.toLowerCase().startsWith(key.toLowerCase()));
+        if (next >= 0) highlight(next);
+      }
+    });
+    list.addEventListener("mousedown", event => event.preventDefault());
+    list.addEventListener("click", event => {
+      const item = event.target.closest("[data-choice]");
+      if (item) choose(Number(item.dataset.choice));
+    });
+    field.addEventListener("focusout", event => {
+      if (!field.contains(event.relatedTarget)) close();
+    });
+    document.addEventListener("click", event => {
+      if (!field.contains(event.target)) close();
+    });
+  }
+  const bankField = $("#bank");
+  const banks = [...bankField.options].map(option => ({ label: option.text, value: option.value }));
+  const syncBankPicker = () => { $("#bank-choice").textContent = bankField.value; };
+  bindPicker($("#bank-picker"), () => banks, () => bankField.value, value => {
+    bankField.value = value;
+    bankField.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  bankField.addEventListener("change", syncBankPicker);
+  form.addEventListener("reset", () => queueMicrotask(syncBankPicker));
+  bindPicker(
+    $("#patch-picker"),
+    () => library.map(patch => ({ label: patch.name, value: patch.id })),
+    () => currentPatch.id,
+    id => { currentPatch = library.find(patch => patch.id === id); renderFrontPanel(); }
+  );
+
+  // OTP uses one input so selection, deletion, and paste work as a unit.
+  const code = $("#bench-code");
+  const digits = $$(".otp-digits span");
+  const codeStatus = $("#code-status");
+  const normalizeCode = value => value.replace(/\D/g, "").slice(0, digits.length);
+  function paintCode() {
+    const cursor = Math.min(code.selectionStart, digits.length - 1);
+    digits.forEach((digit, index) => {
+      digit.textContent = code.value[index] ?? "";
+      digit.toggleAttribute("data-active", index === cursor);
+    });
+  }
+  code.addEventListener("input", () => {
+    const cursor = normalizeCode(code.value.slice(0, code.selectionStart)).length;
+    const normalized = normalizeCode(code.value);
+    if (normalized !== code.value) {
+      code.value = normalized;
+      code.setSelectionRange(cursor, cursor);
+    }
+    code.removeAttribute("aria-invalid");
+    codeStatus.textContent = "";
+    paintCode();
+  });
+  for (const event of ["focus", "click", "keyup", "select"]) code.addEventListener(event, paintCode);
+  $("#bench-access").addEventListener("submit", event => {
+    event.preventDefault();
+    const valid = code.value === "314159";
+    codeStatus.textContent = valid ? "Bench code accepted." : "Enter the six-digit demo code.";
+    codeStatus.classList.toggle("error", !valid);
+    code.setAttribute("aria-invalid", !valid);
+    if (!valid) code.focus();
+  });
+  paintCode();
+
+  const questionnaire = $("#questionnaire");
+  const questions = $$("[data-step]", questionnaire);
+  const questionError = $("#question-error");
+  const questionRadios = $$('input[name="inspection-bank"]', questionnaire);
+  const questionChecks = $$('input[name="inspection-check"]', questionnaire);
+  let question = 0;
+  function showQuestion(next) {
+    question = next;
+    questions.forEach((step, index) => {
+      step.hidden = index !== next;
+      step.disabled = index !== next;
+      step.inert = index !== next;
+    });
+    $("#question-count").textContent = `${next + 1} of ${questions.length}`;
+    $("#question-progress").value = next + 1;
+    $("#question-back").hidden = next === 0;
+    $("#question-skip").hidden = next !== 1;
+    $("#question-next").textContent = next === questions.length - 1 ? "Save inspection" : "Next step";
+    $("legend", questions[next]).focus();
+  }
+  function questionInvalid(invalid) {
+    questionError.hidden = !invalid;
+    questionRadios.forEach(radio => radio.setAttribute("aria-invalid", invalid));
+  }
+  questions[0].addEventListener("change", () => questionInvalid(false));
+  $("#question-back").addEventListener("click", () => showQuestion(question - 1));
+  $("#question-skip").addEventListener("click", () => {
+    questionChecks.forEach(check => { check.checked = false; });
+    showQuestion(question + 1);
+  });
+  questionnaire.addEventListener("submit", event => {
+    event.preventDefault();
+    const bank = questionRadios.find(radio => radio.checked);
+    if (question === 0 && !bank) {
+      questionInvalid(true);
+      questionRadios[0].focus();
+      return;
+    }
+    if (question < questions.length - 1) {
+      showQuestion(question + 1);
+      return;
+    }
+    const checks = questionChecks.filter(check => check.checked).map(check => check.value);
+    const notes = $("#inspection-notes").value.trim();
+    const summary = [`${bank.value} bank`, checks.join(" · ") || "No checks selected.", notes || "No inspection notes."];
+    $("#inspection-summary").replaceChildren(...summary.map(value => {
+      const line = document.createElement("p");
+      line.textContent = value;
+      return line;
+    }));
+    $("#questionnaire-steps").hidden = true;
+    $("#questionnaire-result").hidden = false;
+    $("#inspection-complete").focus();
+  });
+  $("#question-restart").addEventListener("click", () => {
+    questionnaire.reset();
+    $("#questionnaire-result").hidden = true;
+    $("#questionnaire-steps").hidden = false;
+    questionInvalid(false);
+    showQuestion(0);
+  });
+
+  // Transcript keeps scroll position when history is prepended.
+  const transcript = $("#transcript");
+  const log = $("#transcript-log");
+  const fileInput = $("#bench-file");
+  const draftFile = $("#draft-file");
+  const noteInput = $("#bench-message");
+  const noteStatus = $("#bench-status");
+  const toLatest = () => { transcript.scrollTop = transcript.scrollHeight; };
+  let attachment;
+  function makeMarker(text) {
+    const item = document.createElement("li");
+    item.className = "marker";
+    const label = document.createElement("span");
+    label.textContent = text;
+    item.append(label);
+    return item;
+  }
+  function makeAttachment({ file, url }) {
+    const element = $("#attachment-template").content.firstElementChild.cloneNode(true);
+    const link = $("a", element);
+    link.href = url;
+    link.download = file.name;
+    link.textContent = file.name;
+    $(".small", element).textContent = file.size < 1024 ? `${file.size} B` : `${(file.size / 1024).toFixed(1)} KiB`;
+    return element;
+  }
+  function makeMessage(author, text, attached) {
+    const item = $("#message-template").content.firstElementChild.cloneNode(true);
+    const message = $("article", item);
+    message.dataset.author = author === "You" ? "you" : "bench";
+    $(".avatar", message).textContent = author === "You" ? "Y" : "B";
+    $("header strong", message).textContent = author;
+    const bubble = $(".message-bubble", message);
+    bubble.textContent = text;
+    bubble.hidden = !text;
+    if (attached) bubble.after(makeAttachment(attached));
+    return item;
+  }
+  function addTrace(message, patch) {
+    const trace = document.createElement("ol");
+    trace.className = "trace";
+    trace.setAttribute("aria-label", "Patch report trace");
+    for (const [title, detail] of [
+      ["Receive bench note", "The note was added to this local transcript."],
+      ["Read the selected patch", `${patch.name} · ${patch.bank} bank`],
+      ["Report front-panel state", `${patch.source} source · ${patch.pinned ? "Pinned" : "Unpinned"}`]
+    ]) {
+      const step = document.createElement("li");
+      const disclosure = document.createElement("details");
+      const summary = document.createElement("summary");
+      const body = document.createElement("p");
+      summary.textContent = title;
+      body.textContent = detail;
+      disclosure.append(summary, body);
+      step.append(disclosure);
+      trace.append(step);
+    }
+    $(".message-bubble", message).after(trace);
+  }
+  log.append(
+    makeMarker("Current session"),
+    makeMessage("Bench", "The patch library is ready. Use the selectors or open a patch from the table."),
+    makeMessage("You", "Which patch is on the front panel?"),
+    makeMessage("Bench", "Aether Receiver is selected. It uses the internal source and is pinned."),
+    makeMessage("You", "Keep the signal settings for review."),
+    makeMessage("Bench", "Add a bench note to read the current patch state. You can include a local file.")
+  );
+  toLatest();
+  $("#latest-note").addEventListener("click", toLatest);
+  $("#add-marker").addEventListener("click", () => {
+    log.append(makeMarker("Session checkpoint"));
+    toLatest();
+  });
+  $("#load-history").addEventListener("click", event => {
+    if (event.currentTarget.getAttribute("aria-disabled") === "true") return;
+    const height = transcript.scrollHeight;
+    const offset = transcript.scrollTop;
+    log.prepend(
+      makeMarker("Earlier on the bench"),
+      makeMessage("Bench", "Bench powered on."),
+      makeMessage("You", "Load the starter patches."),
+      makeMessage("Bench", "Six patches loaded across Signal, Rhythm, and Utility.")
+    );
+    transcript.scrollTop = offset + transcript.scrollHeight - height;
+    event.currentTarget.setAttribute("aria-disabled", "true");
+  });
+  function removeDraft(revoke) {
+    if (revoke && attachment) URL.revokeObjectURL(attachment.url);
+    attachment = null;
+    fileInput.value = "";
+    draftFile.replaceChildren();
+    draftFile.hidden = true;
+  }
+  fileInput.addEventListener("change", () => {
+    if (attachment) URL.revokeObjectURL(attachment.url);
+    const file = fileInput.files[0];
+    if (!file) { removeDraft(false); return; }
+    attachment = { file, url: URL.createObjectURL(file) };
+    const preview = makeAttachment(attachment);
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "key";
+    remove.setAttribute("aria-label", "Remove attachment");
+    remove.textContent = "×";
+    remove.addEventListener("click", () => { removeDraft(true); fileInput.focus(); });
+    preview.append(remove);
+    draftFile.replaceChildren(preview);
+    draftFile.hidden = false;
+    noteStatus.textContent = "";
+  });
+  noteInput.addEventListener("input", () => { noteStatus.textContent = ""; });
+  $("#bench-note").addEventListener("submit", event => {
+    event.preventDefault();
+    const text = noteInput.value.trim();
+    if (!text && !attachment) {
+      noteStatus.textContent = "Write a note or attach a file.";
+      noteInput.focus();
+      return;
+    }
+    const report = makeMessage("Bench", "Patch report ready.");
+    addTrace(report, currentPatch);
+    log.append(makeMessage("You", text, attachment), report);
+    noteInput.value = "";
+    removeDraft(false);
+    noteStatus.textContent = "";
+    toLatest();
+  });
+
+  const carousel = $("#bank-carousel");
+  const slides = $$("[data-bank-slide]", carousel);
+  let slideIndex = 0;
+  function moveCarousel(delta) {
+    slideIndex = (slideIndex + delta + slides.length) % slides.length;
+    slides.forEach((slide, index) => { slide.hidden = index !== slideIndex; });
+    $("#bank-position").textContent = `${slideIndex + 1} of ${slides.length}`;
+  }
+  $("#bank-before").addEventListener("click", () => moveCarousel(-1));
+  $("#bank-after").addEventListener("click", () => moveCarousel(1));
+  carousel.addEventListener("keydown", event => {
+    if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    moveCarousel(event.key === "ArrowRight" ? 1 : -1);
+  });
+  const slideWindow = $("#bank-slides");
+  let swipe;
+  slideWindow.addEventListener("pointerdown", event => {
+    if (event.pointerType === "mouse" || !event.isPrimary) return;
+    swipe = { pointer: event.pointerId, x: event.clientX, y: event.clientY };
+    slideWindow.setPointerCapture(event.pointerId);
+  });
+  slideWindow.addEventListener("pointerup", event => {
+    if (event.pointerId !== swipe?.pointer) return;
+    const dx = event.clientX - swipe.x;
+    const dy = event.clientY - swipe.y;
+    if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy)) moveCarousel(dx < 0 ? 1 : -1);
+    swipe = null;
+  });
+  slideWindow.addEventListener("lostpointercapture", () => { swipe = null; });
+
+  const panes = $("#patch-panes");
+  const resizeGrip = $(".resize-grip", panes);
+  const minSplit = Number(resizeGrip.getAttribute("aria-valuemin"));
+  const maxSplit = Number(resizeGrip.getAttribute("aria-valuemax"));
+  let split = Number(resizeGrip.getAttribute("aria-valuenow"));
+  let resizeDrag;
+  function setSplit(value) {
+    split = Math.max(minSplit, Math.min(maxSplit, Math.round(value)));
+    panes.style.setProperty("--split", split / 100);
+    resizeGrip.setAttribute("aria-valuenow", split);
+    resizeGrip.setAttribute("aria-valuetext", `Source pane ${split}%`);
+  }
+  function readingSign() { return panes.dir === "rtl" ? -1 : 1; }
+  for (const radio of $$('[name="pane-direction"]')) {
+    radio.addEventListener("change", () => { panes.dir = radio.value; });
+  }
+  resizeGrip.addEventListener("keydown", event => {
+    const target = {
+      ArrowLeft: split - 5 * readingSign(),
+      ArrowRight: split + 5 * readingSign(),
+      Home: minSplit,
+      End: maxSplit
+    }[event.key];
+    if (target === undefined) return;
+    event.preventDefault();
+    setSplit(target);
+  });
+  resizeGrip.addEventListener("pointerdown", event => {
+    if (event.button !== 0) return;
+    const width = panes.clientWidth - resizeGrip.clientWidth;
+    resizeDrag = { pointer: event.pointerId, x: event.clientX, split, width };
+    resizeGrip.setPointerCapture(event.pointerId);
+  });
+  resizeGrip.addEventListener("pointermove", event => {
+    if (event.pointerId !== resizeDrag?.pointer) return;
+    const distance = readingSign() * (event.clientX - resizeDrag.x);
+    setSplit(resizeDrag.split + 100 * distance / resizeDrag.width);
+  });
+  resizeGrip.addEventListener("lostpointercapture", () => { resizeDrag = null; });
+  setSplit(split);
+
+  const diagnose = $("#diagnose");
+  const loadingPreview = $("#diagnostic-preview");
+  function setLoadingPreview(show) {
+    loadingPreview.setAttribute("aria-pressed", String(show));
+    $("#diagnostic-placeholder").hidden = !show;
+  }
+  loadingPreview.addEventListener("click", () => {
+    setLoadingPreview(loadingPreview.getAttribute("aria-pressed") !== "true");
+  });
+  diagnose.addEventListener("click", () => {
+    setLoadingPreview(false);
+    const missingNames = library.filter(patch => !patch.name.trim()).length;
+    $("#progress").value = 100;
+    $("#diagnostic-value").textContent = "100%";
+    $("#diagnostic-status").textContent = missingNames
+      ? `Diagnostics complete. ${missingNames} patches need a name.`
+      : `Diagnostics complete. ${library.length} patches checked.`;
+  });
+
+  renderTable();
+  renderChart();
+  renderFrontPanel();
+</script>
+</body>
+</html>

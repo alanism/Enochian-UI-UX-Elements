@@ -4,11 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Enochian Compact Controls</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400;1,500&display=swap">
-<script>if(new URLSearchParams(location.search).has("embedded"))document.documentElement.classList.add("embedded");</script>
-<style>
+<script src="../assets/atlas-preview.js" data-fonts="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400;1,500&amp;display=swap"></script>
+<style data-pattern-style>
   html.embedded .page > header, html.embedded .page > .finish-line{display:none}
   html.embedded .page > .section-title:first-of-type{padding-top:18px}
 
@@ -102,6 +99,7 @@
   /* toggles */
   .tg{position:relative;width:84px;height:40px;border-radius:999px;border:0;padding:0;cursor:pointer;background:var(--well);box-shadow:var(--sunk);touch-action:none;transition:background .22s ease;flex:none}
   .tg:focus-visible{outline:3px solid var(--accent);outline-offset:5px}
+  #std:focus-visible{outline-color:var(--ink)}
   .tg-k{position:absolute;top:4px;left:4px;width:32px;height:32px;border-radius:50%;background:var(--cap);box-shadow:var(--lift);will-change:transform;pointer-events:none}
   .tg.std[aria-checked="true"]{background:var(--ink)}
   .tg.col[aria-checked="true"]{background:var(--accent);box-shadow:inset 0 2px 5px rgba(0,0,0,.25)}
@@ -374,7 +372,7 @@ function noteOff(midi) { const v = voices.get(midi); v.g.gain.setTargetAtTime(0.
     </div>
   </article>
 
-  <article class="unit" id="c-tpb">
+  <article class="unit" id="c-tpb" data-atlas-pattern="toggle-group">
     <div class="cap"><span>Triad Action Keys · latching trio</span><span class="pill">SIGNAL · WHITE · BLACK</span></div>
     <div class="card">
       <p class="component-copy">Three latching buttons, told apart by colour. A press seats the cap and lights the lamp above it, and a second press releases it. The red one is kept for the action you most want to notice.</p>
@@ -405,7 +403,7 @@ btn.onpointerup   = () =&gt; { clearTimeout(timer); if (!held) onTap(); };</code
     </div>
   </article>
 
-  <article class="unit" id="c-ccv">
+  <article class="unit" id="c-ccv" data-atlas-pattern="toggle">
     <div class="cap"><span>Hollow Gate · dished latch</span><span class="pill">ON / OFF</span></div>
     <div class="card">
       <p class="component-copy">A signal-red latch with a dished face. Turning it on deepens the dish as the cap seats, and the lamp above confirms the state. Use it for one important on/off, like arming or going live.</p>
@@ -443,7 +441,7 @@ btn.onpointerup   = () =&gt; { clearTimeout(timer); if (!held) onTap(); };</code
 <!-- ───────────── SWITCHES ───────────── -->
 <div class="section-title">Switches</div>
 <div class="grid">
-  <article class="unit" id="c-std">
+  <article class="unit" id="c-std" data-atlas-pattern="switch">
     <div class="cap"><span>Binary Gate · the plain toggle</span><span class="pill">ON / OFF</span></div>
     <div class="card">
       <p class="component-copy">The baseline toggle. A white knob in a sunken track, and the track fills black when the switch is on. Click it, or drag the knob and let it settle on the nearer side.</p>
@@ -574,7 +572,7 @@ thumb.style.transform = `translateY(${(1 - x) * 58}px)`;</code></pre></section>
 <!-- ───────────── SLIDERS AND DIALS ───────────── -->
 <div class="section-title">Sliders and dials</div>
 <div class="grid">
-  <article class="unit" id="c-trk">
+  <article class="unit" id="c-trk" data-atlas-pattern="slider">
     <div class="cap"><span>Signal Slider · ribbed thumb</span><span class="pill">0 – 100</span></div>
     <div class="card">
       <p class="component-copy">A continuous slider with a ribbed pill thumb on a hairline track. The part of the track behind the thumb fills black, so the value reads from the line alone. Drag anywhere on the track and the thumb follows.</p>
@@ -681,7 +679,7 @@ shadow.style.transform = `scale(${1 - y / 400})`;  shadow.style.opacity = 1 - y 
 </section>
 </div>
 
-<script>
+<script data-pattern-script>
 (() => {
 "use strict";
 let MASTER=null, ANALYSER=null; const masterGainVal=()=>1;

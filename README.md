@@ -14,6 +14,10 @@ Black, white, and Cinnabar `#CC0000` define the palette. Ivory and Obsidian are 
 
 See [`HOW_TO_USE_AND_REMIX.md`](HOW_TO_USE_AND_REMIX.md) for implementation details and [`LICENSE.md`](LICENSE.md) for source terms.
 
+## Interface components
+
+[`volume-4/index.html`](volume-4/index.html) is the searchable, offline catalog for all 66 interface patterns. It combines 59 Volume IV examples with seven live previews from the original source volumes. Each pattern has a **Copy Code** action that exports a runnable HTML example. See the [coverage map and reuse guide](HOW_TO_USE_AND_REMIX.md#7-interface-components).
+
 ## Standalone typing keyboard
 
 [`typing-keyboard/index.html`](typing-keyboard/index.html) adds the reference-inspired 79-key mechanical typing surface: Cinnabar Escape/arrows, two Enochian rotary knobs, a live clock, and Ivory/Obsidian finishes. Keys edit real text; the knobs adjust local key-sound volume and display backlight. It is an offline single-file component with scoped input/key/parameter events for reuse. The showcase can add it as a device study from its separate source checkout. See [`typing-keyboard/README.md`](typing-keyboard/README.md) for embedding, extraction, controls, and acceptance checks.
