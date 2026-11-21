@@ -14,6 +14,10 @@ Black, white, and Cinnabar `#CC0000` define the palette. Ivory and Obsidian are 
 
 See [`HOW_TO_USE_AND_REMIX.md`](HOW_TO_USE_AND_REMIX.md) for implementation details and [`LICENSE.md`](LICENSE.md) for source terms.
 
+## Interface components
+
+[`volume-4/index.html`](volume-4/index.html) is the searchable, offline catalog for all 66 interface patterns. It combines 59 Volume IV examples with seven live previews from the original source volumes. Each pattern has a **Copy Code** action that exports a runnable HTML example. See the [coverage map and reuse guide](HOW_TO_USE_AND_REMIX.md#7-interface-components).
+
 ## Composed instrument study
 
 [`op-1/index.html`](op-1/index.html) combines the Canticle Keys, spring-driven encoders, and interlocked transport into a Teenage Engineering OP-1-inspired Enochian control surface. This is an additional study, not a replacement for the existing sources or part of the 55-control showcase count.

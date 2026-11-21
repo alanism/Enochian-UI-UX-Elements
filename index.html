@@ -3,12 +3,9 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;700&display=swap"/>
 <title>Enochian Elements — Control Atlas</title>
-<script>if(new URLSearchParams(location.search).has("embedded"))document.documentElement.classList.add("embedded");</script>
-<style>
+<script src="assets/atlas-preview.js" data-fonts="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;500;700&amp;display=swap"></script>
+<style data-pattern-style>
   html.embedded body > header, html.embedded body > .accentrow, html.embedded footer.finish-line{display:none}
   html.embedded .section-title:first-of-type{padding-top:18px}
 
@@ -315,6 +312,7 @@
   <div class="portable"><strong>Portable by design.</strong> No hosted design service is required. The controls are self-contained, accessible, and ready to adapt.</div>
   <nav class="atlas-map" aria-label="Control atlas guide">
     <h3>Find the right pattern</h3>
+    <p><a href="volume-4/index.html">Interface components</a> — forms, navigation, overlays, feedback, data, and layout in Ivory and Obsidian.</p>
     <p><a href="op-1/index.html">Canticle / OP study</a> — a composed instrument surface with playable keys, four encoders, and note-event tape.</p>
     <p><a href="speakers/index.html">Mesh &amp; Twin / audio studies</a> — woven grille, twin drivers, tactile volume controls, and switchable speaker finishes.</p>
     <p><a href="tp-7/index.html">TP / recorder study</a> — tactile scrub wheel, generated-demo recording, transport keys, and silver/dark finishes.</p>
@@ -331,7 +329,7 @@
 
 <div class="section-title">Inspect the construction</div>
 <div class="cap"><span>The Code Veil · reveal the implementation</span><span class="pill">CODE HIDDEN / VISIBLE</span></div>
-<div class="grid"><div class="card code-toggle-card">
+<div class="grid" data-atlas-pattern="code-block"><div class="card code-toggle-card">
   <p class="component-copy">The Code Veil turns the atlas from a visual catalogue into a practical reference. Switch it on to reveal a copyable implementation fragment beneath every control.</p>
   <div class="rthemes" id="codeVeilFinish" role="group" aria-label="Code Veil finish"><button type="button" data-finish="ivory" aria-pressed="true">IVORY</button><button type="button" data-finish="obsidian" aria-pressed="false">OBSIDIAN</button></div>
   <div class="d37-wrap">
@@ -576,7 +574,7 @@
 </div></div>
 
 <div class="cap"><span>Push Button · concave momentary control</span><span class="pill">PRESS / RELEASE</span></div>
-<div class="grid"><div class="card">
+<div class="grid" data-atlas-pattern="button"><div class="card">
   <p class="component-copy">A single-purpose actuator with a dished surface, a visible socket, and enough vertical travel to make the press unmistakable.</p>
   <div class="concave-stage">
     <div class="concave-led" aria-hidden="true"></div>
@@ -589,7 +587,7 @@
 </div></div>
 
 <div class="cap"><span>The Three Keys · tactile action controls</span><span class="pill">MOMENTARY / LATCH</span></div>
-<div class="grid"><div class="card">
+<div class="grid" data-atlas-pattern="button-group"><div class="card">
   <p class="component-copy">Three arcade-style controls with a physical press, visible socket, and immediate signal response. Use momentary behavior for hold actions or latch behavior for persistent state.</p>
   <div class="stepbar" id="abMode" role="group" aria-label="Button behavior">
     <button data-m="moment" aria-pressed="true">momentary</button><button data-m="latch" aria-pressed="false">latch</button>
@@ -609,8 +607,9 @@
   <blockquote>Choose the instrument. Change the state. See the result. Reuse the pattern.</blockquote>
 </footer>
 
-<script type="module">
-import { animate } from "https://cdn.jsdelivr.net/npm/motion@11/+esm";
+<script src="assets/motion-11.18.2.js"></script>
+<script type="module" data-pattern-script>
+const { animate } = globalThis.Motion;
 const SNAP = { type:"spring", stiffness:700, damping:35, mass:0.8 };
 const HEAVY = { type:"spring", stiffness:300, damping:30, mass:1.2 };
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
